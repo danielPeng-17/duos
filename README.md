@@ -1,6 +1,6 @@
 # Dating-App
 
-dating-app-service -> nest.js
+dating-app-service -> nest.js\
 dating-app-ui -> flutter
 
 
