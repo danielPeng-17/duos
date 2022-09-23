@@ -1,7 +1,7 @@
 # Dating-App
 
 dating-app-service -> nest.js\
-dating-app-ui -> flutter\
+dating-app-ui -> flutter
 
 FOR THOSE OF YOU THAT LIKE MERGING TO MAIN BRANCH, DON'T. I WILL KILL YOU.\
 MAKE YOUR CHANGES ON A DIFFERENT BRANCH THEN MAKE A DAMN PR, YOU LAZY FUCK.\
