@@ -3,7 +3,7 @@
 dating-app-service -> nest.js\
 dating-app-ui -> flutter
 
-FOR THOSE OF YOU THAT LIKE MERGING TO MAIN BRANCH, DON'T. I WILL KILL YOU.\
+FOR THOSE OF YOU THAT LIKE MERGING TO MAIN BRANCH, DON'T BECAUSE U CAN'T.\
 MAKE YOUR CHANGES ON A DIFFERENT BRANCH THEN MAKE A DAMN PR, YOU LAZY FUCK.\
 Thanks.
 
@@ -18,6 +18,3 @@ you need to go into the dating-app-service and install the node dependencies. Fo
 1. open a terminal in the root dir of this project.
 2. ```cd dating-app-service```
 3. ```npm ci```
-
-test
-dfsdfg
