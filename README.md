@@ -3,10 +3,6 @@
 dating-app-service -> nest.js\
 dating-app-ui -> flutter
 
-FOR THOSE OF YOU THAT LIKE MERGING TO MAIN BRANCH, DON'T BECAUSE U CAN'T.\
-MAKE YOUR CHANGES ON A DIFFERENT BRANCH THEN MAKE A DAMN PR, YOU LAZY FUCK.\
-Thanks.
-
 ## flutter install
 https://docs.flutter.dev/get-started/install
 
