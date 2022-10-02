@@ -1,7 +1,7 @@
-# Dating-App
+# Duos App
 
-dating-app-service -> nest.js\
-dating-app-ui -> flutter
+duos-api -> nest.js\
+duos-ui -> flutter
 
 ## flutter install
 https://docs.flutter.dev/get-started/install
