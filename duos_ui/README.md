@@ -1,6 +1,6 @@
-# dating_app_ui
+# duos_ui
 
-A Flutter dating app.
+Flutter project.
 
 ## Getting Started
 

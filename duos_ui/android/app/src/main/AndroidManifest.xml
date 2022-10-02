@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.dating_app_ui">
+    package="com.example.duos_ui">
    <application
-        android:label="dating_app_ui"
+        android:label="duos_ui"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
