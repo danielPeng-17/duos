@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:duos_ui/widgets/custom_navigation_bar.dart';
+import 'package:duos_ui/screens/profile_creation_name.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +18,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.purple,
       ),
-      home: const RootPage(),
+      home: const RootPage(
+
+      ),
     );
   }
 }
@@ -37,7 +40,7 @@ class _RootPageState extends State<RootPage> {
       appBar: AppBar(
         title: const Text("Duos"),
       ),
-      // body: pages[currentPage],
+      body: const ProfileCreationName(),
       bottomNavigationBar: const CustomNavigationBar(),
     );
   }
