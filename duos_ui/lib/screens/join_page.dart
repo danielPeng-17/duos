@@ -1,3 +1,4 @@
+import 'package:duos_ui/screens/login_page.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -42,7 +43,8 @@ class JoinPage extends StatelessWidget {
                 ),
                 child: TextButton(
                   onPressed: () {
-                    //Navigator.push();
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const LoginPage()));
                   },
                   child: const Text(
                     'Join Now',
@@ -69,8 +71,9 @@ class JoinPage extends StatelessWidget {
                       const TextSpan(text: 'Already have an account?'),
                       TextSpan(
                           recognizer: TapGestureRecognizer()
-                            ..onTap = () =>
-                                (print("Placeholder for login navigator")),
+                            ..onTap = () => (Navigator.of(context).push(
+                                MaterialPageRoute(
+                                    builder: (context) => const LoginPage()))),
                           text: ' Log in',
                           style: const TextStyle(fontWeight: FontWeight.bold)),
                     ]),
