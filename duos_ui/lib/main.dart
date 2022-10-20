@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:duos_ui/widgets/custom_navigation_bar.dart';
-import 'package:duos_ui/screens/profile_creation_name.dart';
+import 'package:duos_ui/screens/login_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,30 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.purple,
       ),
-      home: const RootPage(
-
-      ),
-    );
-  }
-}
-
-class RootPage extends StatefulWidget {
-  const RootPage({super.key});
-
-  @override
-  State<RootPage> createState() => _RootPageState();
-}
-
-class _RootPageState extends State<RootPage> {
-  int currentPage = 0;
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Duos"),
-      ),
-      body: const ProfileCreationName(),
-      bottomNavigationBar: const CustomNavigationBar(),
+      home: const LoginPage(),
     );
   }
 }
