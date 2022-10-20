@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
@@ -59,16 +60,19 @@ class JoinPage extends StatelessWidget {
             padding: const EdgeInsets.only(top: 680),
             child: Center(
               child: RichText(
-                text: const TextSpan(
-                    style: TextStyle(
+                text: TextSpan(
+                    style: const TextStyle(
                       fontSize: 15,
                       color: Colors.black,
                     ),
                     children: <TextSpan>[
-                      TextSpan(text: 'Already have an account?'),
+                      const TextSpan(text: 'Already have an account?'),
                       TextSpan(
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () =>
+                                (print("Placeholder for login navigator")),
                           text: ' Log in',
-                          style: TextStyle(fontWeight: FontWeight.bold)),
+                          style: const TextStyle(fontWeight: FontWeight.bold)),
                     ]),
               ),
             ),
