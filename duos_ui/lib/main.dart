@@ -1,3 +1,6 @@
+import 'package:duos_ui/screens/profile_creation_bio.dart';
+import 'package:duos_ui/screens/profile_creation_game.dart';
+import 'package:duos_ui/screens/profile_creation_name.dart';
 import 'package:flutter/material.dart';
 import 'package:duos_ui/screens/login_page.dart';
 
@@ -17,7 +20,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.purple,
       ),
-      home: const LoginPage(),
+      home: const ProfileCreationGame(),
     );
   }
 }
