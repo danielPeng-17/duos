@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:textfield_search/textfield_search.dart';
 
-class ProfileCreationName extends StatefulWidget {
-  const ProfileCreationName({Key? key}) : super(key: key);
+class ProfileCreationGame extends StatefulWidget {
+  const ProfileCreationGame({Key? key}) : super(key: key);
 
   @override
-  State<ProfileCreationName> createState() => _ProfileCreationNameState();
+  State<ProfileCreationGame> createState() => _ProfileCreationGameState();
 }
 
-class _ProfileCreationNameState extends State<ProfileCreationName> {
+class _ProfileCreationGameState extends State<ProfileCreationGame> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
@@ -21,7 +22,6 @@ class _ProfileCreationNameState extends State<ProfileCreationName> {
 
 class MyCustomForm extends StatelessWidget {
   const MyCustomForm({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -55,32 +55,30 @@ class MyCustomForm extends StatelessWidget {
         ),
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-          child: Text("What is your name?",
+          child: Text("Favourite Games?",
               style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
         ),
+
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 3),
+          child: Text("",
+              style: TextStyle(fontSize: 12)),
+        ),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
           child: TextFormField(
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'First name is required';
+                return '';
               }
             },
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
-              labelText: 'Enter your first name',
+              labelText: 'Search.... e.g. Valorant, League of Legends, Stardew Valley',
             ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-          child: TextFormField(
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Enter your last name',
-            ),
-          ),
-        ),
+
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 20.0),
           child: Center(
