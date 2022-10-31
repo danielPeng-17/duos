@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import '../main.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -8,6 +10,17 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,27 +34,31 @@ class _LoginPageState extends State<LoginPage> {
                 child: SizedBox(
                   width: 250,
                   height: 200,
-                  child: Image.asset('assets/images/duosBlackLogoText.png', scale: 10.0),
+                  child: Image.asset('assets/images/duosBlackLogoText.png',
+                      scale: 10.0),
                 ),
               ),
             ),
-            const Padding(
+            Padding(
               //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
-              padding: EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: TextField(
-                decoration: InputDecoration(
+                controller: emailController,
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Email',
                   //hintText:
                 ),
+                textInputAction: TextInputAction.next,
               ),
             ),
-            const Padding(
-              padding:
-                  EdgeInsets.only(left: 20.0, right: 20.0, top: 15, bottom: 0),
+            Padding(
+              padding: const EdgeInsets.only(
+                  left: 20.0, right: 20.0, top: 15, bottom: 0),
               child: TextField(
                 obscureText: true,
-                decoration: InputDecoration(
+                controller: passwordController,
+                decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Password',
                     hintText: 'Enter password'),
@@ -62,9 +79,7 @@ class _LoginPageState extends State<LoginPage> {
                 borderRadius: BorderRadius.circular(20),
               ),
               child: TextButton(
-                onPressed: () {
-                  //Navigator.push();
-                },
+                onPressed: signIn,
                 child: const Text(
                   'Login',
                   style: TextStyle(color: Colors.white, fontSize: 20),
@@ -79,5 +94,24 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  Future signIn() async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const Center(child: CircularProgressIndicator()),
+    );
+
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+      );
+    } on FirebaseAuthException catch (e) {
+      print(e);
+    }
+
+   navigatorKey.currentState!.popUntil((route) => route.isFirst);
   }
 }
