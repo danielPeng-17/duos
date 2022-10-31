@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.purple,
       ),
-      home: const ProfileCreationGame(),
+      home: const LoginPage(),
     );
   }
 }

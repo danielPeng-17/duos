@@ -163,7 +163,7 @@ class MyCustomForm extends StatelessWidget {
                     elevation: 20,  // Elevation
                     shadowColor: Colors.black.withOpacity(0), // Shadow Color
                   ),
-                icon: Image.asset("../assets/images/profile_creation_next.png", width: 100, height:100),
+                icon: Image.asset("assets/images/profile_creation_next.png", width: 100, height:100),
                 label: Text(""),
                 onPressed: () {
                   // Validate returns true if the form is valid, or false otherwise.
