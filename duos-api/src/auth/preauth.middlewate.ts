@@ -1,49 +1,40 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response } from 'express';
 import * as firebase from 'firebase-admin';
-import * as serviceAccount from './firebase-service-account.json';
-
-const firebase_params = {
-    type: serviceAccount.type,
-    projectId: serviceAccount.project_id,
-    privateKeyId: serviceAccount.private_key_id,
-    privateKey: serviceAccount.private_key,
-    clientEmail: serviceAccount.client_email,
-    clientId: serviceAccount.client_id,
-    authUri: serviceAccount.auth_uri,
-    tokenUri: serviceAccount.token_uri,
-    authProviderX509CertUrl: serviceAccount.auth_provider_x509_cert_url,
-    clientC509CertUrl: serviceAccount.client_x509_cert_url
-}
+import { collection, query, where } from "firebase/firestore";
+import database from '../firebase/config';
+import { FirebaseService } from 'src/firebase/firebase.service';
 
 @Injectable()
 export class PreauthMiddleware implements NestMiddleware {
 
-    private defaultApp: any;
+    private auth: firebase.auth.Auth;
 
-    constructor() {
-        this.defaultApp = firebase.initializeApp({
-            credential: firebase.credential.cert(firebase_params),
-            databaseURL: "https://duos-fd03d.northamerica-northeast1.firebaseio.com"
-        });
+    constructor(private firebaseService: FirebaseService) {
+        this.auth = firebaseService.getAuth();
     }
 
     use(req: Request, res: Response, next: Function) {
         const token = req.headers.authorization;
         if (token != null && token != '') {
-            this.defaultApp.auth().verifyIdToken(token.replace('Bearer ', ''))
+            this.auth.verifyIdToken(token.replace('Bearer ', ''))
                 .then(async decodedToken => {
                     const user = {
-                        email: decodedToken.email
+                        userUID: decodedToken.userUID
                     }
-                    req['user'] = user;
-                    next();
+                    const users = collection(database, "users");
+                    const q = query(users, where("userUID", "==", user.userUID));
+                    console.log('in here', q)
+                    if (q) {
+                        next();
+                    }
                 }).catch(error => {
                     console.error(error);
                     this.accessDenied(req.url, res);
                 });
         } else {
-            next();
+            console.error("error: can not auth");
+            this.accessDenied(req.url, res);
         }
     }
 

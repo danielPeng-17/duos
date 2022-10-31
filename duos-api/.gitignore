@@ -1,4 +1,5 @@
 /src/auth/firebase-service-account.json
+/src/firebase/firebase-service-account.json
 
 # compiled output
 /dist
