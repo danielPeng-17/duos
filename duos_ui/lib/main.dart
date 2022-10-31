@@ -1,3 +1,4 @@
+import 'package:duos_ui/screens/join_page.dart';
 import 'package:duos_ui/screens/profile_creation_bio.dart';
 import 'package:duos_ui/screens/profile_creation_game.dart';
 import 'package:duos_ui/screens/profile_creation_name.dart';
