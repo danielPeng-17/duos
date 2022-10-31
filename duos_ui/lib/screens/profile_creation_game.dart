@@ -22,6 +22,7 @@ class _ProfileCreationGameState extends State<ProfileCreationGame> {
 
 class MyCustomForm extends StatelessWidget {
   const MyCustomForm({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -58,11 +59,9 @@ class MyCustomForm extends StatelessWidget {
           child: Text("Favourite Games?",
               style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
         ),
-
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 3),
-          child: Text("",
-              style: TextStyle(fontSize: 12)),
+          child: Text("", style: TextStyle(fontSize: 12)),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
@@ -74,11 +73,11 @@ class MyCustomForm extends StatelessWidget {
             },
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
-              labelText: 'Search.... e.g. Valorant, League of Legends, Stardew Valley',
+              labelText:
+                  'Search.... e.g. Valorant, League of Legends, Stardew Valley',
             ),
           ),
         ),
-
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 20.0),
           child: Center(
@@ -86,10 +85,13 @@ class MyCustomForm extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     primary: Colors.black.withOpacity(0),
                     onPrimary: Colors.black.withOpacity(0),
-                    elevation: 20,  // Elevation
+                    elevation: 20, // Elevation
                     shadowColor: Colors.black.withOpacity(0), // Shadow Color
                   ),
-                  icon: Image.asset("../assets/images/profile_creation_next.png", width: 100, height:100),
+                  icon: Image.asset(
+                      "assets/images/profile_creation_next.png",
+                      width: 100,
+                      height: 100),
                   label: Text(""),
                   onPressed: () {
                     // Validate returns true if the form is valid, or false otherwise.
@@ -100,8 +102,7 @@ class MyCustomForm extends StatelessWidget {
                     //     const SnackBar(content: Text('Processing Data')),
                     //   );
                     // }
-                  }
-              )),
+                  })),
         ),
       ],
     );

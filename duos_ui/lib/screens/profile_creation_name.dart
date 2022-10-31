@@ -84,26 +84,27 @@ class MyCustomForm extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 20.0),
           child: Center(
-              child: ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.black.withOpacity(0),
-                    onPrimary: Colors.black.withOpacity(0),
-                    elevation: 20,  // Elevation
-                    shadowColor: Colors.black.withOpacity(0), // Shadow Color
-                  ),
-                  icon: Image.asset("../assets/images/profile_creation_next.png", width: 100, height:100),
-                  label: Text(""),
-                  onPressed: () {
-                    // Validate returns true if the form is valid, or false otherwise.
-                    // if (_formKey.currentState!.validate()) {
-                    //   // If the form is valid, display a snackbar. In the real world,
-                    //   // you'd often call a server or save the information in a database.
-                    //   ScaffoldMessenger.of(context).showSnackBar(
-                    //     const SnackBar(content: Text('Processing Data')),
-                    //   );
-                    // }
-                  }
-              )),
+            child: ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.black.withOpacity(0),
+                  onPrimary: Colors.black.withOpacity(0),
+                  elevation: 20, // Elevation
+                  shadowColor: Colors.black.withOpacity(0), // Shadow Color
+                ),
+                icon: Image.asset("assets/images/profile_creation_next.png",
+                    width: 100, height: 100),
+                label: Text(""),
+                onPressed: () {
+                  // Validate returns true if the form is valid, or false otherwise.
+                  // if (_formKey.currentState!.validate()) {
+                  //   // If the form is valid, display a snackbar. In the real world,
+                  //   // you'd often call a server or save the information in a database.
+                  //   ScaffoldMessenger.of(context).showSnackBar(
+                  //     const SnackBar(content: Text('Processing Data')),
+                  //   );
+                  // }
+                }),
+          ),
         ),
       ],
     );
