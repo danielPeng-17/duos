@@ -1,7 +1,7 @@
 import { throwError } from "rxjs";
 import { User } from "src/models/user";
-import { UserInformation } from "src/models/user_info";
-import { Injectable } from '@nestjs/common';
+import { ConsoleLogger, Injectable } from '@nestjs/common';
+import { createNewUserAsync } from "src/firebase/database_functions/database_functions";
 
 @Injectable()
 export class UserService
@@ -13,12 +13,13 @@ export class UserService
 
     }
 
-   public CreateNewUser(user: UserInformation) {
-        if(!user.first_name || !user.last_name){
+   public CreateNewUser(user: User) {
+        console.log(user);
+        if(!user.info.first_name || !user.info.last_name){
             throwError(() => new Error("First or last name is missing"));
-        } else if(!user.email)
-        {
+        } else if(!user.info.email){
             throwError(() => new Error("Email is missing"));
         }
+        createNewUserAsync(user);
    } 
 }

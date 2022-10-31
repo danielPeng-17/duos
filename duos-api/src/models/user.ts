@@ -1,5 +1,5 @@
 import { UserInformation } from "./user_info";
-import { IsString} from "class-validator";
+//import { IsString} from "class-validator";
 
 
 /*
@@ -11,4 +11,11 @@ export class User {
     info: UserInformation;
     matched: Array<number>;
     categories: Array<number>;
+    
+    constructor(info)
+    {
+        this.info = info,
+        this.matched = [],
+        this.categories = []
+    }
 }
