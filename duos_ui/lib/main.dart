@@ -3,12 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:duos_ui/screens/login_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:duos_ui/screens/join_page.dart';
+import 'package:duos_ui/screens/home_page.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(const MyApp());
 }
+
+final navigatorKey = GlobalKey<NavigatorState>();
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -17,6 +20,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navigatorKey,
       title: 'Duos',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -36,9 +40,12 @@ class RootPage extends StatelessWidget {
       body: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            // temporary, replace with HomePage when it is complete
-            return const LoginPage();
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return const Center(child: Text('An error has occured'));
+          } else if (snapshot.hasData) {
+            return const HomePage();
           } else {
             return const JoinPage();
           }
