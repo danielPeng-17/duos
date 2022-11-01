@@ -1,4 +1,5 @@
 import 'package:duos_ui/screens/home_page.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:duos_ui/screens/forgot_password_page.dart';
@@ -51,8 +52,22 @@ class _SignUpPageState extends State<SignUpPage> {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: TextField(
+                child: TextFormField(
                   controller: _emailController,
+                  validator: (email) {
+                    if (email!.isEmpty) {
+                      return 'Empty';
+                    }
+                    if (email != null) {
+                      bool emailValid = RegExp(
+                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                          .hasMatch(email);
+                      if (emailValid) {
+                        return null;
+                      }
+                      return 'Enter Valid Email';
+                    }
+                  },
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Email',
@@ -151,6 +166,5 @@ class _SignUpPageState extends State<SignUpPage> {
 
     if (!mounted) return;
     Navigator.of(context).popUntil((route) => route.isFirst);
-    HomePage();
   }
 }
