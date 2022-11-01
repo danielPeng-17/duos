@@ -77,9 +77,14 @@ class _LoginPageState extends State<LoginPage> {
               Padding(
                 padding: const EdgeInsets.only(
                     left: 20.0, right: 20.0, top: 15, bottom: 0),
-                child: TextField(
+                child: TextFormField(
                   obscureText: true,
                   controller: _passwordController,
+                  validator: (val) {
+                    if (val!.isEmpty) {
+                      return 'Empty';
+                    }
+                  },
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Password',
@@ -106,7 +111,15 @@ class _LoginPageState extends State<LoginPage> {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: TextButton(
-                  onPressed: signIn,
+                  onPressed: () {
+                    if (_signinform.currentState!.validate()) {
+                      signIn();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                            content: Text('Attempting to Sign in...')),
+                      );
+                    }
+                  },
                   child: const Text(
                     'Login',
                     style: TextStyle(color: Colors.white, fontSize: 20),
