@@ -1,7 +1,5 @@
 import 'package:duos_ui/screens/login_page.dart';
 import 'package:flutter/gestures.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
 
 class JoinPage extends StatelessWidget {
@@ -10,14 +8,13 @@ class JoinPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color(0xFFCEBAFF),
       body: Stack(
-        children: [
-          Positioned(
-            top: 0,
-            child: SizedBox(
-              child: Image.asset('assets/images/duosJoinPageBackground.png',
-                  scale: 1),
+        children: <Widget>[
+          Positioned.fill(
+            child: Image.asset(
+              'assets/images/duosJoinPageBackground.png',
+              fit: BoxFit.cover,
             ),
           ),
           Padding(
@@ -26,8 +23,10 @@ class JoinPage extends StatelessWidget {
               child: SizedBox(
                 width: 250,
                 height: 200,
-                child: Image.asset('assets/images/duosBlackLogoText.png',
-                    scale: 10.0),
+                child: Image.asset(
+                  'assets/images/duosBlackLogoText.png',
+                  scale: 10.0,
+                ),
               ),
             ),
           ),
@@ -55,28 +54,27 @@ class JoinPage extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 740),
-            child: Center(child: Container(color: const Color(0xFFCEBAFF))),
-          ),
-          Padding(
             padding: const EdgeInsets.only(top: 680),
             child: Center(
               child: RichText(
                 text: TextSpan(
-                    style: const TextStyle(
-                      fontSize: 15,
-                      color: Colors.black,
+                  style: const TextStyle(
+                    fontSize: 15,
+                    color: Colors.black,
+                  ),
+                  children: <TextSpan>[
+                    const TextSpan(text: 'Already have an account?'),
+                    TextSpan(
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () => (Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) => const LoginPage()))),
+                      text: ' Log in',
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold),
                     ),
-                    children: <TextSpan>[
-                      const TextSpan(text: 'Already have an account?'),
-                      TextSpan(
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () => (Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (context) => const LoginPage()))),
-                          text: ' Log in',
-                          style: const TextStyle(fontWeight: FontWeight.bold)),
-                    ]),
+                  ],
+                ),
               ),
             ),
           ),

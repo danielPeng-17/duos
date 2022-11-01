@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../main.dart';
 import 'package:duos_ui/screens/forgot_password_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -38,8 +37,10 @@ class _LoginPageState extends State<LoginPage> {
                 child: SizedBox(
                   width: 250,
                   height: 200,
-                  child: Image.asset('assets/images/duosBlackLogoText.png',
-                      scale: 10.0),
+                  child: Image.asset(
+                    'assets/images/duosBlackLogoText.png',
+                    scale: 10.0,
+                  ),
                 ),
               ),
             ),
