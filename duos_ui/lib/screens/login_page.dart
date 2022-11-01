@@ -11,6 +11,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final GlobalKey<FormState> _signinform = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
@@ -29,88 +30,105 @@ class _LoginPageState extends State<LoginPage> {
         //backgroundColor: Colors.white,
         elevation: 0,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(top: 60.0),
-              child: Center(
-                child: SizedBox(
-                  width: 250,
-                  height: 200,
-                  child: Image.asset(
-                    'assets/images/duosBlackLogoText.png',
-                    scale: 10.0,
+      body: Form(
+        key: _signinform,
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(top: 60.0),
+                child: Center(
+                  child: SizedBox(
+                    width: 250,
+                    height: 200,
+                    child: Image.asset(
+                      'assets/images/duosBlackLogoText.png',
+                      scale: 10.0,
+                    ),
                   ),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: TextField(
-                controller: _emailController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Email',
-                  //hintText:
-                ),
-                textInputAction: TextInputAction.next,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                  left: 20.0, right: 20.0, top: 15, bottom: 0),
-              child: TextField(
-                obscureText: true,
-                controller: _passwordController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Password',
-                  hintText: 'Enter password',
-                ),
-              ),
-            ),
-            TextButton(
-              onPressed: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const ForgotPasswordPage(),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: TextFormField(
+                  controller: _emailController,
+                  validator: (email) {
+                    if (email!.isEmpty) {
+                      return 'Empty';
+                    }
+                    if (email != null) {
+                      bool emailValid = RegExp(
+                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                          .hasMatch(email);
+                      if (emailValid) {
+                        return null;
+                      }
+                      return 'Enter Valid Email';
+                    }
+                  },
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Email',
+                    //hintText:
+                  ),
+                  textInputAction: TextInputAction.next,
                 ),
               ),
-              child: const Text(
-                'Forgot Password?',
-                style: TextStyle(color: Colors.black, fontSize: 15),
+              Padding(
+                padding: const EdgeInsets.only(
+                    left: 20.0, right: 20.0, top: 15, bottom: 0),
+                child: TextField(
+                  obscureText: true,
+                  controller: _passwordController,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Password',
+                    hintText: 'Enter password',
+                  ),
+                ),
               ),
-            ),
-            Container(
-              height: 50,
-              width: 250,
-              decoration: BoxDecoration(
-                color: Colors.black,
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: TextButton(
-                onPressed: signIn,
+              TextButton(
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const ForgotPasswordPage(),
+                  ),
+                ),
                 child: const Text(
-                  'Login',
-                  style: TextStyle(color: Colors.white, fontSize: 20),
+                  'Forgot Password?',
+                  style: TextStyle(color: Colors.black, fontSize: 15),
                 ),
               ),
-            ),
-            const SizedBox(
-              height: 100,
-            ),
-            TextButton(
-              onPressed: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const SignUpPage(),
+              Container(
+                height: 50,
+                width: 250,
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: TextButton(
+                  onPressed: signIn,
+                  child: const Text(
+                    'Login',
+                    style: TextStyle(color: Colors.white, fontSize: 20),
+                  ),
                 ),
               ),
-              child: const Text(
-                'Create Account',
-                style: TextStyle(color: Colors.black, fontSize: 15),
+              const SizedBox(
+                height: 100,
               ),
-            ),
-          ],
+              TextButton(
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const SignUpPage(),
+                  ),
+                ),
+                child: const Text(
+                  'Create Account',
+                  style: TextStyle(color: Colors.black, fontSize: 15),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
