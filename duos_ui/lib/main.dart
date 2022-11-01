@@ -1,5 +1,3 @@
-import 'dart:js';
-
 import 'package:duos_ui/widgets/authentication.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
