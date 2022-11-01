@@ -1,3 +1,4 @@
+import 'package:duos_ui/screens/sign_up_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:duos_ui/screens/forgot_password_page.dart';
@@ -98,7 +99,17 @@ class _LoginPageState extends State<LoginPage> {
             const SizedBox(
               height: 100,
             ),
-            const Text('Create Account')
+            TextButton(
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const SignUpPage(),
+                ),
+              ),
+              child: const Text(
+                'Create Account',
+                style: TextStyle(color: Colors.black, fontSize: 15),
+              ),
+            ),
           ],
         ),
       ),
