@@ -1,5 +1,5 @@
-import { Controller, Post, Req, Body} from '@nestjs/common';
-import { ApiUser } from 'src/api_models/api_user';
+import { Controller, Post, Body, Get, Param} from '@nestjs/common';
+import { UserDto } from 'src/Dtos/userDto';
 import { User } from 'src/models/user';
 import { UserService } from './user.service';
 
@@ -7,8 +7,14 @@ import { UserService } from './user.service';
 export class UserController {
 
     constructor(private userService: UserService){}
+
+    @Get(':id')
+    getUser(@Param('id') id: string){
+        return this.userService.GetUser(id);
+    }
+
     @Post()
-    createNewUser(@Body() newUser: ApiUser): ApiUser {
+    createNewUser(@Body() newUser: UserDto): UserDto {
         let user = new User(newUser.info);
         this.userService.CreateNewUser(user);
         return newUser;
