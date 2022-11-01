@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../main.dart';
+import 'package:duos_ui/screens/forgot_password_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -10,13 +10,13 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   @override
   void dispose() {
-    emailController.dispose();
-    passwordController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
 
     super.dispose();
   }
@@ -24,7 +24,10 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      appBar: AppBar(
+        //backgroundColor: Colors.white,
+        elevation: 0,
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
@@ -34,16 +37,17 @@ class _LoginPageState extends State<LoginPage> {
                 child: SizedBox(
                   width: 250,
                   height: 200,
-                  child: Image.asset('assets/images/duosBlackLogoText.png',
-                      scale: 10.0),
+                  child: Image.asset(
+                    'assets/images/duosBlackLogoText.png',
+                    scale: 10.0,
+                  ),
                 ),
               ),
             ),
             Padding(
-              //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: TextField(
-                controller: emailController,
+                controller: _emailController,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Email',
@@ -57,17 +61,22 @@ class _LoginPageState extends State<LoginPage> {
                   left: 20.0, right: 20.0, top: 15, bottom: 0),
               child: TextField(
                 obscureText: true,
-                controller: passwordController,
+                controller: _passwordController,
                 decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Password',
-                    hintText: 'Enter password'),
+                  border: OutlineInputBorder(),
+                  labelText: 'Password',
+                  hintText: 'Enter password',
+                ),
               ),
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const ForgotPasswordPage(),
+                ),
+              ),
               child: const Text(
-                'Forgot Password',
+                'Forgot Password?',
                 style: TextStyle(color: Colors.black, fontSize: 15),
               ),
             ),
@@ -105,13 +114,14 @@ class _LoginPageState extends State<LoginPage> {
 
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text.trim(),
-        password: passwordController.text.trim(),
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
       );
     } on FirebaseAuthException catch (e) {
       print(e);
     }
 
-   navigatorKey.currentState!.popUntil((route) => route.isFirst);
+    if (!mounted) return;
+    Navigator.of(context).popUntil((route) => route.isFirst);
   }
 }
