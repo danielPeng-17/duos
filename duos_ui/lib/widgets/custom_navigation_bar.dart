@@ -27,7 +27,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.person),
-          label: 'Matching',
+          label: 'Profile',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.message),
