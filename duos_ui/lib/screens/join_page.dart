@@ -1,4 +1,5 @@
 import 'package:duos_ui/screens/login_page.dart';
+import 'package:duos_ui/screens/sign_up_page.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -43,7 +44,7 @@ class JoinPage extends StatelessWidget {
                 child: TextButton(
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const LoginPage()));
+                        builder: (context) => const SignUpPage()));
                   },
                   child: const Text(
                     'Join Now',
@@ -70,8 +71,7 @@ class JoinPage extends StatelessWidget {
                             MaterialPageRoute(
                                 builder: (context) => const LoginPage()))),
                       text: ' Log in',
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold),
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
