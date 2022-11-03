@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../../widgets/custom_navigation_bar.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -40,7 +39,6 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
-      bottomNavigationBar: const CustomNavigationBar(),
       body: Padding(
           padding: const EdgeInsets.all(16),
           child: Stack(
@@ -138,9 +136,22 @@ class HomePage extends StatelessWidget {
                   ),
                   child: const Icon(Icons.videogame_asset_rounded),
                 ),
+              ],
+            ),
+            const SizedBox(height: 50),
+            ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                  minimumSize: const Size.fromHeight(50)),
+              icon: const Icon(Icons.arrow_back, size: 32),
+              label: const Text(
+                'Sign Out',
+                style: TextStyle(fontSize: 24),
               ),
-            ],
-          )),
+              onPressed: () => FirebaseAuth.instance.signOut(),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
