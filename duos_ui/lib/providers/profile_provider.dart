@@ -1,6 +1,7 @@
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import '../widgets/games.dart';
 
 class Profile with ChangeNotifier {
   String _firstName = '';
@@ -10,7 +11,9 @@ class Profile with ChangeNotifier {
   String _bio = '';
   String _datingPref = '';
   String _dateOfBirth = '';
+  String _location = '';
   List<String> _igns = [];
+  List<Games> _games = [];
 
   String get firstName => _firstName;
   String get lastName => _lastName;
@@ -19,7 +22,9 @@ class Profile with ChangeNotifier {
   String get bio => _bio;
   String get datingPref => _datingPref;
   String get dob => _dateOfBirth;
+  String get location => _location;
   List<String> get igns => _igns;
+  List<Games> get games => _games;
 
   void setFirstName(String s) {
     _firstName = s;
@@ -56,6 +61,11 @@ class Profile with ChangeNotifier {
     notifyListeners();
   }
 
+  void setLocation(String s) {
+    _location = s;
+    notifyListeners();
+  }
+
   void setIgns(List<String> igns) {
     _igns = igns;
     notifyListeners();
@@ -63,6 +73,11 @@ class Profile with ChangeNotifier {
 
   void addIgn(String ign) {
     _igns.add(ign);
+    notifyListeners();
+  }
+
+  void addGame(Games game) {
+    _games.add(game);
     notifyListeners();
   }
 }

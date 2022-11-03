@@ -68,7 +68,7 @@ class _ProfileCreationAgeState extends State<ProfileCreationAge> {
                 validator: (value) {
                   if (value!.isEmpty) return 'Empty';
                   try {
-                    DateFormat('yyyy-MM-dd').parse(value!);
+                    DateFormat('yyyy-MM-dd').parse(value);
                   } on FormatException {
                     return 'Invalid Date';
                   }

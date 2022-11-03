@@ -186,7 +186,13 @@ class _ProfileCreationBioState extends State<ProfileCreationBio> {
                         onPressed: () {
                           if (_bioform.currentState!.validate()) {
                             context.read<Profile>().setBio(
-                                "${descInput}|${hobbiesInput}|${languagesInput}|${pronounsInput}|${locationInput}");
+                                "${descInput}|${hobbiesInput}|${languagesInput}");
+                            context
+                                .read<Profile>()
+                                .setGender(pronounsInput.text);
+                            context
+                                .read<Profile>()
+                                .setLocation(locationInput.text);
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) =>
                                     const ProfileCreationGame()));
