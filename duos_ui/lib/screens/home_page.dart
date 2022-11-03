@@ -98,7 +98,7 @@ class HomePage extends StatelessWidget {
               ),
               Positioned(
                   top: 500,
-                  right: 25,
+                  right: 20,
                   child: ElevatedButton(
                     onPressed: () {},
                     style: ButtonStyle(
