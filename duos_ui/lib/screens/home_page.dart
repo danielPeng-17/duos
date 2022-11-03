@@ -11,7 +11,33 @@ class HomePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home'),
+        centerTitle: true,
+        title:
+            // Text('Duos'),
+            Image.asset('assets/images/duosBlackLogo.png', fit: BoxFit.contain, height: 60),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.menu),
+            tooltip: 'Adjust preferences',
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute<void>(
+                builder: (BuildContext context) {
+                  return Scaffold(
+                    appBar: AppBar(
+                      title: const Text('Preferences'),
+                    ),
+                    body: const Center(
+                      child: Text(
+                        'Preference setting page',
+                        style: TextStyle(fontSize: 24),
+                      ),
+                    ),
+                  );
+                },
+              ));
+            },
+          ),
+        ],
       ),
       bottomNavigationBar: const CustomNavigationBar(),
       body: Padding(
@@ -53,17 +79,56 @@ class HomePage extends StatelessWidget {
             //   user.email!,
             //   style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             // ),
-            const SizedBox(height: 40),
-            ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(
-                  minimumSize: const Size.fromHeight(50)),
-              icon: const Icon(Icons.arrow_back, size: 32),
-              label: const Text(
-                'Sign Out',
-                style: TextStyle(fontSize: 24),
-              ),
-              onPressed: () => FirebaseAuth.instance.signOut(),
+            const SizedBox(height: 50),
+            Row(
+              children: [
+                ElevatedButton(
+                  onPressed: () {},
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all(const CircleBorder()),
+                    padding:
+                        MaterialStateProperty.all(const EdgeInsets.all(15)),
+                    backgroundColor: MaterialStateProperty.all(Colors.black),
+                    // <-- Button color
+                    overlayColor:
+                        MaterialStateProperty.resolveWith<Color?>((states) {
+                      if (states.contains(MaterialState.pressed)) {
+                        return Colors.red;
+                      } // <-- Splash color
+                    }),
+                  ),
+                  child: const Icon(Icons.close),
+                ),
+                const Spacer(),
+                ElevatedButton(
+                  onPressed: () {},
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all(const CircleBorder()),
+                    padding:
+                        MaterialStateProperty.all(const EdgeInsets.all(15)),
+                    backgroundColor: MaterialStateProperty.all(Colors.black),
+                    // <-- Button color
+                    overlayColor:
+                        MaterialStateProperty.resolveWith<Color?>((states) {
+                      if (states.contains(MaterialState.pressed)) {
+                        return Colors.green;
+                      } // <-- Splash color
+                    }),
+                  ),
+                  child: const Icon(Icons.videogame_asset_rounded),
+                ),
+              ],
             ),
+            // ElevatedButton.icon(
+            //   style: ElevatedButton.styleFrom(
+            //       minimumSize: const Size.fromHeight(50)),
+            //   icon: const Icon(Icons.arrow_back, size: 32),
+            //   label: const Text(
+            //     'Sign Out',
+            //     style: TextStyle(fontSize: 24),
+            //   ),
+            //   onPressed: () => FirebaseAuth.instance.signOut(),
+            // ),
           ],
         ),
       ),
