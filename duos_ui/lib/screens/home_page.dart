@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../../widgets/custom_navigation_bar.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -14,7 +13,8 @@ class HomePage extends StatelessWidget {
         centerTitle: true,
         title:
             // Text('Duos'),
-            Image.asset('assets/images/duosBlackLogo.png', fit: BoxFit.contain, height: 60),
+            Image.asset('assets/images/duosBlackLogo.png',
+                fit: BoxFit.contain, height: 60),
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.menu),
@@ -39,7 +39,6 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
-      bottomNavigationBar: const CustomNavigationBar(),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: ListView(
@@ -119,16 +118,17 @@ class HomePage extends StatelessWidget {
                 ),
               ],
             ),
-            // ElevatedButton.icon(
-            //   style: ElevatedButton.styleFrom(
-            //       minimumSize: const Size.fromHeight(50)),
-            //   icon: const Icon(Icons.arrow_back, size: 32),
-            //   label: const Text(
-            //     'Sign Out',
-            //     style: TextStyle(fontSize: 24),
-            //   ),
-            //   onPressed: () => FirebaseAuth.instance.signOut(),
-            // ),
+            const SizedBox(height: 50),
+            ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                  minimumSize: const Size.fromHeight(50)),
+              icon: const Icon(Icons.arrow_back, size: 32),
+              label: const Text(
+                'Sign Out',
+                style: TextStyle(fontSize: 24),
+              ),
+              onPressed: () => FirebaseAuth.instance.signOut(),
+            ),
           ],
         ),
       ),
