@@ -9,7 +9,7 @@ import { FirebaseService } from './firebase/firebase.service';
 @Module({
   imports: [UserModule],
   controllers: [AppController],
-  providers: [AppService, FirebaseService],
+  providers: [AppService],
 })
 export class AppModule {
   // configure(consumer: MiddlewareConsumer) {
