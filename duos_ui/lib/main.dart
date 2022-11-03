@@ -1,4 +1,5 @@
 import 'package:duos_ui/providers/profile_provider.dart';
+import 'package:duos_ui/screens/profile_creation_age.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -54,7 +55,7 @@ class RootPage extends StatelessWidget {
           } else if (snapshot.hasError) {
             return const Center(child: Text('An error has occurred'));
           } else if (snapshot.hasData) {
-            return const HomePage();
+            return const ProfileCreationAge();
           } else {
             return const JoinPage();
           }

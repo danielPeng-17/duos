@@ -9,7 +9,7 @@ class Profile with ChangeNotifier {
   String _gender = '';
   String _bio = '';
   String _datingPref = '';
-  DateTime _dateOfBirth = DateTime.utc(1900, 01, 01);
+  String _dateOfBirth = '';
   List<String> _igns = [];
 
   String get firstName => _firstName;
@@ -18,7 +18,7 @@ class Profile with ChangeNotifier {
   String get gender => _gender;
   String get bio => _bio;
   String get datingPref => _datingPref;
-  DateTime get dob => _dateOfBirth;
+  String get dob => _dateOfBirth;
   List<String> get igns => _igns;
 
   void setFirstName(String s) {
@@ -51,8 +51,8 @@ class Profile with ChangeNotifier {
     notifyListeners();
   }
 
-  void setDateofBirth(DateTime date) {
-    _dateOfBirth = date;
+  void setDateofBirth(String s) {
+    _dateOfBirth = s;
     notifyListeners();
   }
 
