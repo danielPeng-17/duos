@@ -83,9 +83,9 @@ class HomePage extends StatelessWidget {
             const SizedBox(height: 50),
             Row(
               children: [
-                FloatingActionButton(
+                ElevatedButton(
                   onPressed: () {},
-                  theme: ButtonStyle(
+                  style: ButtonStyle(
                     shape: MaterialStateProperty.all(const CircleBorder()),
                     padding:
                         MaterialStateProperty.all(const EdgeInsets.all(15)),
