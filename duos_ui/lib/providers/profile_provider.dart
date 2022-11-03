@@ -56,8 +56,13 @@ class Profile with ChangeNotifier {
     notifyListeners();
   }
 
-  void set(List<String> igns) {
+  void setIgns(List<String> igns) {
     _igns = igns;
+    notifyListeners();
+  }
+
+  void addIgn(String ign) {
+    _igns.add(ign);
     notifyListeners();
   }
 }
