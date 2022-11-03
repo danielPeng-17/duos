@@ -14,6 +14,7 @@ class Profile with ChangeNotifier {
   String _location = '';
   List<String> _igns = [];
   List<Games> _games = [];
+  bool _doneSetup = false;
 
   String get firstName => _firstName;
   String get lastName => _lastName;
@@ -25,6 +26,7 @@ class Profile with ChangeNotifier {
   String get location => _location;
   List<String> get igns => _igns;
   List<Games> get games => _games;
+  bool get doneSetup => _doneSetup;
 
   void setFirstName(String s) {
     _firstName = s;
@@ -78,6 +80,11 @@ class Profile with ChangeNotifier {
 
   void addGame(Games game) {
     _games.add(game);
+    notifyListeners();
+  }
+
+  void setSetupStatus(bool setup) {
+    _doneSetup = setup;
     notifyListeners();
   }
 }

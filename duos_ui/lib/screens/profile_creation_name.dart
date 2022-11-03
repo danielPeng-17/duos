@@ -115,6 +115,8 @@ class _ProfileCreationNameState extends State<ProfileCreationName> {
                               .read<Profile>()
                               .setLastName(lastNameInput.text);
 
+                          context.read<Profile>().setSetupStatus(true);
+
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => const HomePage()));
                         }
