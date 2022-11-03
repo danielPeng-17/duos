@@ -14,7 +14,8 @@ class HomePage extends StatelessWidget {
         centerTitle: true,
         title:
             // Text('Duos'),
-            Image.asset('assets/images/duosBlackLogo.png', fit: BoxFit.contain, height: 60),
+            Image.asset('assets/images/duosBlackLogo.png',
+                fit: BoxFit.contain, height: 60),
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.menu),
@@ -82,9 +83,9 @@ class HomePage extends StatelessWidget {
             const SizedBox(height: 50),
             Row(
               children: [
-                ElevatedButton(
+                FloatingActionButton(
                   onPressed: () {},
-                  style: ButtonStyle(
+                  theme: ButtonStyle(
                     shape: MaterialStateProperty.all(const CircleBorder()),
                     padding:
                         MaterialStateProperty.all(const EdgeInsets.all(15)),
