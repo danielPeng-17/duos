@@ -117,8 +117,8 @@ class _ProfileCreationNameState extends State<ProfileCreationName> {
 
                           context.read<Profile>().setSetupStatus(true);
 
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => const HomePage()));
+                          Navigator.of(context)
+                              .popUntil((route) => route.isFirst);
                         }
 
                         // Validate returns true if the form is valid, or false otherwise.
