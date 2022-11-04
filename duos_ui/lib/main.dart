@@ -1,14 +1,21 @@
+import 'package:duos_ui/providers/profile_provider.dart';
+import 'package:duos_ui/screens/profile_creation_age.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:duos_ui/screens/join_page.dart';
 import 'package:duos_ui/screens/home_page.dart';
+import 'package:provider/provider.dart';
 import 'package:duos_ui/screens/container_page.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(const MyApp());
+
+  runApp(MultiProvider(
+    providers: [ChangeNotifierProvider(create: (_) => Profile())],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -21,16 +28,15 @@ class MyApp extends StatelessWidget {
       title: 'Duos',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.purple,
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          iconTheme: IconThemeData(
-            color: Colors.black,
-          ),
-          foregroundColor: Colors.black,
-        )
-      ),
+          primarySwatch: Colors.purple,
+          appBarTheme: const AppBarTheme(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            iconTheme: IconThemeData(
+              color: Colors.black,
+            ),
+            foregroundColor: Colors.black,
+          )),
       home: const RootPage(),
     );
   }

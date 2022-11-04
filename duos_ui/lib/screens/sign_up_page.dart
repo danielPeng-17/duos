@@ -1,4 +1,5 @@
 import 'package:duos_ui/screens/home_page.dart';
+import 'package:duos_ui/screens/profile_creation_age.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -165,6 +166,7 @@ class _SignUpPageState extends State<SignUpPage> {
     }
 
     if (!mounted) return;
-    Navigator.of(context).popUntil((route) => route.isFirst);
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => ProfileCreationAge()));
   }
 }

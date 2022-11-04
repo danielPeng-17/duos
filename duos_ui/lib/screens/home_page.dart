@@ -6,7 +6,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser!;
+    //final user = FirebaseAuth.instance.currentUser!;
 
     return Scaffold(
       appBar: AppBar(
@@ -41,53 +41,70 @@ class HomePage extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
-        child: ListView(
-          children: [
-            const Text(
-              'Shang Chi',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-
-            ClipRRect(
-              borderRadius: BorderRadius.circular(5.0),
-              child: Image.network(
-                  'https://wegotthiscovered.com/wp-content/uploads/2021/09/simu-reddit-e1631092903317.jpeg'),
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(5.0),
-              child: Image.network(
-                  'https://imagesvc.meredithcorp.io/v3/mm/image?q=60&c=sc&rect=0%2C54%2C1997%2C1053&poi=face&w=1997&h=999&url=https%3A%2F%2Fstatic.onecms.io%2Fwp-content%2Fuploads%2Fsites%2F6%2F2021%2F09%2F07%2FGettyImages-488099013.jpg'),
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(5.0),
-              child: Image.network(
-                  'https://etcanada.com/wp-content/uploads/2021/08/GettyImages-493170697.jpg?quality=80&strip=all'),
-            ),
-            // const Text(
-            //   'Signed In as',
-            //   style: TextStyle(fontSize: 16),
-            // ),
-            // const SizedBox(height: 8),
-            // Text(
-            //   user.email!,
-            //   style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            // ),
-            const SizedBox(height: 50),
-            Row(
+        child: Stack(
+          children: <Widget>[
+            ListView(
               children: [
-                ElevatedButton(
+                const Text(
+                  'Shang Chi',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(5.0),
+                  child: Image.network(
+                      'https://wegotthiscovered.com/wp-content/uploads/2021/09/simu-reddit-e1631092903317.jpeg'),
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(5.0),
+                  child: Image.network(
+                      'https://imagesvc.meredithcorp.io/v3/mm/image?q=60&c=sc&rect=0%2C54%2C1997%2C1053&poi=face&w=1997&h=999&url=https%3A%2F%2Fstatic.onecms.io%2Fwp-content%2Fuploads%2Fsites%2F6%2F2021%2F09%2F07%2FGettyImages-488099013.jpg'),
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(5.0),
+                  child: Image.network(
+                      'https://etcanada.com/wp-content/uploads/2021/08/GettyImages-493170697.jpg?quality=80&strip=all'),
+                ),
+                // const Text(
+                //   'Signed In as',
+                //   style: TextStyle(fontSize: 16),
+                // ),
+                // const SizedBox(height: 8),
+                // Text(
+                //   user.email!,
+                //   style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                // ),
+                const SizedBox(height: 50),
+
+                // ElevatedButton.icon(
+                //   style: ElevatedButton.styleFrom(
+                //       minimumSize: const Size.fromHeight(50)),
+                //   icon: const Icon(Icons.arrow_back, size: 32),
+                //   label: const Text(
+                //     'Sign Out',
+                //     style: TextStyle(fontSize: 24),
+                //   ),
+                //   onPressed: () => FirebaseAuth.instance.signOut(),
+                // ),
+              ],
+            ),
+            Positioned(
+                top: 500,
+                right: 20,
+                child: ElevatedButton(
                   onPressed: () {},
                   style: ButtonStyle(
                     shape: MaterialStateProperty.all(const CircleBorder()),
                     padding:
-                        MaterialStateProperty.all(const EdgeInsets.all(15)),
-                    backgroundColor: MaterialStateProperty.all(Colors.black),
+                        MaterialStateProperty.all(const EdgeInsets.all(22)),
+                    backgroundColor: MaterialStateProperty.all(
+                        Colors.black.withOpacity(0.75)),
                     // <-- Button color
                     overlayColor:
                         MaterialStateProperty.resolveWith<Color?>((states) {
@@ -97,28 +114,28 @@ class HomePage extends StatelessWidget {
                     }),
                   ),
                   child: const Icon(Icons.close),
+                )),
+            Positioned(
+              top: 500,
+              left: 20,
+              child: ElevatedButton(
+                onPressed: () {},
+                style: ButtonStyle(
+                  shape: MaterialStateProperty.all(const CircleBorder()),
+                  padding: MaterialStateProperty.all(const EdgeInsets.all(22)),
+                  backgroundColor:
+                      MaterialStateProperty.all(Colors.black.withOpacity(0.75)),
+                  // <-- Button color
+                  overlayColor:
+                      MaterialStateProperty.resolveWith<Color?>((states) {
+                    if (states.contains(MaterialState.pressed)) {
+                      return Colors.green;
+                    } // <-- Splash color
+                  }),
                 ),
-                const Spacer(),
-                ElevatedButton(
-                  onPressed: () {},
-                  style: ButtonStyle(
-                    shape: MaterialStateProperty.all(const CircleBorder()),
-                    padding:
-                        MaterialStateProperty.all(const EdgeInsets.all(15)),
-                    backgroundColor: MaterialStateProperty.all(Colors.black),
-                    // <-- Button color
-                    overlayColor:
-                        MaterialStateProperty.resolveWith<Color?>((states) {
-                      if (states.contains(MaterialState.pressed)) {
-                        return Colors.green;
-                      } // <-- Splash color
-                    }),
-                  ),
-                  child: const Icon(Icons.videogame_asset_rounded),
-                ),
-              ],
+                child: const Icon(Icons.videogame_asset_rounded),
+              ),
             ),
-            const SizedBox(height: 50),
             ElevatedButton.icon(
               style: ElevatedButton.styleFrom(
                   minimumSize: const Size.fromHeight(50)),
