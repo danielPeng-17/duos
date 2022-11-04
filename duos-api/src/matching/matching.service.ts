@@ -1,6 +1,6 @@
 import { User } from "src/models/user";
 import { ConsoleLogger, Injectable } from '@nestjs/common';
-import { createNewUserAsync } from "src/firebase/database_functions/database_functions";
+import { createNewUserAsync, getAllUsersInCategory, getUserAsync } from "src/firebase/database_functions/database_functions";
 
 @Injectable()
 export class MatchingService {
@@ -11,9 +11,14 @@ export class MatchingService {
 
     }
 
-    public GetNewPotentialMatches(toMatchWith: User): User[] {
+    public async GetNewPotentialMatches(id: string): Promise<string[]> {
+        //TODO 
+        // -exclude already matched/swiped
+        // -pair based on preference 
+        const thisUser = await getUserAsync(id)
+        const allUsers = await getAllUsersInCategory(thisUser.categories)
+        return allUsers.filter(ele => ele != id)
 
-        //need logic
-        return [] as User[]
     }
+
 }

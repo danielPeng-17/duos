@@ -10,12 +10,11 @@ export class User {
     id: number;
     info: UserInformation;
     matched: Array<number>;
-    categories: Array<number>;
-    
-    constructor(info)
-    {
+    categories: Array<string>;
+
+    constructor(info) {
         this.info = info,
-        this.matched = [],
-        this.categories = []
+            this.matched = [],
+            this.categories = []
     }
 }
