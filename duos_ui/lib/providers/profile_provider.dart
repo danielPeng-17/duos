@@ -14,6 +14,7 @@ class Profile with ChangeNotifier {
   String _datingPref = '';
   String _dateOfBirth = '';
   String _location = '';
+  String _profilePictureURL = '';
   List<String> _igns = [];
   List<Games> _games = [];
   bool _doneSetup = false;
@@ -28,6 +29,7 @@ class Profile with ChangeNotifier {
   String get datingPref => _datingPref;
   String get dob => _dateOfBirth;
   String get location => _location;
+  String get profilePicURL => _profilePictureURL;
   List<String> get igns => _igns;
   List<Games> get games => _games;
   bool get doneSetup => _doneSetup;
@@ -79,6 +81,11 @@ class Profile with ChangeNotifier {
 
   void setLocation(String s) {
     _location = s;
+    notifyListeners();
+  }
+
+  void setProfilePicURL(String s) {
+    _profilePictureURL = s;
     notifyListeners();
   }
 
