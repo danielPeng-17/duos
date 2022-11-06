@@ -22,7 +22,7 @@ class _ProfileCreationBioState extends State<ProfileCreationBio> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       body: Center(
         child: Form(
           key: _bioform,

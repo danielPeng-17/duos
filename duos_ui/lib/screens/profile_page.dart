@@ -25,19 +25,18 @@ class ProfilePage extends StatelessWidget {
       Text(
           "${context.read<Profile>().firstName} ${context.read<Profile>().lastName}",
           style: nameStyle),
-      SizedBox(height: 20),
+      const SizedBox(height: 20),
       Text(context.read<Profile>().email),
-      SizedBox(height: 20),
+      const SizedBox(height: 20),
       Text(context.read<Profile>().location),
-      SizedBox(height: 75),
-      Text("asdasldlasdlewasdasjdkasdjlkas\ndaklsjdaslkjdaskldjasjdklaasda",
-          style: descStyle),
-      SizedBox(height: 50),
+      const SizedBox(height: 75),
+      Text(context.read<Profile>().bio, style: descStyle),
+      const SizedBox(height: 50),
       Text("Pronouns: ${context.read<Profile>().gender}", style: descStyle),
-      SizedBox(height: 50),
+      const SizedBox(height: 50),
       Text("Dating Preference: ${context.read<Profile>().datingPref}",
           style: descStyle),
-      SizedBox(height: 50),
+      const SizedBox(height: 50),
       Text("Games: ${context.read<Profile>().games[0]}", style: descStyle)
     ]);
   }
