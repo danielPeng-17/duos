@@ -9,6 +9,8 @@ class Profile with ChangeNotifier {
   String _email = '';
   String _gender = '';
   String _bio = '';
+  String _hobbies = '';
+  String _languages = '';
   String _datingPref = '';
   String _dateOfBirth = '';
   String _location = '';
@@ -21,6 +23,8 @@ class Profile with ChangeNotifier {
   String get email => _email;
   String get gender => _gender;
   String get bio => _bio;
+  String get hobbies => _hobbies;
+  String get languages => _languages;
   String get datingPref => _datingPref;
   String get dob => _dateOfBirth;
   String get location => _location;
@@ -50,6 +54,16 @@ class Profile with ChangeNotifier {
 
   void setBio(String s) {
     _bio = s;
+    notifyListeners();
+  }
+
+  void setHobbies(String s) {
+    _hobbies = s;
+    notifyListeners();
+  }
+
+  void setLanguages(String s) {
+    _languages = s;
     notifyListeners();
   }
 

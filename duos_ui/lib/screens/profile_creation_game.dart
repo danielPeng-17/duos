@@ -130,7 +130,9 @@ class _ProfileCreationGameState extends State<ProfileCreationGame> {
                       onPressed: () {
                         var index = 0;
                         for (var selected in _selectedGames) {
-                          context.read<Profile>().addGame(allGames[index]);
+                          if (selected == true) {
+                            context.read<Profile>().addGame(allGames[index]);
+                          }
                           index++;
                         }
 

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:duos_ui/screens/home_page.dart';
+import 'package:provider/provider.dart';
+import 'package:duos_ui/providers/profile_provider.dart';
+import '../screens/profile_page.dart';
 
 class ContainerPage extends StatefulWidget {
   const ContainerPage({Key? key}) : super(key: key);
@@ -11,13 +14,10 @@ class ContainerPage extends StatefulWidget {
 class _ContainerPageState extends State<ContainerPage> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
-  TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _pages = <Widget>[
     HomePage(),
-    Text(
-      'Index 1: Profile',
-      style: optionStyle,
-    ),
+    ProfilePage(),
     Text(
       'Index 2: Messages',
       style: optionStyle,

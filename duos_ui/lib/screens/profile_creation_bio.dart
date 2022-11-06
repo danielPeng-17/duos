@@ -185,8 +185,13 @@ class _ProfileCreationBioState extends State<ProfileCreationBio> {
                         label: Text(""),
                         onPressed: () {
                           if (_bioform.currentState!.validate()) {
-                            context.read<Profile>().setBio(
-                                "${descInput}|${hobbiesInput}|${languagesInput}");
+                            context.read<Profile>().setBio(descInput.text);
+                            context
+                                .read<Profile>()
+                                .setHobbies(hobbiesInput.text);
+                            context
+                                .read<Profile>()
+                                .setLanguages(languagesInput.text);
                             context
                                 .read<Profile>()
                                 .setGender(pronounsInput.text);
