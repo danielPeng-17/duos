@@ -17,6 +17,7 @@ class _ProfileCreationBioState extends State<ProfileCreationBio> {
   TextEditingController hobbiesInput = TextEditingController();
   TextEditingController languagesInput = TextEditingController();
   TextEditingController pronounsInput = TextEditingController();
+  TextEditingController datingPrefInput = TextEditingController();
   TextEditingController locationInput = TextEditingController();
 
   @override
@@ -106,6 +107,28 @@ class _ProfileCreationBioState extends State<ProfileCreationBio> {
               ),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 3),
+                child:
+                    Text("Dating Preference", style: TextStyle(fontSize: 12)),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+                child: TextFormField(
+                  controller: datingPrefInput,
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Dating preference field is required';
+                    }
+                    return null;
+                  },
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'E.g. Male, Female, Non-Binary',
+                  ),
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 3),
                 child: Text("Languages", style: TextStyle(fontSize: 12)),
               ),
               Padding(
@@ -142,7 +165,7 @@ class _ProfileCreationBioState extends State<ProfileCreationBio> {
                   },
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'She/He/They',
+                    labelText: 'E.g. She/He/They',
                   ),
                 ),
               ),
@@ -191,6 +214,9 @@ class _ProfileCreationBioState extends State<ProfileCreationBio> {
                                 .setHobbies(hobbiesInput.text);
                             context
                                 .read<Profile>()
+                                .setLocation(datingPrefInput.text);
+                            context
+                                .read<Profile>()
                                 .setLanguages(languagesInput.text);
                             context
                                 .read<Profile>()
@@ -198,6 +224,7 @@ class _ProfileCreationBioState extends State<ProfileCreationBio> {
                             context
                                 .read<Profile>()
                                 .setLocation(locationInput.text);
+
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) =>
                                     const ProfileCreationGame()));

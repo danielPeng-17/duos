@@ -23,9 +23,12 @@ class ProfilePage extends StatelessWidget {
           Container(
             padding: EdgeInsets.only(top: 20),
             alignment: Alignment.topCenter,
-            child: Image.asset(
-              'assets/images/duosDefaultProfilePic.png',
-              scale: 4,
+            child: ClipRRect(
+              //borderRadius: BorderRadius.circular(300),  for when user image is uploaded
+              child: Image.asset(
+                'assets/images/duosDefaultProfilePic.png',
+                scale: 4,
+              ),
             ),
           ),
           Positioned(
