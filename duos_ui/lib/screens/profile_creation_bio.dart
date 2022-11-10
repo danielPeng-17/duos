@@ -214,7 +214,7 @@ class _ProfileCreationBioState extends State<ProfileCreationBio> {
                                 .setHobbies(hobbiesInput.text);
                             context
                                 .read<Profile>()
-                                .setLocation(datingPrefInput.text);
+                                .setDatingPref(datingPrefInput.text);
                             context
                                 .read<Profile>()
                                 .setLanguages(languagesInput.text);
