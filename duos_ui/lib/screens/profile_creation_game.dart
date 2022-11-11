@@ -82,9 +82,9 @@ class _ProfileCreationGameState extends State<ProfileCreationGame> {
                   });
                 },
                 borderRadius: const BorderRadius.all(Radius.circular(8)),
-                selectedBorderColor: Colors.purple,
-                selectedColor: Colors.white,
-                fillColor: Colors.purple[300],
+                selectedBorderColor: Colors.grey,
+                selectedColor: Colors.black,
+                fillColor: Colors.grey[300],
                 color: Colors.black,
                 constraints: const BoxConstraints(
                   minHeight: 60.0,

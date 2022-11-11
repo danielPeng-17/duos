@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:duos_ui/screens/home_page.dart';
+import 'package:duos_ui/screens/settings_page.dart';
 
 class ContainerPage extends StatefulWidget {
   const ContainerPage({Key? key}) : super(key: key);
@@ -22,10 +23,7 @@ class _ContainerPageState extends State<ContainerPage> {
       'Index 2: Messages',
       style: optionStyle,
     ),
-    Text(
-      'Index 3: Settings',
-      style: optionStyle,
-    ),
+    SettingsPage(),
   ];
 
   void _onItemTapped(int index) {
