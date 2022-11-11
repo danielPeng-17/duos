@@ -1,5 +1,5 @@
 import database from "../config";
-import { collection, addDoc, getDoc, doc } from "firebase/firestore"; 
+import { collection, addDoc, getDoc, doc, updateDoc } from "firebase/firestore"; 
 import { User } from "src/models/user";
 
 export const createNewUserAsync = async (user: User) => {
@@ -23,4 +23,10 @@ export const getUserAsync = async (id: string) => {
     else {
         throw new Error("No such document");
     }
+}
+
+export const updateUserAsync = async(id:string, editedUser: User) => {
+    const docRef = doc(collection(database, "user_profiles"), id);
+    const updateDocument = JSON.stringify(editedUser);
+    await updateDoc(docRef, JSON.parse(updateDocument));
 }
