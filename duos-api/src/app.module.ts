@@ -13,7 +13,7 @@ import { PreauthMiddleware } from './auth/preauth.middlewate';
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(PreauthMiddleware).forRoutes({
-      path: '/matching/*', method: RequestMethod.ALL
+      path: '/*', method: RequestMethod.ALL
     });
   }
 }
