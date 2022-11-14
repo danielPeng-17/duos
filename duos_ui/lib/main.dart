@@ -1,10 +1,8 @@
 import 'package:duos_ui/providers/profile_provider.dart';
-import 'package:duos_ui/screens/profile_creation_age.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:duos_ui/screens/join_page.dart';
-import 'package:duos_ui/screens/home_page.dart';
 import 'package:provider/provider.dart';
 import 'package:duos_ui/screens/container_page.dart';
 
