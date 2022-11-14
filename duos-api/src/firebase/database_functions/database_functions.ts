@@ -54,3 +54,8 @@ export const addMatch = async (firstID: string, secondID: string) => {
     const document2 = doc(collection(database, "user_profiles"), secondID);
     await updateDoc(document2, { matches: arrayRemove(firstID) });
 }
+export const updateUserAsync = async (id: string, editedUser: User) => {
+    const docRef = doc(collection(database, "user_profiles"), id);
+    const updateDocument = JSON.stringify(editedUser);
+    await updateDoc(docRef, JSON.parse(updateDocument));
+}

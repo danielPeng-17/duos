@@ -1,19 +1,22 @@
-import 'package:duos_ui/screens/sign_up_page.dart';
+import 'package:duos_ui/screens/home_page.dart';
+import 'package:duos_ui/screens/profile_creation_age.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:duos_ui/screens/forgot_password_page.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+class SignUpPage extends StatefulWidget {
+  const SignUpPage({Key? key}) : super(key: key);
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<SignUpPage> createState() => _SignUpPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
-  final GlobalKey<FormState> _signinform = GlobalKey<FormState>();
+class _SignUpPageState extends State<SignUpPage> {
+  final GlobalKey<FormState> _signupform = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _passwordConfirmController = TextEditingController();
 
   @override
   void dispose() {
@@ -31,7 +34,7 @@ class _LoginPageState extends State<LoginPage> {
         elevation: 0,
       ),
       body: Form(
-        key: _signinform,
+        key: _signupform,
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
@@ -81,64 +84,61 @@ class _LoginPageState extends State<LoginPage> {
                   obscureText: true,
                   controller: _passwordController,
                   validator: (val) {
-                    if (val!.isEmpty) {
-                      return 'Empty';
-                    }
+                    if (val!.isEmpty) return 'Empty';
+                    return null;
                   },
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Password',
-                    hintText: 'Enter password',
+                    hintText: 'Create password',
                   ),
                 ),
               ),
-              TextButton(
-                onPressed: () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const ForgotPasswordPage(),
-                  ),
-                ),
-                child: const Text(
-                  'Forgot Password?',
-                  style: TextStyle(color: Colors.black, fontSize: 15),
-                ),
-              ),
-              Container(
-                height: 50,
-                width: 250,
-                decoration: BoxDecoration(
-                  color: Colors.black,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: TextButton(
-                  onPressed: () {
-                    if (_signinform.currentState!.validate()) {
-                      signIn();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                            content: Text('Attempting to Sign in...')),
-                      );
-                    }
+              Padding(
+                padding: const EdgeInsets.only(
+                    left: 20.0, right: 20.0, top: 15, bottom: 0),
+                child: TextFormField(
+                  obscureText: true,
+                  controller: _passwordConfirmController,
+                  validator: (val) {
+                    if (val!.isEmpty) return 'Empty';
+                    if (val != _passwordController.text) return 'Not Matching';
+                    return null;
                   },
-                  child: const Text(
-                    'Login',
-                    style: TextStyle(color: Colors.white, fontSize: 20),
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Confirm Password',
+                    hintText: 'Confirm password',
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 40),
+                child: Container(
+                  height: 50,
+                  width: 250,
+                  decoration: BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: TextButton(
+                    onPressed: () {
+                      if (_signupform.currentState!.validate()) {
+                        signUp();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Creating Account...')),
+                        );
+                      }
+                    },
+                    child: const Text(
+                      'Sign Up',
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    ),
                   ),
                 ),
               ),
               const SizedBox(
                 height: 100,
-              ),
-              TextButton(
-                onPressed: () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const SignUpPage(),
-                  ),
-                ),
-                child: const Text(
-                  'Create Account',
-                  style: TextStyle(color: Colors.black, fontSize: 15),
-                ),
               ),
             ],
           ),
@@ -147,7 +147,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Future signIn() async {
+  Future signUp() async {
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -155,7 +155,7 @@ class _LoginPageState extends State<LoginPage> {
     );
 
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
@@ -166,6 +166,7 @@ class _LoginPageState extends State<LoginPage> {
     }
 
     if (!mounted) return;
-    Navigator.of(context).popUntil((route) => route.isFirst);
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => ProfileCreationAge()));
   }
 }

@@ -1,7 +1,7 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response } from 'express';
 import * as firebase from 'firebase-admin';
-import * as serviceAccount from './firebase-service-account.json';
+import * as serviceAccount from "./firebase-service-account.json";
 
 const firebase_params = {
     type: serviceAccount.type,
@@ -18,7 +18,6 @@ const firebase_params = {
 
 @Injectable()
 export class PreauthMiddleware implements NestMiddleware {
-
     private defaultApp: any;
 
     constructor() {
@@ -33,17 +32,18 @@ export class PreauthMiddleware implements NestMiddleware {
         if (token != null && token != '') {
             this.defaultApp.auth().verifyIdToken(token.replace('Bearer ', ''))
                 .then(async decodedToken => {
-                    const user = {
+                    req['user'] = {
+                        sub: decodedToken.sub,
                         email: decodedToken.email
                     }
-                    req['user'] = user;
                     next();
                 }).catch(error => {
                     console.error(error);
                     this.accessDenied(req.url, res);
                 });
         } else {
-            next();
+            console.error("error: can not auth request due to invalid token");
+            this.accessDenied(req.url, res);
         }
     }
 

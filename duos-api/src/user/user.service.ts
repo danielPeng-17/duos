@@ -1,8 +1,7 @@
 import { throwError } from "rxjs";
 import { User } from "src/models/user";
-import { ConsoleLogger, Injectable } from '@nestjs/common';
-import { createNewUserAsync, getUserAsync } from "src/firebase/database_functions/database_functions";
-import { UserDto } from "src/Dtos/userDto";
+import { Injectable } from '@nestjs/common';
+import { createNewUserAsync, getUserAsync, updateUserAsync } from "src/firebase/database_functions/database_functions";
 
 @Injectable()
 export class UserService
@@ -30,5 +29,18 @@ export class UserService
             throwError(() => new Error("Id is empty or null"));
         }
         return getUserAsync(id);
+   }
+
+   public EditUser(id: string, editedUser: User){
+        if(!id) {
+            throwError(() => new Error("Id is empty or null"));
+        }
+        else if(!editedUser.info.first_name || !editedUser.info.last_name){
+            throwError(() => new Error("First or last name is missing"));
+        } 
+        else if(!editedUser.info.email){
+            throwError(() => new Error("Email is missing"));
+        }
+        return updateUserAsync(id, editedUser);
    }
 }
