@@ -22,8 +22,28 @@ export class UserInformation {
     gender: string;
 
     @IsNotEmpty()
+    @IsString()
+    bio: string;
+
+    @IsNotEmpty()
     @IsDateString()
     date_of_birth: Date;
+
+    @IsNotEmpty()
+    @IsString()
+    hobbies: string;
+
+    @IsNotEmpty()
+    @IsString()
+    languages: string;
+
+    @IsNotEmpty()
+    @IsString()
+    location: string;
+
+    @IsNotEmpty()
+    @IsString()
+    profile_picture_url: string;
 
     @IsNotEmpty()
     @IsString()
