@@ -29,7 +29,7 @@ export class MatchingService {
 
         //skip is already matches
         if (likedUser.matched) {
-            const alreadyMatched = likedUser.likes.find(ele => ele == likedId)
+            const alreadyMatched = likedUser.matched.find(ele => ele == likerId)
             if (alreadyMatched) {
                 return {
                     matched: false,
