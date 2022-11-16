@@ -86,6 +86,7 @@ class _ProfileCreationAgeState extends State<ProfileCreationAge> {
                     labelText: "Enter Date" //label text of field
                     ),
                 readOnly: true,
+                initialValue: context.read<Profile>().dob,
                 //set it true, so that user will not able to edit text
                 onTap: () async {
                   DateTime? pickedDate = await showDatePicker(

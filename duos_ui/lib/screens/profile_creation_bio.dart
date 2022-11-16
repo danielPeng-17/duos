@@ -83,6 +83,7 @@ class _ProfileCreationBioState extends State<ProfileCreationBio> {
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
                 child: TextFormField(
                   controller: descInput,
+                  initialValue: context.read<Profile>().bio,
                   validator: (value) {
                     if (value!.isEmpty) {
                       return 'Description is required';
@@ -104,6 +105,7 @@ class _ProfileCreationBioState extends State<ProfileCreationBio> {
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
                 child: TextFormField(
                   controller: hobbiesInput,
+                  initialValue: context.read<Profile>().hobbies,
                   validator: (value) {
                     if (value!.isEmpty) {
                       return 'Hobbies field is required';
@@ -126,6 +128,7 @@ class _ProfileCreationBioState extends State<ProfileCreationBio> {
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
                 child: TextFormField(
                   controller: datingPrefInput,
+                  initialValue: context.read<Profile>().datingPref,
                   validator: (value) {
                     if (value!.isEmpty) {
                       return 'Dating preference field is required';
@@ -147,6 +150,7 @@ class _ProfileCreationBioState extends State<ProfileCreationBio> {
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
                 child: TextFormField(
                   controller: languagesInput,
+                  initialValue: context.read<Profile>().languages,
                   validator: (value) {
                     if (value!.isEmpty) {
                       return 'Language field is required';
@@ -168,6 +172,7 @@ class _ProfileCreationBioState extends State<ProfileCreationBio> {
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
                 child: TextFormField(
                   controller: pronounsInput,
+                  initialValue: context.read<Profile>().gender,
                   validator: (value) {
                     if (value!.isEmpty) {
                       return 'Pronouns field is required';
@@ -189,6 +194,7 @@ class _ProfileCreationBioState extends State<ProfileCreationBio> {
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
                 child: TextFormField(
                   controller: locationInput,
+                  initialValue: context.read<Profile>().location,
                   validator: (value) {
                     if (value!.isEmpty) {
                       return 'Description is required';

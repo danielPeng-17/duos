@@ -36,15 +36,15 @@ class _ProfilePageState extends State<ProfilePage> {
             padding: EdgeInsets.only(top: 20),
             alignment: Alignment.topCenter,
             child: ClipRRect(
-              //borderRadius: BorderRadius.circular(300),  for when user image is uploaded
-              child: image == null
+              child: context.read<Profile>().profilePicPath == ''
                   ? Image.asset(
                       'assets/images/duosDefaultProfilePic.png',
                       scale: 4,
                     )
                   : ClipRRect(
                       borderRadius: BorderRadius.circular(100),
-                      child: Image.file(File(image!.path)),
+                      child: Image.file(
+                          File(context.read<Profile>().profilePicPath)),
                     ),
             ),
           ),
@@ -60,6 +60,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   setState(() {
                     //update UI
                   });
+                  context.read<Profile>().setProfilePicPath(image!.path);
                 },
                 style: ButtonStyle(
                   shape: MaterialStateProperty.all(const CircleBorder()),
