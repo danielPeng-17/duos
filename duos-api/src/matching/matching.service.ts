@@ -27,7 +27,18 @@ export class MatchingService {
     public async LikePerson(likerId: string, likedId: string): Promise<likePayload> {
         const likedUser = await getUserAsync(likedId) as User
 
-        if(likedUser.likes){
+        //skip is already matches
+        if (likedUser.matched) {
+            const alreadyMatched = likedUser.likes.find(ele => ele == likedId)
+            if (alreadyMatched) {
+                return {
+                    matched: false,
+                    matchedId: null
+                }
+            }
+        }
+
+        if (likedUser.likes) {
             const likedBack = likedUser.likes.find(ele => ele == likerId)
             if (likedBack) {
                 //remove like of other user
