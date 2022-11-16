@@ -60,7 +60,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   setState(() {
                     //update UI
                   });
-                  context.read<Profile>().setProfilePicPath(image!.path);
+                  if (image != null) {
+                    context.read<Profile>().setProfilePicPath(image!.path);
+                  }
                 },
                 style: ButtonStyle(
                   shape: MaterialStateProperty.all(const CircleBorder()),
