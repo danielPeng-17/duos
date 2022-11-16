@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:duos_ui/providers/profile_provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:http/http.dart' as http;
 
 class SettingsPagePreferences extends StatefulWidget {
   const SettingsPagePreferences({Key? key}) : super(key: key);
@@ -10,12 +10,11 @@ class SettingsPagePreferences extends StatefulWidget {
 }
 
 class _SettingsPagePreferencesState extends State<SettingsPagePreferences> {
-  final GlobalKey<FormState> _settingsform = GlobalKey<FormState>();
-  TextEditingController descInput = TextEditingController();
-  TextEditingController hobbiesInput = TextEditingController();
-  TextEditingController languagesInput = TextEditingController();
-  TextEditingController pronounsInput = TextEditingController();
-  TextEditingController locationInput = TextEditingController();
+  final GlobalKey<FormState> settingsform = GlobalKey<FormState>();
+  final TextEditingController _gameInput = TextEditingController();
+  final TextEditingController _ageInput = TextEditingController();
+  final TextEditingController _genderInput = TextEditingController();
+  final TextEditingController _ethnicityInput = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +36,7 @@ class _SettingsPagePreferencesState extends State<SettingsPagePreferences> {
       resizeToAvoidBottomInset: false,
       body: Center(
         child: Form(
-          key: _settingsform,
+          key: settingsform,
           child: ListView(
             //Listview is a fix in order to prevent overflow, (scrollable) works well needs formatting
             //crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,7 +62,7 @@ class _SettingsPagePreferencesState extends State<SettingsPagePreferences> {
                 padding:
                 const EdgeInsets.symmetric(horizontal: 16, vertical: 3),
                 child: TextFormField(
-                  controller: descInput,
+                  controller: _gameInput,
                   validator: (value) {
                     if (value!.isEmpty) {
                       return '-';
@@ -84,7 +83,7 @@ class _SettingsPagePreferencesState extends State<SettingsPagePreferences> {
                 padding:
                 const EdgeInsets.symmetric(horizontal: 16, vertical:3),
                 child: TextFormField(
-                  controller: hobbiesInput,
+                  controller: _ageInput,
                   validator: (value) {
                     if (value!.isEmpty) {
                       return '-';
@@ -99,34 +98,13 @@ class _SettingsPagePreferencesState extends State<SettingsPagePreferences> {
               ),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                child: Text("I'm interested in", style: TextStyle(fontSize: 12)),
-              ),
-              Padding(
-                padding:
-                const EdgeInsets.symmetric(horizontal: 16, vertical: 3),
-                child: TextFormField(
-                  controller: languagesInput,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return '-';
-                    }
-                    return null;
-                  },
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Load gender interest',
-                  ),
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 child: Text("Gender", style: TextStyle(fontSize: 12)),
               ),
               Padding(
                 padding:
                 const EdgeInsets.symmetric(horizontal: 16, vertical: 3),
                 child: TextFormField(
-                  controller: pronounsInput,
+                  controller: _genderInput,
                   validator: (value) {
                     if (value!.isEmpty) {
                       return '-';
@@ -147,7 +125,7 @@ class _SettingsPagePreferencesState extends State<SettingsPagePreferences> {
                 padding:
                 const EdgeInsets.symmetric(horizontal: 16, vertical: 3),
                 child: TextFormField(
-                  controller: locationInput,
+                  controller: _ethnicityInput,
                   validator: (value) {
                     if (value!.isEmpty) {
                       return '-';
@@ -172,7 +150,9 @@ class _SettingsPagePreferencesState extends State<SettingsPagePreferences> {
                         shadowColor:
                         Colors.black.withOpacity(0.0), // Shadow Color
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        updatePreferences();
+                      },
                       child: const Text('Save'),
                     ),
                   )
@@ -182,5 +162,22 @@ class _SettingsPagePreferencesState extends State<SettingsPagePreferences> {
         ),
       ),
     );
+  }
+  Future updatePreferences() async {
+    final apiPreferences = 'http://10.0.2.2:3000/user/x';
+    String? token;
+    FirebaseAuth.instance.currentUser!.getIdTokenResult(true).then((result){
+      token = result.token;
+    });
+    final headers = {
+      "Content-type": 'application/json',
+      "Authorization": token ?? '',
+    };
+    final json = '{"game": "${_gameInput.text.trim()}", '
+        '"age": "${_ageInput.text.trim()}", '
+        '"game": "${_genderInput.text.trim()}", '
+        '"ethnicity": "${_ethnicityInput.text.trim()}",}';
+
+    final res = http.put(Uri.parse(apiPreferences), headers: headers, body:json);
   }
 }

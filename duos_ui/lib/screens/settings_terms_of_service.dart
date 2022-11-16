@@ -49,6 +49,13 @@ class _SettingsPageTOSState extends State<SettingsPageTOS> {
                 ),
               ),
               Padding(
+                padding: EdgeInsets.only(top: 20.0),
+                child: SizedBox(
+                  width: 50,
+                  height: 10,
+                ),
+              ),
+              Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                 child: Text("1. Acceptance of Terms of Use Agreement",
                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
@@ -57,6 +64,13 @@ class _SettingsPageTOSState extends State<SettingsPageTOS> {
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                 child: Text("Not our problem ",
                     style: TextStyle(fontSize: 12)),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 20.0),
+                child: SizedBox(
+                  width: 50,
+                  height: 10,
+                ),
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
@@ -69,6 +83,13 @@ class _SettingsPageTOSState extends State<SettingsPageTOS> {
                     style: TextStyle(fontSize: 12)),
               ),
               Padding(
+                padding: EdgeInsets.only(top: 20.0),
+                child: SizedBox(
+                  width: 50,
+                  height: 10,
+                ),
+              ),
+              Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                 child: Text("3. Your Account",
                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
@@ -77,6 +98,13 @@ class _SettingsPageTOSState extends State<SettingsPageTOS> {
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                 child: Text("Not our problem ",
                     style: TextStyle(fontSize: 12)),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 20.0),
+                child: SizedBox(
+                  width: 50,
+                  height: 10,
+                ),
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
