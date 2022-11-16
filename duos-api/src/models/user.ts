@@ -12,11 +12,14 @@ export class User {
     matched: Array<number>;
     likes: Array<string>;
     categories: Array<string>;
+    uid: string;
 
-    constructor(info) {
+    constructor(uid, info)
+    {
         this.info = info,
-            this.matched = [],
-            this.categories = [],
-            this.likes = []
+        this.matched = [],
+        this.categories = [],
+        this.likes = [],
+        this.uid = uid
     }
 }
