@@ -1,5 +1,5 @@
 import database from "../config";
-import { collection, addDoc, getDoc, doc, updateDoc } from "firebase/firestore"; 
+import { collection, addDoc, getDocs, doc, updateDoc, query, where } from "firebase/firestore"; 
 import { User } from "src/models/user";
 
 export const createNewUserAsync = async (user: User) => {
@@ -14,14 +14,14 @@ export const createNewUserAsync = async (user: User) => {
     }
 }
 
-export const getUserAsync = async (id: string) => {
-    const document = doc(collection(database, "user_profiles"), id);
-    const dbDoc = await getDoc(document);
-    if(dbDoc.exists()){
-        return dbDoc.data();
+export const getUserAsync = async (uid: string) => {
+    const q = query(collection(database, "user_profiles"), where("uid", "==", uid));
+    const dbSnapshot = await getDocs(q);
+    if(dbSnapshot.size == 1){
+        return dbSnapshot.docs.at(0).data();
     }
     else {
-        throw new Error("No such document");
+        throw new Error("No such documents");
     }
 }
 

@@ -8,21 +8,22 @@ export class UserController {
 
     constructor(private userService: UserService){}
 
-    @Get(':id')
-    getUser(@Param('id') id: string){
-        return this.userService.GetUser(id);
+    @Get(':uid')
+    getUser(@Param('uid') uid: string){
+        console.log(this.userService.GetUser(uid));
+        return this.userService.GetUser(uid);
     }
 
     @Post()
     createNewUser(@Body() newUser: UserDto): UserDto {
-        let user = new User(newUser.info);
+        let user = new User(newUser.uid, newUser.info);
         this.userService.CreateNewUser(user);
         return newUser;
     }
 
     @Put(':id')
     editUser(@Param('id') id: string, @Body() editUser:UserDto): UserDto {
-        let user = new User(editUser.info);
+        let user = new User(editUser.uid, editUser.info);
         this.userService.EditUser(id, user);
         return editUser;
     }
