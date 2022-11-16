@@ -84,8 +84,13 @@ class _ProfilePageState extends State<ProfilePage> {
               right: 15,
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const ProfileCreationAge()));
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(
+                          builder: (context) => const ProfileCreationAge()))
+                      .then((_) => setState(
+                            //This is done to refresh the profile page upon return from editing
+                            () {},
+                          ));
                 },
                 style: ButtonStyle(
                   shape: MaterialStateProperty.all(const CircleBorder()),
