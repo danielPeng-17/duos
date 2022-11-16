@@ -1,3 +1,6 @@
+import 'package:duos_ui/screens/settings_preferences.dart';
+import 'package:duos_ui/screens/settings_notifications.dart';
+import 'package:duos_ui/screens/settings_privacy.dart';
 import 'package:duos_ui/screens/settings_terms_of_service.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -158,7 +161,11 @@ class _SettingsPageState extends State<SettingsPage> {
                   child: Align(
                     alignment: Alignment.center,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const SettingsPagePreferences(),
+                        ),
+                      ),
                       style: ElevatedButton.styleFrom(
                         primary: Colors.black.withOpacity(0),
                         onPrimary: Colors.black.withOpacity(1),
@@ -206,7 +213,11 @@ class _SettingsPageState extends State<SettingsPage> {
                   child: Align(
                     alignment: Alignment.center,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const SettingsPagePrivacy(),
+                        ),
+                      ),
                       style: ElevatedButton.styleFrom(
                         primary: Colors.black.withOpacity(0),
                         onPrimary: Colors.black.withOpacity(1),
@@ -254,7 +265,11 @@ class _SettingsPageState extends State<SettingsPage> {
                   child: Align(
                     alignment: Alignment.center,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const SettingsPageNotifications(),
+                        ),
+                      ),
                       style: ElevatedButton.styleFrom(
                         primary: Colors.black.withOpacity(0),
                         onPrimary: Colors.black.withOpacity(1),
