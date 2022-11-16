@@ -21,6 +21,17 @@ class _ProfileCreationBioState extends State<ProfileCreationBio> {
   TextEditingController locationInput = TextEditingController();
 
   @override
+  void dispose() {
+    descInput.dispose();
+    hobbiesInput.dispose();
+    languagesInput.dispose();
+    pronounsInput.dispose();
+    datingPrefInput.dispose();
+    locationInput.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,

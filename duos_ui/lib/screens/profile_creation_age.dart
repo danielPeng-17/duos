@@ -22,6 +22,12 @@ class _ProfileCreationAgeState extends State<ProfileCreationAge> {
   }
 
   @override
+  void dispose() {
+    dateInput.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
