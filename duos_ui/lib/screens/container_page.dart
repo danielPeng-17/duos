@@ -1,3 +1,4 @@
+import 'package:duos_ui/screens/contacts_page.dart';
 import 'package:flutter/material.dart';
 import 'package:duos_ui/screens/home_page.dart';
 import 'package:duos_ui/screens/settings_page.dart';
@@ -19,10 +20,7 @@ class _ContainerPageState extends State<ContainerPage> {
       'Index 1: Profile',
       style: optionStyle,
     ),
-    Text(
-      'Index 2: Messages',
-      style: optionStyle,
-    ),
+    ContactsPage(),
     SettingsPage(),
   ];
 
