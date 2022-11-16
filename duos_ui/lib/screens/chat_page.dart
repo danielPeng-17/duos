@@ -2,61 +2,84 @@ import 'package:duos_ui/widgets/avatar.dart';
 import 'package:duos_ui/widgets/icon.dart';
 import 'package:flutter/material.dart';
 
-class ChatPage extends StatelessWidget {
-  ChatPage({Key? key}) : super(key: key);
+class ChatPageArguments {
+  final String peerId;
+  final String peerAvatar;
+  final String peerName;
 
-  final ValueNotifier<String> personName = ValueNotifier("Kevin");
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-            backgroundColor: Colors.transparent,
-            centerTitle: true,
-            title: Text(
-              personName.value,
-              style: const TextStyle(color: Colors.black),
-            ),
-            leading: const Material(
-              child: IconButton(
-                onPressed: (null),
-                icon: Icon(Icons.arrow_back),
-              ),
-            ),
-            actions: [
-              Padding(
-                padding: const EdgeInsets.only(right: 24),
-                child: Avatar.small(url: "https://picsum.photos/200/300"),
-              ),
-            ],
-            shape: Border(bottom: BorderSide(color: Colors.black, width: 4)),
-            elevation: 0),
-        body: Column(
-          children: [Expanded(child: DemoMessage()), ActionBar()],
-        ),
-      ),
-    );
-  }
+  ChatPageArguments({required this.peerId, required this.peerAvatar, required this.,peerName});
 }
 
-class DemoMessage extends StatelessWidget {
-  const DemoMessage({Key? key}) : super(key: key);
+
+class ChatPage extends StatefulWidget {
+  ChatPage({Key? key, required this.arguments}) : super(key: key);
+  final ChatPageArguments arguments;
 
   @override
-  Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        _DateLabel(label: "Yesterday"),
-        _MessageTile(message: "Hey how is it going"),
-        OwnMessageTile(message: "how is your day"),
-        _MessageTile(message: "it is good"),
-        _MessageTile(message: "how about you"),
-        OwnMessageTile(message: "it could be better"),
-      ],
-    );
-  }
+  ChatPageState createState() => ChatPageState();
 }
+
+class ChatPageState extends State<ChatPage> {
+  
+}
+
+
+
+// class ChatPage extends StatelessWidget {
+//   ChatPage({Key? key}) : super(key: key);
+//
+//   final ValueNotifier<String> personName = ValueNotifier("Kevin");
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       home: Scaffold(
+//         appBar: AppBar(
+//             backgroundColor: Colors.transparent,
+//             centerTitle: true,
+//             title: Text(
+//               personName.value,
+//               style: const TextStyle(color: Colors.black),
+//             ),
+//             leading: const Material(
+//               child: IconButton(
+//                 onPressed: (null),
+//                 icon: Icon(Icons.arrow_back),
+//               ),
+//             ),
+//             actions: const [
+//               Padding(
+//                 padding: EdgeInsets.only(right: 24),
+//                 child: Avatar.small(url: "https://picsum.photos/200/300"),
+//               ),
+//             ],
+//             shape: const Border(bottom: BorderSide(color: Colors.black, width: 4)),
+//             elevation: 0),
+//         body: Column(
+//           children: const [],
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+// class DemoMessage extends StatelessWidget {
+//   const DemoMessage({Key? key}) : super(key: key);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return ListView(
+//       children: const [
+//         _DateLabel(label: "Yesterday"),
+//         _MessageTile(message: "Hey how is it going"),
+//         OwnMessageTile(message: "how is your day"),
+//         _MessageTile(message: "it is good"),
+//         _MessageTile(message: "how about you"),
+//         OwnMessageTile(message: "it could be better"),
+//       ],
+//     );
+//   }
+// }
 
 class _DateLabel extends StatelessWidget {
   const _DateLabel({
