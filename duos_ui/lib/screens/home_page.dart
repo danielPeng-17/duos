@@ -14,7 +14,7 @@ class _HomePageState extends State<HomePage> {
   dynamic _currentProfile;
   static const List _profiles = [
     {
-      "categories": ["valorant", "Apex Legends"],
+      "categories": ["Valorant", "Apex Legends"],
       "info": {
         "bio": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ac"
             " maximus justo, nec vestibulum turpis. Pellentesque mollis eget lore"
@@ -23,11 +23,16 @@ class _HomePageState extends State<HomePage> {
         "first_name": "FirstName",
         "last_name": "LastName",
         "gender": "Female",
-        "profile_picture_url": "https://images.unsplash.com/photo-1506691318991-c91e"
-            "7df669b1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG9"
-            "0by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w"
-            "=673&q=80",
+        "profile_picture_url":
+            "https://images.unsplash.com/photo-1506691318991-c91e"
+                "7df669b1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG9"
+                "0by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w"
+                "=673&q=80",
         "location": "Toronto, Ontario",
+        "hobbies":
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ac"
+                " maximus justo, nec vestibulum turpis. Pellentesque mollis eget lore"
+                "m sed viverra. Ut convallis leo a fermentum fermentum."
       },
       "matches": [],
       "uuid": "8OTxBd5tLeMxzdvnkUBOt861V5g1",
@@ -46,6 +51,10 @@ class _HomePageState extends State<HomePage> {
             "dc38448a05e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8"
             "fHx8&auto=format&fit=crop&w=1470&q=80",
         "location": "Markham, Ontario",
+        "hobbies":
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ac"
+                " maximus justo, nec vestibulum turpis. Pellentesque mollis eget lore"
+                "m sed viverra. Ut convallis leo a fermentum fermentum."
       },
       "matches": [],
       "uuid": "z8wbVHhaQfPq1KDnX1iwqprG8DR2",
@@ -54,8 +63,9 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    super.initState();
     _currentProfile = _profiles[_currentIndex];
+
+    super.initState();
   }
 
   @override
@@ -114,13 +124,9 @@ class _HomePageState extends State<HomePage> {
                     child: Container(
                       height: MediaQuery.of(context).size.height * 0.6,
                       width: MediaQuery.of(context).size.width * 0.9,
-                      decoration: const BoxDecoration(
+                      decoration: BoxDecoration(
                         image: DecorationImage(
-                          image: NetworkImage(
-                              "https://images.unsplash.com/photo-1506691318991-c91e"
-                              "7df669b1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG9"
-                              "0by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w"
-                              "=673&q=80"),
+                          image: NetworkImage(_currentProfile["info"]["profile_picture_url"]),
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -137,18 +143,20 @@ class _HomePageState extends State<HomePage> {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: const [
+                                children: [
                                   Text(
-                                    "Firstname, Age",
-                                    style: TextStyle(
+                                    _currentProfile["info"]["first_name"] +
+                                        " " +
+                                        _currentProfile["info"]["last_name"],
+                                    style: const TextStyle(
                                         fontSize: 20,
                                         color: Colors.white,
                                         fontWeight: FontWeight.w600),
                                   ),
-                                  SizedBox(height: 5),
+                                  const SizedBox(height: 5),
                                   Text(
-                                    "Toronto, Ontario",
-                                    style: TextStyle(
+                                    _currentProfile["info"]["location"],
+                                    style: const TextStyle(
                                         fontSize: 14,
                                         color: Colors.white,
                                         fontWeight: FontWeight.w400),
@@ -177,7 +185,7 @@ class _HomePageState extends State<HomePage> {
                             child: const Text(
                               "About Me",
                               style: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 22,
                                   color: Colors.black,
                                   fontWeight: FontWeight.w400),
                             ),
@@ -188,11 +196,10 @@ class _HomePageState extends State<HomePage> {
                           Container(
                             margin: const EdgeInsets.only(left: 10, right: 10),
                             width: MediaQuery.of(context).size.width * 0.85,
-                            child: const Text(
-                              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ac maximus justo, nec vestibulum turpis. Pellentesque mollis eget lorem sed viverra. Ut convallis leo a fermentum fermentum.",
-                              style: TextStyle(
-                                  fontFamily: "ProximaNova-Regular",
-                                  fontSize: 14,
+                            child: Text(
+                              _currentProfile["info"]["bio"],
+                              style: const TextStyle(
+                                  fontSize: 16,
                                   color: Colors.black,
                                   fontWeight: FontWeight.w300),
                             ),
@@ -205,7 +212,7 @@ class _HomePageState extends State<HomePage> {
                             child: const Text(
                               "Favourite Games",
                               style: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 22,
                                   color: Colors.black,
                                   fontWeight: FontWeight.w400),
                             ),
@@ -214,59 +221,17 @@ class _HomePageState extends State<HomePage> {
                             height: 10,
                           ),
                           Container(
-                            width: MediaQuery.of(context).size.width*0.9,
-                            margin: EdgeInsets.only(left: 10,right: 10,),
+                            width: MediaQuery.of(context).size.width * 0.9,
+                            margin: const EdgeInsets.only(
+                              left: 10,
+                              right: 10,
+                            ),
                             child: Wrap(
-                              children: [
-                                Container(
-                                    height: 30,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(15.0),
-                                        color: Colors.blue.withOpacity(0.25)
-                                    ),
-                                    child: const Padding(
-                                      padding: EdgeInsets.only(left: 12, right: 12, top: 7, bottom: 7 ),
-                                      child: Text("Valorant", style: TextStyle(fontFamily: "ProximaNova-Regular",
-                                          fontSize: 14, color: Colors.black, fontWeight: FontWeight.w400
-                                      ),),
-                                    )
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                Container(
-                                    height: 30,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(15.0),
-                                        color: Colors.orange.withOpacity(0.25)
-                                    ),
-                                    child: const Padding(
-                                      padding: EdgeInsets.only(left: 12, right: 12, top: 7, bottom: 7 ),
-                                      child: Text("Apex Legends", style: TextStyle(fontFamily: "ProximaNova-Regular",
-                                          fontSize: 14, color: Colors.black, fontWeight: FontWeight.w400
-                                      ),),
-                                    )
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                Container(
-                                    height: 30,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(15.0),
-                                        color: Colors.pink.withOpacity(0.25)
-                                    ),
-                                    child: const Padding(
-                                      padding: EdgeInsets.only(left: 12, right: 12, top: 7, bottom: 7 ),
-                                      child: Text("Minecraft", style: TextStyle(fontFamily: "ProximaNova-Regular",
-                                          fontSize: 14, color: Colors.black, fontWeight: FontWeight.w400
-                                      ),),
-                                    )
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                              ],
+                              spacing: 10.0,
+                              children: _currentProfile["categories"]
+                                  .map<Widget>((category) =>
+                                      _GameBubble(title: category))
+                                  .toList(),
                             ),
                           ),
                           const SizedBox(
@@ -277,7 +242,7 @@ class _HomePageState extends State<HomePage> {
                             child: const Text(
                               "Hobbies",
                               style: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 22,
                                   color: Colors.black,
                                   fontWeight: FontWeight.w400),
                             ),
@@ -286,13 +251,12 @@ class _HomePageState extends State<HomePage> {
                             height: 10,
                           ),
                           Container(
-                            margin: EdgeInsets.only(left: 10, right: 10),
+                            margin: const EdgeInsets.only(left: 10, right: 10),
                             width: MediaQuery.of(context).size.width * 0.85,
-                            child: const Text(
-                              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ac maximus justo, nec vestibulum turpis. Pellentesque mollis eget lorem sed viverra. Ut convallis leo a fermentum fermentum.",
-                              style: TextStyle(
-                                  fontFamily: "ProximaNova-Regular",
-                                  fontSize: 14,
+                            child: Text(
+                              _currentProfile["info"]["hobbies"],
+                              style: const TextStyle(
+                                  fontSize: 16,
                                   color: Colors.black,
                                   fontWeight: FontWeight.w300),
                             ),
@@ -309,13 +273,9 @@ class _HomePageState extends State<HomePage> {
             ),
             Positioned(
                 bottom: MediaQuery.of(context).size.height * 0.01,
-                left: MediaQuery.of(context).size.width * 0.25,
+                left: MediaQuery.of(context).size.width * 0.03,
                 child: ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      _currentIndex += 1;
-                    });
-                  },
+                  onPressed: () => skipProfile(),
                   style: ButtonStyle(
                     shape: MaterialStateProperty.all(
                       const CircleBorder(),
@@ -338,13 +298,9 @@ class _HomePageState extends State<HomePage> {
                 )),
             Positioned(
               bottom: MediaQuery.of(context).size.height * 0.01,
-              right: MediaQuery.of(context).size.width * 0.25,
+              right: MediaQuery.of(context).size.width * 0.03,
               child: ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    _currentIndex += 1;
-                  });
-                },
+                onPressed: () => likeProfile(),
                 style: ButtonStyle(
                   shape: MaterialStateProperty.all(
                     const CircleBorder(),
@@ -368,6 +324,54 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  void likeProfile() {
+    setState(() {
+      _currentIndex += 1;
+      if (_currentIndex > _profiles.length - 1) {
+        _currentIndex = 0;
+        // put a snackbar indicating it refreshed
+      }
+      _currentProfile = _profiles[_currentIndex];
+    });
+  }
+
+  void skipProfile() {
+    setState(() {
+      _currentIndex += 1;
+      if (_currentIndex > _profiles.length - 1) {
+        _currentIndex = 0;
+        // put a snackbar indicating it refreshed
+      }
+      _currentProfile = _profiles[_currentIndex];
+    });
+  }
+}
+
+class _GameBubble extends StatelessWidget {
+  const _GameBubble({Key? key, required this.title}) : super(key: key);
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 30,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15.0),
+          color: Colors.blue.withOpacity(0.25)),
+      child: Padding(
+        padding: const EdgeInsets.only(left: 12, right: 12, top: 7, bottom: 7),
+        child: Text(
+          title,
+          style: const TextStyle(
+            fontSize: 14,
+            color: Colors.black,
+            fontWeight: FontWeight.w400,
+          ),
         ),
       ),
     );
