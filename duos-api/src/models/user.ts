@@ -10,7 +10,8 @@ export class User {
     id: number;
     info: UserInformation;
     matched: Array<number>;
-    categories: Array<number>;
+    likes: Array<string>;
+    categories: Array<string>;
     uid: string;
 
     constructor(uid, info)
@@ -18,6 +19,7 @@ export class User {
         this.info = info,
         this.matched = [],
         this.categories = [],
+        this.likes = [],
         this.uid = uid
     }
 }
