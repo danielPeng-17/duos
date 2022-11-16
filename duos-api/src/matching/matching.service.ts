@@ -1,8 +1,8 @@
 import { User } from "src/models/user";
-import { ConsoleLogger, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { addALiked, addMatch, createNewUserAsync, getAllUsersInCategory, getUserAsync, removeALiked } from "src/firebase/database_functions/database_functions";
 import { likePayload } from "./matching.controller";
-import { userInfo } from "os";
+
 
 
 @Injectable()
@@ -26,15 +26,18 @@ export class MatchingService {
 
     public async LikePerson(likerId: string, likedId: string): Promise<likePayload> {
         const likedUser = await getUserAsync(likedId) as User
-        const likedBack = likedUser.likes.find(ele => ele == likerId)
-        if (likedBack) {
-            //remove like of other user
-            await removeALiked(likedId, likerId)
-            //create match
-            await addMatch(likerId, likedId)
-            return {
-                matched: true,
-                matchedId: likedId
+
+        if(likedUser.likes){
+            const likedBack = likedUser.likes.find(ele => ele == likerId)
+            if (likedBack) {
+                //remove like of other user
+                await removeALiked(likedId, likerId)
+                //create match
+                await addMatch(likerId, likedId)
+                return {
+                    matched: true,
+                    matchedId: likedId
+                }
             }
         }
 
