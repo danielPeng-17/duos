@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -11,61 +12,69 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
+  String? token = "";
+  final dynamic user = FirebaseAuth.instance.currentUser!;
   dynamic _currentProfile;
-  static const List _profiles = [
-    {
-      "categories": ["Valorant", "Apex Legends"],
-      "info": {
-        "bio": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ac"
-            " maximus justo, nec vestibulum turpis. Pellentesque mollis eget lore"
-            "m sed viverra. Ut convallis leo a fermentum fermentum.",
-        "date_of_birth": "2000-04-23",
-        "first_name": "FirstName",
-        "last_name": "LastName",
-        "gender": "Female",
-        "profile_picture_url":
-            "https://images.unsplash.com/photo-1506691318991-c91e"
-                "7df669b1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG9"
-                "0by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w"
-                "=673&q=80",
-        "location": "Toronto, Ontario",
-        "hobbies":
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ac"
-                " maximus justo, nec vestibulum turpis. Pellentesque mollis eget lore"
-                "m sed viverra. Ut convallis leo a fermentum fermentum."
-      },
-      "matches": [],
-      "uuid": "8OTxBd5tLeMxzdvnkUBOt861V5g1",
-    },
-    {
-      "categories": ["Minecraft", "Overwatch"],
-      "info": {
-        "bio": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ac"
-            " maximus justo, nec vestibulum turpis. Pellentesque mollis eget lore"
-            "m sed viverra. Ut convallis leo a fermentum fermentum.",
-        "date_of_birth": "2001-04-23",
-        "first_name": "FirstName2",
-        "last_name": "LastName2",
-        "gender": "Male",
-        "profile_picture_url": "https://images.unsplash.com/photo-1542751371-a"
-            "dc38448a05e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8"
-            "fHx8&auto=format&fit=crop&w=1470&q=80",
-        "location": "Markham, Ontario",
-        "hobbies":
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ac"
-                " maximus justo, nec vestibulum turpis. Pellentesque mollis eget lore"
-                "m sed viverra. Ut convallis leo a fermentum fermentum."
-      },
-      "matches": [],
-      "uuid": "z8wbVHhaQfPq1KDnX1iwqprG8DR2",
-    },
-  ];
+  dynamic _profiles = [];
+  // static const List _profiles = [
+  //   {
+  //     "categories": ["Valorant", "Apex Legends"],
+  //     "info": {
+  //       "bio": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ac"
+  //           " maximus justo, nec vestibulum turpis. Pellentesque mollis eget lore"
+  //           "m sed viverra. Ut convallis leo a fermentum fermentum.",
+  //       "date_of_birth": "2000-04-23",
+  //       "first_name": "FirstName",
+  //       "last_name": "LastName",
+  //       "gender": "Female",
+  //       "profile_picture_url":
+  //           "https://images.unsplash.com/photo-1506691318991-c91e"
+  //               "7df669b1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG9"
+  //               "0by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w"
+  //               "=673&q=80",
+  //       "location": "Toronto, Ontario",
+  //       "hobbies":
+  //           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ac"
+  //               " maximus justo, nec vestibulum turpis. Pellentesque mollis eget lore"
+  //               "m sed viverra. Ut convallis leo a fermentum fermentum."
+  //     },
+  //     "matches": [],
+  //     "uuid": "8OTxBd5tLeMxzdvnkUBOt861V5g1",
+  //   },
+  //   {
+  //     "categories": ["Minecraft", "Overwatch"],
+  //     "info": {
+  //       "bio": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ac"
+  //           " maximus justo, nec vestibulum turpis. Pellentesque mollis eget lore"
+  //           "m sed viverra. Ut convallis leo a fermentum fermentum.",
+  //       "date_of_birth": "2001-04-23",
+  //       "first_name": "FirstName2",
+  //       "last_name": "LastName2",
+  //       "gender": "Male",
+  //       "profile_picture_url": "https://images.unsplash.com/photo-1542751371-a"
+  //           "dc38448a05e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8"
+  //           "fHx8&auto=format&fit=crop&w=1470&q=80",
+  //       "location": "Markham, Ontario",
+  //       "hobbies":
+  //           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ac"
+  //               " maximus justo, nec vestibulum turpis. Pellentesque mollis eget lore"
+  //               "m sed viverra. Ut convallis leo a fermentum fermentum."
+  //     },
+  //     "matches": [],
+  //     "uuid": "z8wbVHhaQfPq1KDnX1iwqprG8DR2",
+  //   },
+  // ];
 
   @override
   void initState() {
-    _currentProfile = _profiles[_currentIndex];
-
     super.initState();
+    user.getIdTokenResult(true).then((result) {
+      token = result.token;
+      _getProfiles().then((profiles){
+        _profiles = profiles;
+        _currentProfile = _profiles[_currentIndex];
+      });
+    });
   }
 
   @override
@@ -329,7 +338,30 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void likeProfile() {
+  Future _getProfiles() async {
+    final String uid = user.uid;
+    String? token;
+    final apiGetProfilesEndpoint = "http://10.0.2.2:3000/matching/$uid}";
+    final headers = {
+      "Content-type": 'application/json',
+      "Authorization": token ?? '',
+    };
+    final res = await http.put(Uri.parse(apiGetProfilesEndpoint), headers: headers);
+    return jsonDecode(res.body);
+  }
+
+  Future postLikeProfile() async {
+    final String uid = user.uid;
+    final apiMatchingEndpoint = "http://10.0.2.2:3000/matching/$uid/like/${_currentProfile["uid"]}";
+    final headers = {
+      "Content-type": 'application/json',
+      "Authorization": token ?? '',
+    };
+    final res = await http.put(Uri.parse(apiMatchingEndpoint), headers: headers);
+  }
+
+  void likeProfile() async {
+    await postLikeProfile();
     setState(() {
       _currentIndex += 1;
       if (_currentIndex > _profiles.length - 1) {
