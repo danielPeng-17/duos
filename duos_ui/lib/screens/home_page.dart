@@ -346,8 +346,12 @@ class _HomePageState extends State<HomePage> {
       "Content-type": 'application/json',
       "Authorization": token ?? '',
     };
-    final res = await http.put(Uri.parse(apiGetProfilesEndpoint), headers: headers);
-    return jsonDecode(res.body);
+    try {
+      final res = await http.put(Uri.parse(apiGetProfilesEndpoint), headers: headers);
+      return jsonDecode(res.body);
+    } catch (err) {
+      // ignore
+    }
   }
 
   Future postLikeProfile() async {
@@ -357,7 +361,11 @@ class _HomePageState extends State<HomePage> {
       "Content-type": 'application/json',
       "Authorization": token ?? '',
     };
-    final res = await http.put(Uri.parse(apiMatchingEndpoint), headers: headers);
+    try {
+      final res = await http.put(Uri.parse(apiMatchingEndpoint), headers: headers);
+    } catch (err) {
+      // ignore
+    }
   }
 
   void likeProfile() async {
