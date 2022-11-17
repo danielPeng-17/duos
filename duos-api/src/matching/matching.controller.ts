@@ -19,7 +19,7 @@ export class MatchingController {
     // }
 
     @Get(':id')
-    testMatches(@Param('id') id: string): Promise<string[]> {
+    testMatches(@Param('id') id: string): Promise<User[]> {
         const matchingDeck = this.matchingService.GetNewPotentialMatches(id);
         return matchingDeck;
     }
