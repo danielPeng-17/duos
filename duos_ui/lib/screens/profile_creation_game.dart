@@ -129,10 +129,14 @@ class _ProfileCreationGameState extends State<ProfileCreationGame> {
                       label: Text(""),
                       onPressed: () {
                         var index = 0;
+                        List<Games> listofchosengames = [];
                         for (var selected in _selectedGames) {
-                          context.read<Profile>().addGame(allGames[index]);
+                          if (selected == true) {
+                            listofchosengames.add(allGames[index]);
+                          }
                           index++;
                         }
+                        context.read<Profile>().setGames(listofchosengames);
 
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => const ProfileCreationName()));

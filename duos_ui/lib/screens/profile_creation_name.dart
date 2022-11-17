@@ -16,6 +16,13 @@ class _ProfileCreationNameState extends State<ProfileCreationName> {
   TextEditingController lastNameInput = TextEditingController();
 
   @override
+  void dispose() {
+    firstNameInput.dispose();
+    lastNameInput.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
