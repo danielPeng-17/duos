@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:duos_ui/screens/join_page.dart';
 import 'package:provider/provider.dart';
 import 'package:duos_ui/screens/container_page.dart';
+import 'package:duos_ui/screens/profile_creation_picture.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
       title: 'Duos',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          primarySwatch: Colors.purple,
+          primarySwatch: Colors.deepPurple,
           appBarTheme: const AppBarTheme(
             backgroundColor: Colors.transparent,
             elevation: 0,
@@ -54,9 +55,9 @@ class RootPage extends StatelessWidget {
           } else if (snapshot.hasError) {
             return const Center(child: Text('An error has occurred'));
           } else if (snapshot.hasData) {
-            return const ContainerPage();
+            return const ProfileCreationPicture();
           } else {
-            return const JoinPage();
+            return const ProfileCreationPicture();
           }
         },
       ),
