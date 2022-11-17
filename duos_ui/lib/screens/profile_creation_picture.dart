@@ -19,9 +19,6 @@ class _ProfileCreationPictureState extends State<ProfileCreationPicture> {
   PlatformFile? pickedFile;
   FilePickerResult? result;
 
-  TextEditingController _profilePicturePath = TextEditingController();
-  TextEditingController _profilePictureURL = TextEditingController();
-
   String imageURL = "";
   String imagePath = "";
 
