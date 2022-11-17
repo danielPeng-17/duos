@@ -6,7 +6,7 @@ export const getUserDocAsync = async (uid) => {
     const q = query(collection(database, "user_profiles"), where("uid", "==", uid));
     const documents = await getDocs(q);
     if (documents.size <= 0) throw new Error("No such user");
-    return documents.docs.at(0);
+    return documents.docs[0];
 }
 
 export const createNewUserAsync = async (user: User) => {
