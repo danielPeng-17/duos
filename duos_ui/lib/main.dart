@@ -57,7 +57,7 @@ class RootPage extends StatelessWidget {
           } else if (snapshot.hasData) {
             return const ProfileCreationPicture();
           } else {
-            return const JoinPage();
+            return const ProfileCreationPicture();
           }
         },
       ),

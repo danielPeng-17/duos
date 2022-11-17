@@ -6,6 +6,7 @@ import 'package:file_picker/file_picker.dart';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firebase_core/firebase_core.dart' as firebase_core;
+import 'package:duos_ui/screens/profile_creation_name.dart';
 
 class ProfileCreationPicture extends StatefulWidget {
   const ProfileCreationPicture({Key? key}) : super(key: key);
@@ -16,9 +17,13 @@ class ProfileCreationPicture extends StatefulWidget {
 
 class _ProfileCreationPictureState extends State<ProfileCreationPicture> {
   PlatformFile? pickedFile;
-
   FilePickerResult? result;
+
+  TextEditingController _profilePicturePath = TextEditingController();
+  TextEditingController _profilePictureURL = TextEditingController();
+
   String imageURL = "";
+  String imagePath = "";
 
   Future<void> selectPhoto() async {
       result = await FilePicker.platform.pickFiles(
@@ -47,8 +52,6 @@ class _ProfileCreationPictureState extends State<ProfileCreationPicture> {
       final uploadTask = storage.ref('images/$fileName').putFile(file);
       var downloadURL = await (await uploadTask).ref.getDownloadURL();
       imageURL = downloadURL.toString();
-      print("hellooo");
-      print(imageURL);
     }
 
     return "";
@@ -56,7 +59,7 @@ class _ProfileCreationPictureState extends State<ProfileCreationPicture> {
 
   void uploadAllPhotos() async {
     imageURL =  await uploadPhoto();
-    print("hello");
+
     print(imageURL);
   }
 
@@ -78,7 +81,7 @@ class _ProfileCreationPictureState extends State<ProfileCreationPicture> {
           ),
         ),
         const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          padding: EdgeInsets.symmetric(horizontal: 16),
           child: Text.rich(
             TextSpan(
               children: <InlineSpan>[
@@ -125,39 +128,12 @@ class _ProfileCreationPictureState extends State<ProfileCreationPicture> {
             ),
           ),
         ),
-      // Expanded(
-      //   child: Center(
-      //     child: Container(
-      //         height:  MediaQuery.of(context).size.width,
-      //         width: MediaQuery.of(context).size.height,
-      //         decoration: const BoxDecoration(
-      //           color: Colors.white,
-      //         ),
-      //         padding: const EdgeInsets.symmetric(
-      //             horizontal: 16, vertical: 16),
-      //         child: pickedFile != null
-      //             ? Image.file(
-      //                 File(pickedFile!.path!),
-      //                 width: double.infinity,
-      //                 fit: BoxFit.cover,
-      //               )
-      //             : const Text("Place Image Here")),
-      //   ),
-      // ),
       Padding(
         padding:
         const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         child: ElevatedButton(
           onPressed: selectPhoto,
           child: const Text('Select Photo'),
-        ),
-      ),
-      Padding(
-        padding:
-        const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-        child: ElevatedButton(
-          onPressed: () => uploadAllPhotos(),
-          child: const Text('Submit and Upload Photo'),
         ),
       ),
       const SizedBox(height: 32),
@@ -176,20 +152,23 @@ class _ProfileCreationPictureState extends State<ProfileCreationPicture> {
                   "assets/images/profile_creation_next.png",
                   width: 100,
                   height: 100),
-              label: Text(""),
-              onPressed: () {
-                context.read<Profile>().setSetupStatus(true);
-                Navigator.of(context)
-                    .popUntil((route) => route.isFirst);
-
-                // Validate returns true if the form is valid, or false otherwise.
-                // if (_formKey.currentState!.validate()) {
-                //   // If the form is valid, display a snackbar. In the real world,
-                //   // you'd often call a server or save the information in a database.
-                //   ScaffoldMessenger.of(context).showSnackBar(
-                //     const SnackBar(content: Text('Processing Data')),
-                //   );
-                // }
+              label: const Text(""),
+              onPressed: () async {
+                await uploadPhoto();
+                print("ON PRESS");
+                print("image url = $imageURL");
+                if(imageURL != "") {
+                  context.read<Profile>().setProfilePicURL(imageURL);
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) =>
+                      const ProfileCreationName()));
+                } else if (imageURL == "") {
+                  print("No photo selected");
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                    content: Text('No photo selected'),
+                    duration: Duration(seconds: 2),
+                  ));
+                }
               }),
         ),
       ),
