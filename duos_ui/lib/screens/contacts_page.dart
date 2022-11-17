@@ -1,16 +1,71 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:duos_ui/screens/container_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
+//--------------------sample
+class User {
+  String name;
+  String lastMsg;
+  String image;
+  bool unread;
 
-class ContactsPage extends StatelessWidget {
-  const ContactsPage({super.key});
+  User({
+    required this.name,
+    required this.lastMsg,
+    required this.image,
+    required this.unread,
+  });
+}
+List<User> users = [
+  User(
+      name: "Lunazoul",
+      lastMsg: "Im hot asf",
+      image: "https://dawsonvo.ca/daslkjlkfadsjflajslkj2134lkj234.png",
+      unread: true,
 
+  ),
+  User(
+      name: "Jesus",
+      lastMsg: "hi im jesus",
+      image: "https://i.pinimg.com/originals/84/97/68/849768009d5792d5d83c1bb6e0b3572d.jpg",
+      unread: false,
+  ),
+  User(
+    name: "Discord kitten",
+    lastMsg: "Follow me on instagram @lunazoul",
+    image: "https://dawsonvo.ca/20220529_035718927_iOS.png",
+    unread: true,
+  ),
+  User(
+  name: "Discord kitten2",
+  lastMsg: "wanna buy me nitro",
+  image: "https://dawsonvo.ca/asdlkhgskldjfsdoliu32109.JPG",
+  unread: false,
+  ),
+  User(
+    name: "Discord mod",
+    lastMsg: "hey you want nitro?",
+    image: "https://img.ifunny.co/images/38b99393f90225ae7cb9638593799791b3a88f9224007323e8d0e798e484e5b6_1.jpg",
+    unread: false,
+  )
+];
+//-----------------------sample
+
+enum Actions {delete, report, unread}
+class ContactsPage extends StatefulWidget {
+  const ContactsPage({Key? key}) : super(key: key);
+
+  @override
+  State<ContactsPage> createState() => _ContactsPageState();
+}
+class _ContactsPageState extends State<ContactsPage> {
+  //const ContactsPage({super.key});
+  final _searchFieldController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     //final user = FirebaseAuth.instance.currentUser!;
-
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -42,80 +97,135 @@ class ContactsPage extends StatelessWidget {
           ),
         ],
       ),
-    //   body: Padding(
-    //     padding: const EdgeInsets.all(16),
-    //     child: Stack(
-    //       children: <Widget>[
-    //         ListView(
-    //           children: [
-    //             const Text(
-    //               'MESSAGES',
-    //               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-    //             ),
-    //             const SizedBox(
-    //               height: 15,
-    //             ),
-    //             //CONTACT 1
-    //             const SizedBox(
-    //               height: 15,
-    //             ),
-    //             //contact 2
-    //             const SizedBox(height: 50),
-    //
-    //           ],
-    //         ),
-    //
-    //       ],
-    //     ),
-    //   ),
-    // );
-      body: ListView.builder(itemCount: 2, itemBuilder: (context, index) {
-        return Slidable(
-          key: const ValueKey(0),
-          groupTag: 0,
-          endActionPane: ActionPane(
-            motion: BehindMotion(),
-            children: [
-              SlidableAction(
-                // An action can be bigger than the others.
-                flex: 2,
-                onPressed: (context) => print("hi"),
-                backgroundColor: Colors.red,
-                foregroundColor: Colors.white,
-                icon: Icons.report,
-                label: 'Report',
+      body:
+
+      Column(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(height: 10),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15.0),
+            child: TextField(
+              controller: _searchFieldController,
+              onChanged: (value) { //debug print text
+                setState(() { // reloads tile list
+                  print(_searchFieldController.text.toLowerCase());
+                });
+              },
+              decoration: InputDecoration(
+                labelText: 'Search',
+                prefixIcon: Icon(Icons.search),
+                suffixIcon: IconButton(
+                  icon: Icon(Icons.clear),
+                  onPressed: () { //debug print text
+                    setState(() { //reloads tile list
+                      _searchFieldController.clear();
+                      //print(_searchFieldController.text.toLowerCase());
+                    });
+                  },
+                )
               ),
-              SlidableAction(
-                flex: 2,
-                onPressed: (context) => print("hi"),
-                backgroundColor: Color(0xFF0392CF),
-                foregroundColor: Colors.white,
-                icon: Icons.delete,
-                label: 'delete',
-              ),
-              SlidableAction(
-                flex: 2,
-                onPressed: (context) => print("hi"),
-                backgroundColor: Colors.blue,
-                foregroundColor: Colors.white,
-                icon: Icons.mail,
-                label: 'Unread',
-              ),
-            ],
+            ),
           ),
-          child: buildUserListTile(),
-        );
-      }),
+          SizedBox(height: 10),
+          Expanded(
+            child:
+            ListView.builder(itemCount: users.length, itemBuilder: (context, index) { //idk build off user info
+              final user = users[index];
+              return user.name.toLowerCase().contains(_searchFieldController.text.toLowerCase())?
+                Slidable(
+                key: const ValueKey(0),
+                groupTag: 0,
+                endActionPane: ActionPane(
+                  motion: BehindMotion(),
+                  children: [
+                    SlidableAction(
+                      padding: EdgeInsets.all(2),
+                      spacing: 15,
+                      onPressed: (context) => _onDismissed(index, Actions.delete),
+                      backgroundColor: Colors.grey,
+                      foregroundColor: Colors.white,
+                      icon: Icons.delete,
+                      label: 'Delete',
+                    ),
+                    SlidableAction(
+                      padding: EdgeInsets.all(2),
+                      spacing: 15,
+                      onPressed: (context) => _onDismissed(index, Actions.report),
+                      backgroundColor: Colors.red,
+                      foregroundColor: Colors.white,
+                      icon: Icons.report,
+                      label: 'Report',
+                    ),
+                    SlidableAction(
+                      padding: EdgeInsets.all(2),
+                      spacing: 15,
+                      onPressed: (context) => _onDismissed(index, Actions.unread),
+                      backgroundColor: Color(0xFF0392CF),
+                      foregroundColor: Colors.white,
+                      icon: Icons.mail,
+                      label: 'Unread',
+                    ),
+                  ],
+                ),
+                child: buildUserListTile(user), //pass user info in
+              )
+              : Container();
+            }),
+          ),
+        ],
+      )
+
+
     );
   }
-  Widget buildUserListTile() => ListTile(
-    contentPadding: const EdgeInsets.all(10),
+
+  // BUILD EACH CONTACT
+  Widget buildUserListTile(User user) => ListTile( //buildUserListTile(User user) for input info
+    contentPadding: const EdgeInsets.only(left: 30.00),
     leading: CircleAvatar(
       radius: 30,
-      backgroundImage: NetworkImage('https://scontent-ord5-2.cdninstagram.com/v/t51.2885-19/313390331_2356829467815590_1024991815729709224_n.jpg?stp=dst-jpg_s150x150&_nc_ht=scontent-ord5-2.cdninstagram.com&_nc_cat=102&_nc_ohc=z2JjID7bZ8gAX-NBKm9&tn=FxfBeXjfe6p1DrfU&edm=ACWDqb8BAAAA&ccb=7-5&oh=00_AfAeWp97B9IODGLwlh2sYUZk7RvJ7sC7_upfEr9CCGAHQA&oe=637977E3&_nc_sid=1527a3'),
+      backgroundImage: NetworkImage(user.image),
       backgroundColor: Colors.transparent,
     ),
-    title: Text("Lunazoul"),
-    subtitle: Text("sup - 15m"),
+    title: Text(user.name),
+    subtitle: Text(user.lastMsg, //user.unread? "Unread" : "Unread",
+      style: TextStyle(
+          fontWeight: user.unread? FontWeight.bold : FontWeight.normal,
+          color: user.unread? Colors.black : Color(0xFF3d3d3d),
+      ),
+    ),
+    onTap: () {
+      setState(() {
+        user.unread = false;
+      });
+    }
   );
+  void _onDismissed(int index, Actions action) {
+    final user = users[index];
+    switch (action) {
+      case Actions.delete:
+        setState(() {
+          users.removeAt(index);
+        });
+        _showSnackBar(context, "Deleted", Colors.red);
+        break;
+      case Actions.unread:
+        setState(() {
+          users[index].unread=true;
+        });
+        _showSnackBar(context, "Unread", Colors.blue);
+        break;
+      case Actions.report:
+        _showSnackBar(context, "Reported ${user.name}", Colors.blue);
+        break;
+    }
+  }
+  void _showSnackBar(BuildContext context, String message, Color color) {
+    final snackBar = SnackBar(content: Text(message), backgroundColor: color);
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
 }
