@@ -55,9 +55,9 @@ class RootPage extends StatelessWidget {
           } else if (snapshot.hasError) {
             return const Center(child: Text('An error has occurred'));
           } else if (snapshot.hasData) {
-            return const ProfileCreationPicture();
+            return const ContainerPage();
           } else {
-            return const ProfileCreationPicture();
+            return const JoinPage();
           }
         },
       ),
