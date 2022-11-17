@@ -159,6 +159,7 @@ class _ProfileCreationNameState extends State<ProfileCreationName> {
       "Content-type": 'application/json',
       "Authorization": token ?? '',
     };
+    if (!mounted) return;
     final json = jsonEncode({
       "info": {
         "first_name": context.read<Profile>().firstName,
