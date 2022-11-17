@@ -176,6 +176,7 @@ class _LoginPageState extends State<LoginPage> {
             Uri.parse("${ApiConstants.apiBaseUrl}/user/$uid"),
             headers: ApiConstants.apiHeader(token)
         );
+
         final decodedRes = jsonDecode(response.body);
 
         if(!mounted) return;

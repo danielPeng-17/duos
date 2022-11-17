@@ -1,18 +1,20 @@
 import 'package:duos_ui/widgets/avatar.dart';
 import 'package:duos_ui/widgets/icon.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../providers/auth_provider.dart';
+import '../providers/chat_provider.dart';
 
 class ChatPageArguments {
-  final String peerId;
-  final String peerAvatar;
+  final String peerUid;
   final String peerName;
 
-  ChatPageArguments({required this.peerId, required this.peerAvatar, required this.peerName});
+  ChatPageArguments({required this.peerUid, required this.peerName});
 }
 
-
 class ChatPage extends StatefulWidget {
-  ChatPage({Key? key, required this.arguments}) : super(key: key);
+  const ChatPage({Key? key, required this.arguments}) : super(key: key);
+
   final ChatPageArguments arguments;
 
   @override
@@ -20,66 +22,67 @@ class ChatPage extends StatefulWidget {
 }
 
 class ChatPageState extends State<ChatPage> {
-  
+  late String uid1;
+  late String uid2;
+  final ScrollController listScrollController = ScrollController();
+
+  late ChatProvider chatProvider;
+  late AuthProvider authProvider;
+
+  @override
+  void initState() {
+    super.initState();
+    chatProvider = context.read<ChatProvider>();
+    authProvider = context.read<AuthProvider>();
+
+    listScrollController.addListener(_scrollListener);
+    readLocal();
+  }
+
+  _scrollListener() {
+  //  scroll to bottom of list scroll container
+  }
+
+  void readLocal() {
+    uid1 = authProvider.sub;
+    uid2 = widget.arguments.peerUid;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            centerTitle: true,
+            title: const Text(
+              "Name Here",
+              style: TextStyle(color: Colors.black),
+            ),
+            leading: const Material(
+              child: IconButton(
+                onPressed: (null),
+                icon: Icon(Icons.arrow_back),
+              ),
+            ),
+            actions: const [
+              Padding(
+                padding: EdgeInsets.only(right: 24),
+                child: Avatar.small(url: "https://picsum.photos/200/300"),
+              ),
+            ],
+            shape: const Border(bottom: BorderSide(color: Colors.black, width: 4)),
+            elevation: 0),
+        body: Column(
+          children: const [
+            // TODO: MessagesView
+            MessageInput()
+          ],
+        ),
+      ),
+    );
+  }
 }
-
-
-
-// class ChatPage extends StatelessWidget {
-//   ChatPage({Key? key}) : super(key: key);
-//
-//   final ValueNotifier<String> personName = ValueNotifier("Kevin");
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       home: Scaffold(
-//         appBar: AppBar(
-//             backgroundColor: Colors.transparent,
-//             centerTitle: true,
-//             title: Text(
-//               personName.value,
-//               style: const TextStyle(color: Colors.black),
-//             ),
-//             leading: const Material(
-//               child: IconButton(
-//                 onPressed: (null),
-//                 icon: Icon(Icons.arrow_back),
-//               ),
-//             ),
-//             actions: const [
-//               Padding(
-//                 padding: EdgeInsets.only(right: 24),
-//                 child: Avatar.small(url: "https://picsum.photos/200/300"),
-//               ),
-//             ],
-//             shape: const Border(bottom: BorderSide(color: Colors.black, width: 4)),
-//             elevation: 0),
-//         body: Column(
-//           children: const [],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-// class DemoMessage extends StatelessWidget {
-//   const DemoMessage({Key? key}) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return ListView(
-//       children: const [
-//         _DateLabel(label: "Yesterday"),
-//         _MessageTile(message: "Hey how is it going"),
-//         OwnMessageTile(message: "how is your day"),
-//         _MessageTile(message: "it is good"),
-//         _MessageTile(message: "how about you"),
-//         OwnMessageTile(message: "it could be better"),
-//       ],
-//     );
-//   }
-// }
 
 class _DateLabel extends StatelessWidget {
   const _DateLabel({
@@ -180,8 +183,8 @@ class OwnMessageTile extends StatelessWidget {
   }
 }
 
-class ActionBar extends StatelessWidget {
-  const ActionBar({Key? key}) : super(key: key);
+class MessageInput extends StatelessWidget {
+  const MessageInput({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -189,32 +192,17 @@ class ActionBar extends StatelessWidget {
       bottom: true,
       top: false,
       child: Row(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              border: Border(
-                right:
-                    BorderSide(color: Theme.of(context).dividerColor, width: 2),
-              ),
-            ),
-            child: const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: IconButton(
-                onPressed: (null),
-                icon: Icon(Icons.camera_alt_rounded),
-              ),
-            ),
-          ),
-          const Expanded(
+        children: const [
+          Expanded(
             child: Padding(
               padding: EdgeInsets.only(left: 16),
               child: TextField(
                 decoration: InputDecoration(
-                    hintText: "say hi!", border: InputBorder.none),
+                    hintText: "Aa", border: InputBorder.none),
               ),
             ),
           ),
-          const Padding(
+          Padding(
             padding: EdgeInsets.only(left: 12, right: 24),
             child: IconButton(
               icon: Icon(Icons.send_sharp),

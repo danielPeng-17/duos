@@ -1,4 +1,3 @@
-import 'package:duos_ui/providers/profile_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -7,21 +6,31 @@ import 'package:duos_ui/screens/join_page.dart';
 import 'package:provider/provider.dart';
 import 'package:duos_ui/screens/container_page.dart';
 import 'package:duos_ui/screens/chat_page.dart';
+import 'package:duos_ui/providers/providers.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
 
   runApp(MultiProvider(
-    providers: [ChangeNotifierProvider(create: (_) => Profile())],
+    providers: [
+      ChangeNotifierProvider<Profile>(
+          create: (_) => Profile()
+      ),
+      ChangeNotifierProvider<AuthProvider>(
+          create: (_) => AuthProvider()
+      ),
+      Provider<ChatProvider>(
+          create: (_) => ChatProvider(firebaseFirestore: firebaseFirestore)
+      )
+    ],
     child: const MyApp(),
   ));
 }
 
 class MyApp extends StatelessWidget {
-  final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
-
-  MyApp({super.key});
+  const MyApp({super.key});
 
   // This widget is the root of your application.
   @override
@@ -39,7 +48,7 @@ class MyApp extends StatelessWidget {
             ),
             foregroundColor: Colors.black,
           )),
-      home: ChatPage(),
+      home: ChatPage(arguments: ChatPageArguments(peerUid: "1234567", peerName: "Test Name")),
     );
   }
 }
