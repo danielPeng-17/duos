@@ -7,7 +7,7 @@ class ChatPageArguments {
   final String peerAvatar;
   final String peerName;
 
-  ChatPageArguments({required this.peerId, required this.peerAvatar, required this.,peerName});
+  ChatPageArguments({required this.peerId, required this.peerAvatar, required this.peerName});
 }
 
 

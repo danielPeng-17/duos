@@ -12,11 +12,11 @@ class ChatProvider {
   void setSeenTimestampForChat(String uid1, String uid2) {
     try {
       final chatId = ChatUtils.getChatId(uid1, uid2);
-      final uid1Seen = "${uid1}_lastSeen";
+      final uid1Seen = "${uid1}_last_seen";
       final now = Timestamp.now();
 
       FirebaseFirestore.instance.runTransaction((transaction) async {
-        firebaseFirestore.collection("userChats").doc(chatId).update({uid1Seen: now});
+        firebaseFirestore.collection("user_chats").doc(chatId).update({uid1Seen: now});
       });
     } catch(e) {
       log("Error: $e");
@@ -27,9 +27,9 @@ class ChatProvider {
   // Allows user to see which chats got new messages
   Stream<QuerySnapshot> getChatsSnapshot(String uid1) {
     return firebaseFirestore
-        .collection("userChat")
+        .collection("user_chats")
         .where('users', arrayContains: [uid1])
-        .orderBy('lastUpdated', descending: true)
+        .orderBy('last_updated', descending: true)
         .snapshots();
   }
 
@@ -38,7 +38,7 @@ class ChatProvider {
   Stream<QuerySnapshot> getActiveChatMessagesSnapshot(String uid1, String uid2, int limit) {
     final chatId = ChatUtils.getChatId(uid1, uid2);
     return firebaseFirestore
-        .collection("userChat")
+        .collection("user_chats")
         .doc(chatId)
         .collection("messages")
         .orderBy("timestamp", descending: true)
@@ -57,14 +57,14 @@ class ChatProvider {
       final now = Timestamp.now();
 
       final message = ({
-        "senderId": uid1,
+        "sender_id": uid1,
         "timestamp": now,
         "content": content
       });
 
       FirebaseFirestore.instance.runTransaction((transaction) async {
-        firebaseFirestore.collection("userChats").doc(chatId).collection("messages").add(message);
-        firebaseFirestore.collection("userChats").doc(chatId).update({"lastUpdated": now});
+        firebaseFirestore.collection("user_chats").doc(chatId).collection("messages").add(message);
+        firebaseFirestore.collection("user_chats").doc(chatId).update({"last_updated": now});
       });
     } catch(e) {
       log("Error: $e");

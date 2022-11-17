@@ -4,10 +4,8 @@ import 'package:duos_ui/screens/sign_up_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:duos_ui/screens/forgot_password_page.dart';
-import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-
-import '../providers/profile_provider.dart';
+import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -32,6 +30,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    AuthProvider authProvider = Provider.of<AuthProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
         //backgroundColor: Colors.white,
@@ -63,7 +63,7 @@ class _LoginPageState extends State<LoginPage> {
                     if (email!.isEmpty) {
                       return 'Empty';
                     }
-                    if (email != null) {
+                    if (email.isNotEmpty) {
                       bool emailValid = RegExp(
                               r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                           .hasMatch(email);
@@ -120,7 +120,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: TextButton(
                   onPressed: () {
                     if (_signinform.currentState!.validate()) {
-                      signIn();
+                      signIn(authProvider);
                     }
                   },
                   child: const Text(
@@ -150,15 +150,16 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Future signIn() async {
+  Future signIn(AuthProvider authProvider) async {
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) => const Center(child: CircularProgressIndicator()),
     );
+    late String uid;
 
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
+      var userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       ).then((value) {
@@ -169,18 +170,16 @@ class _LoginPageState extends State<LoginPage> {
 
       if (uid.isNotEmpty) {
         final token = await FirebaseAuth.instance.currentUser!.getIdToken();
+        authProvider.setSub(uid);
 
-        final response = await http.get(
-            Uri.parse("http://10.0.2.2:3000/user/$uid"),
-            headers: {
-              "content-type": "application/json",
-              "authorization": 'Bearer $token',
-            });
+        final response = http.get(
+            Uri.parse("${ApiConstants.apiBaseUrl}/user/$uid"),
+            headers: ApiConstants.apiHeader(token)
+        );
         final decodedRes = jsonDecode(response.body);
-        print(decodedRes);
+
         if(!mounted) return;
         if (decodedRes.isNotEmpty) {
-          print(decodedRes["info"]["first_name"]);
           context.read<Profile>().setFirstName(decodedRes["info"]["first_name"]);
           context.read<Profile>().setLastName(decodedRes["info"]["last_name"]);
           context.read<Profile>().setEmail(decodedRes["info"]["email"]);
