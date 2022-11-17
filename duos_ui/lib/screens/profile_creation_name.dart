@@ -1,7 +1,10 @@
 import 'package:duos_ui/screens/home_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:duos_ui/providers/profile_provider.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class ProfileCreationName extends StatefulWidget {
   const ProfileCreationName({Key? key}) : super(key: key);
@@ -124,6 +127,8 @@ class _ProfileCreationNameState extends State<ProfileCreationName> {
 
                           context.read<Profile>().setSetupStatus(true);
 
+                          _createProfile();
+
                           Navigator.of(context)
                               .popUntil((route) => route.isFirst);
                         }
@@ -144,5 +149,38 @@ class _ProfileCreationNameState extends State<ProfileCreationName> {
         ),
       ),
     );
+  }
+  Future _createProfile() async {
+    dynamic user = FirebaseAuth.instance.currentUser!;
+    String uid = user.uid;
+    String? token = await user.getIdToken();
+    const apiMatchingEndpoint = "http://10.0.2.2:3000/user";
+    final headers = {
+      "Content-type": 'application/json',
+      "Authorization": token ?? '',
+    };
+    final json = jsonEncode({
+      "info": {
+        "first_name": context.read<Profile>().firstName,
+        "last_name": context.read<Profile>().lastName,
+        "email": context.read<Profile>().email,
+        "gender": context.read<Profile>().gender,
+        "bio": context.read<Profile>().bio,
+        "date_of_birth": context.read<Profile>().dob,
+        "hobbies": context.read<Profile>().hobbies,
+        "languages": context.read<Profile>().languages,
+        "location": context.read<Profile>().location,
+        "profile_picture_url": "https://images.unsplash.com/photo-1506691318991-c91e7df669b1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=673&q=80",
+        "dating_pref": context.read<Profile>().datingPref,
+        "igns": context.read<Profile>().igns,
+      },
+      "uid": uid,
+    });
+
+    try {
+      final res = await http.post(Uri.parse(apiMatchingEndpoint), headers: headers, body: json);
+    } catch (err) {
+      // ignore
+    }
   }
 }
