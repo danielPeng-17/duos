@@ -53,7 +53,7 @@ class HomePage extends StatelessWidget {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(5.0),
                   child: Image.network(
-                      'https://wegotthiscovered.com/wp-content/uploads/2021/09/simu-reddit-e1631092903317.jpeg'),
+                      'https://image.cnbcfm.com/api/v1/image/106882905-1620938530218-sbt-25882_r_Cropped.jpg?v=1620938576'),
                 ),
                 const SizedBox(
                   height: 15,

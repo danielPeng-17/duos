@@ -17,12 +17,24 @@ class _ProfileCreationBioState extends State<ProfileCreationBio> {
   TextEditingController hobbiesInput = TextEditingController();
   TextEditingController languagesInput = TextEditingController();
   TextEditingController pronounsInput = TextEditingController();
+  TextEditingController datingPrefInput = TextEditingController();
   TextEditingController locationInput = TextEditingController();
+
+  @override
+  void dispose() {
+    descInput.dispose();
+    hobbiesInput.dispose();
+    languagesInput.dispose();
+    pronounsInput.dispose();
+    datingPrefInput.dispose();
+    locationInput.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       body: Center(
         child: Form(
           key: _bioform,
@@ -106,6 +118,28 @@ class _ProfileCreationBioState extends State<ProfileCreationBio> {
               ),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 3),
+                child:
+                    Text("Dating Preference", style: TextStyle(fontSize: 12)),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+                child: TextFormField(
+                  controller: datingPrefInput,
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Dating preference field is required';
+                    }
+                    return null;
+                  },
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'E.g. Male, Female, Non-Binary',
+                  ),
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 3),
                 child: Text("Languages", style: TextStyle(fontSize: 12)),
               ),
               Padding(
@@ -142,7 +176,7 @@ class _ProfileCreationBioState extends State<ProfileCreationBio> {
                   },
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'She/He/They',
+                    labelText: 'E.g. She/He/They',
                   ),
                 ),
               ),
@@ -185,14 +219,23 @@ class _ProfileCreationBioState extends State<ProfileCreationBio> {
                         label: Text(""),
                         onPressed: () {
                           if (_bioform.currentState!.validate()) {
-                            context.read<Profile>().setBio(
-                                "${descInput}|${hobbiesInput}|${languagesInput}");
+                            context.read<Profile>().setBio(descInput.text);
+                            context
+                                .read<Profile>()
+                                .setHobbies(hobbiesInput.text);
+                            context
+                                .read<Profile>()
+                                .setDatingPref(datingPrefInput.text);
+                            context
+                                .read<Profile>()
+                                .setLanguages(languagesInput.text);
                             context
                                 .read<Profile>()
                                 .setGender(pronounsInput.text);
                             context
                                 .read<Profile>()
                                 .setLocation(locationInput.text);
+
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) =>
                                     const ProfileCreationGame()));

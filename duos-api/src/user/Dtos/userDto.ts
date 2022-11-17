@@ -1,4 +1,4 @@
-import { ValidateNested } from 'class-validator';
+import { IsNotEmpty, IsString, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 import { UserInformation } from "src/models/user_info";
 /*
@@ -9,4 +9,8 @@ export class UserDto {
     @ValidateNested({each: true})
     @Type(() => UserInformation)
     info: UserInformation;
+
+    @IsString()
+    @IsNotEmpty()
+    uid: string;
 }
