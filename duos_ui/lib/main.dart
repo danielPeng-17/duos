@@ -5,7 +5,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:duos_ui/screens/join_page.dart';
 import 'package:provider/provider.dart';
 import 'package:duos_ui/screens/container_page.dart';
-import 'package:duos_ui/screens/profile_creation_picture.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
