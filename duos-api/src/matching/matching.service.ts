@@ -47,7 +47,7 @@ export class MatchingService {
                 await addMatch(likerId, likedId)
                 return {
                     matched: true,
-                    matchedId: likedId
+                    matchedId: likedUser
                 }
             }
         }

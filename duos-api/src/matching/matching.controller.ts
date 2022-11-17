@@ -4,7 +4,7 @@ import { MatchingService } from './matching.service';
 
 export interface likePayload {
     matched: boolean,
-    matchedId: null | string,
+    matchedId: null | User,
 }
 
 @Controller('matching')
