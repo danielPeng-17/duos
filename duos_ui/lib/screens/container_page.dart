@@ -1,3 +1,4 @@
+import 'package:duos_ui/screens/contacts_page.dart';
 import 'package:flutter/material.dart';
 import 'package:duos_ui/screens/home_page.dart';
 import 'package:provider/provider.dart';
@@ -19,10 +20,7 @@ class _ContainerPageState extends State<ContainerPage> {
   static const List<Widget> _pages = <Widget>[
     HomePage(),
     ProfilePage(),
-    Text(
-      'Index 2: Messages',
-      style: optionStyle,
-    ),
+    ContactsPage(),
     SettingsPage(),
   ];
 
