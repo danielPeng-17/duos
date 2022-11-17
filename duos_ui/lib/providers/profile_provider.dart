@@ -9,9 +9,13 @@ class Profile with ChangeNotifier {
   String _email = '';
   String _gender = '';
   String _bio = '';
+  String _hobbies = '';
+  String _languages = '';
   String _datingPref = '';
   String _dateOfBirth = '';
   String _location = '';
+  String _profilePicturePath = '';
+  String _profilePictureURL = '';
   List<String> _igns = [];
   List<Games> _games = [];
   bool _doneSetup = false;
@@ -21,9 +25,13 @@ class Profile with ChangeNotifier {
   String get email => _email;
   String get gender => _gender;
   String get bio => _bio;
+  String get hobbies => _hobbies;
+  String get languages => _languages;
   String get datingPref => _datingPref;
   String get dob => _dateOfBirth;
   String get location => _location;
+  String get profilePicPath => _profilePicturePath;
+  String get profilePicURL => _profilePictureURL;
   List<String> get igns => _igns;
   List<Games> get games => _games;
   bool get doneSetup => _doneSetup;
@@ -53,6 +61,16 @@ class Profile with ChangeNotifier {
     notifyListeners();
   }
 
+  void setHobbies(String s) {
+    _hobbies = s;
+    notifyListeners();
+  }
+
+  void setLanguages(String s) {
+    _languages = s;
+    notifyListeners();
+  }
+
   void setDatingPref(String s) {
     _datingPref = s;
     notifyListeners();
@@ -68,6 +86,16 @@ class Profile with ChangeNotifier {
     notifyListeners();
   }
 
+  void setProfilePicPath(String s) {
+    _profilePicturePath = s;
+    notifyListeners();
+  }
+
+  void setProfilePicURL(String s) {
+    _profilePictureURL = s;
+    notifyListeners();
+  }
+
   void setIgns(List<String> igns) {
     _igns = igns;
     notifyListeners();
@@ -78,8 +106,8 @@ class Profile with ChangeNotifier {
     notifyListeners();
   }
 
-  void addGame(Games game) {
-    _games.add(game);
+  void setGames(List<Games> games) {
+    _games = games;
     notifyListeners();
   }
 

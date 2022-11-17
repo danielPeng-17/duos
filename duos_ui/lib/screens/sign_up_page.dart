@@ -4,6 +4,8 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:duos_ui/screens/forgot_password_page.dart';
+import 'package:provider/provider.dart';
+import 'package:duos_ui/providers/profile_provider.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -125,6 +127,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     onPressed: () {
                       if (_signupform.currentState!.validate()) {
                         signUp();
+                        context.read<Profile>().setEmail(_emailController.text);
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Creating Account...')),
                         );

@@ -24,15 +24,15 @@ export class UserService
     /**
     * Retrieves the user from the firebase database
     */
-   public GetUser(id: string){
-        if(!id) {
+   public GetUser(uid: string){
+        if(!uid) {
             throwError(() => new Error("Id is empty or null"));
         }
-        return getUserAsync(id);
+        return getUserAsync(uid);
    }
 
-   public EditUser(id: string, editedUser: User){
-        if(!id) {
+   public EditUser(uid: string, editedUser: User){
+        if(!uid) {
             throwError(() => new Error("Id is empty or null"));
         }
         else if(!editedUser.info.first_name || !editedUser.info.last_name){
@@ -41,6 +41,6 @@ export class UserService
         else if(!editedUser.info.email){
             throwError(() => new Error("Email is missing"));
         }
-        return updateUserAsync(id, editedUser);
+        return updateUserAsync(uid, editedUser);
    }
 }
