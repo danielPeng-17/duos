@@ -9,17 +9,16 @@ Fields here are not final and based on the initial diagram, change them as neede
 export class User {
     id: number;
     info: UserInformation;
-    matched: Array<number>;
+    matched: Array<string>;
     likes: Array<string>;
     categories: Array<string>;
     uid: string;
 
-    constructor(uid, info)
-    {
+    constructor(uid, info) {
         this.info = info,
-        this.matched = [],
-        this.categories = [],
-        this.likes = [],
-        this.uid = uid
+            this.matched = [],
+            this.categories = [],
+            this.likes = [],
+            this.uid = uid
     }
 }

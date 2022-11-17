@@ -14,20 +14,35 @@ export class MatchingService {
 
     }
 
-    public async GetNewPotentialMatches(id: string): Promise<string[]> {
+    public async GetNewPotentialMatches(id: string): Promise<User[]> {
         //TODO 
-        // -exclude already matched/swiped
         // -pair based on preference 
         const thisUser = await getUserAsync(id)
+        console.log(thisUser as User)
         const allUsers = await getAllUsersInCategory(thisUser.categories)
-        return allUsers.filter(ele => ele != id)
+        return allUsers.filter(user => {
+            const preLiked = thisUser.likes ? thisUser.likes.find(ele => ele == user.uid) : false//falses incause likes value doesn't exist in user
+            const preMatched = thisUser.matched ? thisUser.matched.find(ele => ele == user.uid) : false
+            return user.uid != id && !preLiked && !preMatched
+        })
 
     }
 
     public async LikePerson(likerId: string, likedId: string): Promise<likePayload> {
         const likedUser = await getUserAsync(likedId) as User
 
-        if(likedUser.likes){
+        //skip is already matches
+        if (likedUser.matched) {
+            const alreadyMatched = likedUser.matched.find(ele => ele == likerId)
+            if (alreadyMatched) {
+                return {
+                    matched: false,
+                    matchedId: null
+                }
+            }
+        }
+
+        if (likedUser.likes) {
             const likedBack = likedUser.likes.find(ele => ele == likerId)
             if (likedBack) {
                 //remove like of other user
@@ -36,7 +51,7 @@ export class MatchingService {
                 await addMatch(likerId, likedId)
                 return {
                     matched: true,
-                    matchedId: likedId
+                    matchedId: likedUser
                 }
             }
         }

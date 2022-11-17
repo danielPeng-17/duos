@@ -5,7 +5,7 @@ import { User } from "src/models/user"
 export const getUserDocAsync = async (uid) => {
     const q = query(collection(database, "user_profiles"), where("uid", "==", uid));
     const documents = await getDocs(q);
-    if(documents.size <= 0) throw new Error("No such user");
+    if (documents.size <= 0) throw new Error("No such user");
     return documents.docs.at(0);
 }
 
@@ -25,16 +25,16 @@ export const getUserAsync = async (uid: string) => {
     return user.data();
 }
 
-export const getAllUsersInCategory = async (category_ids: DocumentReference[]): Promise<string[]> => {
+export const getAllUsersInCategory = async (category_ids: DocumentReference[]): Promise<User[]> => {
     //note the in operator can only handle up to 10
     const q = query(collection(database, "user_profiles"), where("categories", 'array-contains-any', category_ids));
     const querySnapshot = await getDocs(q);
-    let ids: string[] = [];
+    let users: User[] = [];
     querySnapshot.forEach((doc) => {
         const user = doc.data() as User;
-        ids.push(user.uid);
+        users.push(user);
     })
-    return ids;
+    return users;
 }
 
 export const removeALiked = async (uid: string, idToRemove: string) => {
