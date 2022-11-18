@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -13,24 +14,25 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final _profiles = Queue<dynamic>();
+  final dynamic user = FirebaseAuth.instance.currentUser!;
+
+  dynamic _currentProfile;
   bool loading = true;
   bool existingMatches = false;
-  int _currentIndex = 0;
   String? token = "";
-  final dynamic user = FirebaseAuth.instance.currentUser!;
-  dynamic _currentProfile;
-  List<dynamic> _profiles = [];
 
   @override
   void initState() {
     user.getIdTokenResult(true).then((result) {
       token = result.token;
       _getProfiles().then((profiles) {
-         _profiles = profiles;
+
+        _profiles.addAll(profiles);
         if (_profiles.isNotEmpty) {
           Future.delayed(const Duration(milliseconds: 1000), () {
             setState(() {
-              _currentProfile = _profiles[_currentIndex];
+              _currentProfile = _profiles.removeFirst();
               existingMatches = true;
               loading = false;
             });
@@ -365,7 +367,6 @@ class _HomePageState extends State<HomePage> {
           await http.get(Uri.parse(apiGetProfilesEndpoint), headers: headers);
       return jsonDecode(res.body);
     } catch (err) {
-      print("error");
       // ignore
     }
   }
@@ -381,31 +382,53 @@ class _HomePageState extends State<HomePage> {
     try {
       final res =
           await http.post(Uri.parse(apiMatchingEndpoint), headers: headers);
+      return res.body;
     } catch (err) {
       // ignore
     }
   }
 
   void likeProfile() async {
-    await postLikeProfile();
+    var result = await postLikeProfile();
+    var resultDecoded = jsonDecode(result);
+    if (resultDecoded["matched"] == true) {
+      showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext dialogContext) {
+          return AlertDialog(
+            content: const Text('Matched!'),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('OK'),
+                onPressed: () {
+                  Navigator.of(dialogContext).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
     setState(() {
-      _currentIndex += 1;
-      if (_currentIndex > _profiles.length - 1) {
-        _currentIndex = 0;
-        // put a snackbar indicating it refreshed
+      if (_profiles.isNotEmpty) {
+        _currentProfile = _profiles.removeFirst();
+      } else {
+        _currentProfile = {};
+        existingMatches = false;
       }
-      _currentProfile = _profiles[_currentIndex];
     });
   }
 
   void skipProfile() {
     setState(() {
-      _currentIndex += 1;
-      if (_currentIndex > _profiles.length - 1) {
-        _currentIndex = 0;
-        // put a snackbar indicating it refreshed
+      if (_profiles.isNotEmpty) {
+        _profiles.addLast(_currentProfile);
+        _currentProfile = _profiles.removeFirst();
+      } else {
+        _currentProfile = {};
+        existingMatches = false;
       }
-      _currentProfile = _profiles[_currentIndex];
     });
   }
 }
