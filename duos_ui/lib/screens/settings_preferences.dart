@@ -15,6 +15,57 @@ class _SettingsPagePreferencesState extends State<SettingsPagePreferences> {
   final TextEditingController _ageInput = TextEditingController();
   final TextEditingController _genderInput = TextEditingController();
   final TextEditingController _ethnicityInput = TextEditingController();
+  String genderDropDown = '';
+  String ethnicityDropDown = '';
+  String ageMinDropDown = '';
+  String ageMaxDropDown = '';
+  List<Widget> games = <Widget>[
+    Text('Valorant'),
+    Text('LoL'),
+    Text('Stardew'),
+    Text('Overwatch')
+  ];
+
+  final List<bool> _selectedGames = <bool>[false, false, false, false];
+
+  bool vertical = false;
+
+  var genders = [
+    'Men',
+    'Women',
+    'Both men and women'
+  ];
+
+
+  var ethnicities = [
+    'East Asian',
+    'American Indian',
+    'Black/African Descent',
+    'Hispanic/Latino',
+    'Middle Eastern',
+    'Pacific Islander',
+    'South Asian',
+    'Southeast Asian',
+    'White/Caucasian',
+    'Other',
+    'Open to all'
+  ];
+
+  var ages = [
+    '18',
+    '19',
+    '20',
+    '21',
+    '22',
+    '23',
+    '24',
+    '25',
+    '26',
+    '27',
+    '28',
+    '29',
+    '30',
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -56,65 +107,135 @@ class _SettingsPagePreferencesState extends State<SettingsPagePreferences> {
               ),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                child: Text("Game List", style: TextStyle(fontSize: 12)),
+                child: Text("Favourite games", style: TextStyle(fontSize: 12)),
               ),
               Padding(
-                padding:
-                const EdgeInsets.symmetric(horizontal: 16, vertical: 3),
-                child: TextFormField(
-                  controller: _gameInput,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return '-';
-                    }
-                    return null;
+                padding: EdgeInsets.symmetric(
+                  horizontal: 30,
+                ),
+                child: ToggleButtons(
+                  direction: vertical ? Axis.vertical : Axis.horizontal,
+                  onPressed: (int index) {
+                    // All buttons are selectable.
+                    setState(() {
+                      _selectedGames[index] = !_selectedGames[index];
+                    });
                   },
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Load game list',
+                  borderRadius: const BorderRadius.all(Radius.circular(8)),
+                  selectedBorderColor: Colors.grey,
+                  selectedColor: Colors.black,
+                  fillColor: Colors.grey[300],
+                  color: Colors.black,
+                  constraints: const BoxConstraints(
+                    minHeight: 60.0,
+                    minWidth: 80.0,
                   ),
+                  isSelected: _selectedGames,
+                  children: games,
                 ),
               ),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                child: Text("Age Range", style: TextStyle(fontSize: 12)),
+                child: Text("Age Range (min - max)", style: TextStyle(fontSize: 12)),
               ),
               Padding(
-                padding:
-                const EdgeInsets.symmetric(horizontal: 16, vertical:3),
-                child: TextFormField(
-                  controller: _ageInput,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return '-';
-                    }
-                    return null;
-                  },
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Load age range',
+                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
+                  child: Align(
+                    alignment: Alignment.center,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Expanded(
+                            child: Padding(
+                              padding: EdgeInsets.all(0.0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                Align(
+                                alignment: Alignment.center,
+                                child: DropdownButton(
+                                  value: ageMinDropDown.isNotEmpty ? ageMinDropDown : null, //get gender from user
+                                  items: ages.map((String age) {
+                                    return DropdownMenuItem(
+                                      value: age,
+                                      child: Text(age),
+                                    );
+                                  }).toList(),
+                                  onChanged: (String? newValue){
+                                    setState((){
+                                      ageMinDropDown = newValue!;
+                                    });
+                                  },
+                                ),
+                              ),
+                              ],
+                              ),
+                            ),
+                          ),
+                          Flexible(
+                            fit: FlexFit.tight,
+                            child: Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Align(
+                                    alignment: Alignment.center,
+                                    child: DropdownButton(
+                                      value: ageMaxDropDown.isNotEmpty ? ageMaxDropDown : null, //get gender from user
+                                      items: ages.map((String age) {
+                                        return DropdownMenuItem(
+                                          value: age,
+                                          child: Text(age),
+                                        );
+                                      }).toList(),
+                                      onChanged: (String? newValue){
+                                        setState((){
+                                          ageMaxDropDown = newValue!;
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-              ),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 child: Text("Gender", style: TextStyle(fontSize: 12)),
               ),
               Padding(
                 padding:
-                const EdgeInsets.symmetric(horizontal: 16, vertical: 3),
-                child: TextFormField(
-                  controller: _genderInput,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return '-';
-                    }
-                    return null;
-                  },
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Load user gender',
-                  ),
+                const EdgeInsets.symmetric(horizontal: 20, vertical: 3),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Align(
+                        alignment: Alignment.centerLeft,
+                        child: DropdownButton(
+                          value: genderDropDown.isNotEmpty ? genderDropDown : null, //get gender from user
+                          items: genders.map((String gender) {
+                            return DropdownMenuItem(
+                              value: gender,
+                              child: Text(gender),
+                           );
+                          }).toList(),
+                          onChanged: (String? newValue){
+                            setState((){
+                              genderDropDown = newValue!;
+                            });
+                          },
+                        ),
+                    ),
+                  ],
                 ),
               ),
               const Padding(
@@ -123,19 +244,28 @@ class _SettingsPagePreferencesState extends State<SettingsPagePreferences> {
               ),
               Padding(
                 padding:
-                const EdgeInsets.symmetric(horizontal: 16, vertical: 3),
-                child: TextFormField(
-                  controller: _ethnicityInput,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return '-';
-                    }
-                    return null;
-                  },
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Load preferred ethnicities',
-                  ),
+                const EdgeInsets.symmetric(horizontal: 20, vertical: 3),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: DropdownButton(
+                        value: ethnicityDropDown.isNotEmpty ? ethnicityDropDown : null, //get gender from user
+                        items: ethnicities.map((String ethnicity) {
+                          return DropdownMenuItem(
+                            value: ethnicity,
+                            child: Text(ethnicity),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue){
+                          setState((){
+                            ethnicityDropDown = newValue!;
+                          });
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Padding(
