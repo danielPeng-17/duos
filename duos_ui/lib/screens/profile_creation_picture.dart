@@ -20,7 +20,6 @@ class _ProfileCreationPictureState extends State<ProfileCreationPicture> {
   FilePickerResult? result;
 
   String imageURL = "";
-  String imagePath = "";
 
   Future<void> selectPhoto() async {
       result = await FilePicker.platform.pickFiles(
