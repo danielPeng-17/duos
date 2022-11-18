@@ -16,14 +16,14 @@ export class UserController {
 
     @Post()
     createNewUser(@Body() newUser: UserDto): UserDto {
-        let user = new User(newUser.uid, newUser.info);
+        let user = new User(newUser.uid, newUser.info, newUser.categories);
         this.userService.CreateNewUser(user);
         return newUser;
     }
 
     @Put(':id')
     editUser(@Param('id') id: string, @Body() editUser:UserDto): UserDto {
-        let user = new User(editUser.uid, editUser.info);
+        let user = new User(editUser.uid, editUser.info, editUser.categories);
         this.userService.EditUser(id, user);
         return editUser;
     }
