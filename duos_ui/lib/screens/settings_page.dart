@@ -1,6 +1,10 @@
+import 'package:duos_ui/screens/settings_preferences.dart';
+import 'package:duos_ui/screens/settings_notifications.dart';
+import 'package:duos_ui/screens/settings_privacy.dart';
 import 'package:duos_ui/screens/settings_terms_of_service.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:duos_ui/providers/profile_provider.dart';
 
@@ -12,9 +16,9 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  final GlobalKey<FormState> _contactform = GlobalKey<FormState>();
-  TextEditingController phoneInput = TextEditingController();
-  TextEditingController emailInput = TextEditingController();
+  final GlobalKey<FormState> contactform = GlobalKey<FormState>();
+  final TextEditingController _phoneInput = TextEditingController();
+  final TextEditingController _emailInput = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +26,7 @@ class _SettingsPageState extends State<SettingsPage> {
       resizeToAvoidBottomInset: false,
       body: Center(
         child: Form(
-          key: _contactform,
+          key: contactform,
           child: ListView(
             //Listview is a fix in order to prevent overflow, (scrollable) works well needs formatting
             //crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,7 +65,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 padding:
                 const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
                 child: TextFormField(
-                  controller: phoneInput,
+                  controller: _phoneInput,
                   validator: (value) {
                     if (value!.isEmpty) {
                       return 'Please enter valid phone number';
@@ -88,7 +92,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 padding:
                 const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
                 child: TextFormField(
-                  controller: emailInput,
+                  controller: _emailInput,
                   validator: (value) {
                     if (value!.isEmpty) {
                       return 'Please enter a valid email';
@@ -100,13 +104,26 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.only(top: 20.0),
-                child: SizedBox(
-                  width: 50,
-                  height: 10,
-                ),
+              Padding(
+                  padding: const EdgeInsets.only(top:20, left: 20),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.black.withOpacity(0.1),
+                        onPrimary: Colors.black.withOpacity(1),
+                        elevation: 20, // Elevation
+                        shadowColor:
+                        Colors.black.withOpacity(0.0), // Shadow Color
+                      ),
+                      onPressed: () {
+                        updateEmailAndPhone();
+                      },
+                      child: const Text('Update'),
+                    ),
+                  )
               ),
+
               Padding(
                   padding: const EdgeInsets.only(top:20),
                   child: Align(
@@ -160,7 +177,11 @@ class _SettingsPageState extends State<SettingsPage> {
                   child: Align(
                     alignment: Alignment.center,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const SettingsPagePreferences(),
+                        ),
+                      ),
                       style: ElevatedButton.styleFrom(
                         primary: Colors.black.withOpacity(0),
                         onPrimary: Colors.black.withOpacity(1),
@@ -208,7 +229,11 @@ class _SettingsPageState extends State<SettingsPage> {
                   child: Align(
                     alignment: Alignment.center,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const SettingsPagePrivacy(),
+                        ),
+                      ),
                       style: ElevatedButton.styleFrom(
                         primary: Colors.black.withOpacity(0),
                         onPrimary: Colors.black.withOpacity(1),
@@ -256,7 +281,11 @@ class _SettingsPageState extends State<SettingsPage> {
                   child: Align(
                     alignment: Alignment.center,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const SettingsPageNotifications(),
+                        ),
+                      ),
                       style: ElevatedButton.styleFrom(
                         primary: Colors.black.withOpacity(0),
                         onPrimary: Colors.black.withOpacity(1),
@@ -408,5 +437,20 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
       ),
     );
+  }
+
+  Future updateEmailAndPhone() async {
+    final apiEmailAndPhone = 'http://10.0.2.2:3000/user/x';
+    String? token;
+    FirebaseAuth.instance.currentUser!.getIdTokenResult(true).then((result){
+      token = result.token;
+    });
+    final headers = {
+      "Content-type": 'application/json',
+      "Authorization": token ?? '',
+    };
+    final json = '{"email": "${_emailInput.text.trim()}", "phone": "${_phoneInput.text.trim()}"}';
+
+    final res = http.put(Uri.parse(apiEmailAndPhone), headers: headers, body:json);
   }
 }
