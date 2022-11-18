@@ -1,10 +1,8 @@
 import 'package:duos_ui/providers/profile_provider.dart';
-import 'package:duos_ui/screens/profile_creation_age.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:duos_ui/screens/join_page.dart';
-import 'package:duos_ui/screens/home_page.dart';
 import 'package:provider/provider.dart';
 import 'package:duos_ui/screens/container_page.dart';
 
@@ -28,7 +26,7 @@ class MyApp extends StatelessWidget {
       title: 'Duos',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          primarySwatch: Colors.purple,
+          primarySwatch: Colors.deepPurple,
           appBarTheme: const AppBarTheme(
             backgroundColor: Colors.transparent,
             elevation: 0,
@@ -55,7 +53,7 @@ class RootPage extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return const Center(child: Text('An error has occurred'));
-          } else if (snapshot.hasData) {
+          } else if (snapshot.hasData && context.watch<Profile>().doneSetup == true) {
             return const ContainerPage();
           } else {
             return const JoinPage();

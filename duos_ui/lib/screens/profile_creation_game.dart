@@ -1,9 +1,9 @@
 import 'package:duos_ui/screens/profile_creation_name.dart';
 import 'package:duos_ui/widgets/games.dart';
 import 'package:flutter/material.dart';
-import 'package:textfield_search/textfield_search.dart';
 import 'package:provider/provider.dart';
 import 'package:duos_ui/providers/profile_provider.dart';
+import 'package:duos_ui/screens/profile_creation_picture.dart';
 
 class ProfileCreationGame extends StatefulWidget {
   const ProfileCreationGame({Key? key}) : super(key: key);
@@ -18,8 +18,15 @@ class _ProfileCreationGameState extends State<ProfileCreationGame> {
   List<Widget> games = <Widget>[
     Text('Valorant'),
     Text('LoL'),
-    Text('Stardew'),
+    Text('Apex Legends'),
     Text('Overwatch')
+  ];
+
+  List<String> gameNames = [
+    "Valorant",
+    "LoL",
+    "Apex Legends",
+    "Overwatch"
   ];
 
   final List<bool> _selectedGames = <bool>[false, false, false, false];
@@ -129,13 +136,21 @@ class _ProfileCreationGameState extends State<ProfileCreationGame> {
                       label: Text(""),
                       onPressed: () {
                         var index = 0;
+                        List<Games> listofchosengames = [];
+                        List<String> listOfChosenCategories = [];
                         for (var selected in _selectedGames) {
-                          context.read<Profile>().addGame(allGames[index]);
+                          if (selected == true) {
+                            listofchosengames.add(allGames[index]);
+                            listOfChosenCategories.add(gameNames[index]);
+                          }
                           index++;
                         }
+                        print(listOfChosenCategories);
+                        context.read<Profile>().setCategories(listOfChosenCategories);
+                        context.read<Profile>().setGames(listofchosengames);
 
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const ProfileCreationName()));
+                            builder: (context) => const ProfileCreationPicture()));
 
                         // Validate returns true if the form is valid, or false otherwise.
                         // if (_formKey.currentState!.validate()) {

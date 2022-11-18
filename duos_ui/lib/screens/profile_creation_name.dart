@@ -1,7 +1,10 @@
 import 'package:duos_ui/screens/home_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:duos_ui/providers/profile_provider.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class ProfileCreationName extends StatefulWidget {
   const ProfileCreationName({Key? key}) : super(key: key);
@@ -14,6 +17,13 @@ class _ProfileCreationNameState extends State<ProfileCreationName> {
   final GlobalKey<FormState> _nameform = GlobalKey<FormState>();
   TextEditingController firstNameInput = TextEditingController();
   TextEditingController lastNameInput = TextEditingController();
+
+  @override
+  void dispose() {
+    firstNameInput.dispose();
+    lastNameInput.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +115,7 @@ class _ProfileCreationNameState extends State<ProfileCreationName> {
                           width: 100,
                           height: 100),
                       label: Text(""),
-                      onPressed: () {
+                      onPressed: () async {
                         if (_nameform.currentState!.validate()) {
                           context
                               .read<Profile>()
@@ -115,8 +125,10 @@ class _ProfileCreationNameState extends State<ProfileCreationName> {
                               .read<Profile>()
                               .setLastName(lastNameInput.text);
 
-                          context.read<Profile>().setSetupStatus(true);
+                          await _createProfile();
 
+                          if (!mounted) return;
+                          context.read<Profile>().setSetupStatus(true);
                           Navigator.of(context)
                               .popUntil((route) => route.isFirst);
                         }
@@ -137,5 +149,40 @@ class _ProfileCreationNameState extends State<ProfileCreationName> {
         ),
       ),
     );
+  }
+  Future _createProfile() async {
+    dynamic user = FirebaseAuth.instance.currentUser!;
+    String uid = user.uid;
+    String? token = await user.getIdToken();
+    const apiMatchingEndpoint = "http://10.0.2.2:3000/user";
+    final headers = {
+      "Content-type": 'application/json',
+      "Authorization": token ?? '',
+    };
+    if (!mounted) return;
+    final json = jsonEncode({
+      "info": {
+        "first_name": context.read<Profile>().firstName,
+        "last_name": context.read<Profile>().lastName,
+        "email": context.read<Profile>().email,
+        "gender": context.read<Profile>().gender,
+        "bio": context.read<Profile>().bio,
+        "date_of_birth": context.read<Profile>().dob,
+        "hobbies": context.read<Profile>().hobbies,
+        "languages": context.read<Profile>().languages,
+        "location": context.read<Profile>().location,
+        "profile_picture_url": context.read<Profile>().profilePicURL,
+        "dating_pref": context.read<Profile>().datingPref,
+        "igns": context.read<Profile>().igns,
+      },
+      "uid": uid,
+      "categories": context.read<Profile>().categories
+    });
+
+    try {
+      final res = await http.post(Uri.parse(apiMatchingEndpoint), headers: headers, body: json);
+    } catch (err) {
+      // ignore
+    }
   }
 }

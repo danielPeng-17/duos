@@ -114,10 +114,6 @@ class _LoginPageState extends State<LoginPage> {
                   onPressed: () {
                     if (_signinform.currentState!.validate()) {
                       signIn();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                            content: Text('Attempting to Sign in...')),
-                      );
                     }
                   },
                   child: const Text(

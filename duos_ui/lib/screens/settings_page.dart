@@ -5,6 +5,8 @@ import 'package:duos_ui/screens/settings_terms_of_service.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+import 'package:duos_ui/providers/profile_provider.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -383,7 +385,10 @@ class _SettingsPageState extends State<SettingsPage> {
                   child: Align(
                     alignment: Alignment.center,
                     child: ElevatedButton(
-                      onPressed: () => FirebaseAuth.instance.signOut(),
+                      onPressed: () {
+                        context.read<Profile>().disposeValues();
+                        FirebaseAuth.instance.signOut();
+                      },
                       style: ElevatedButton.styleFrom(
                         primary: Colors.black.withOpacity(0),
                         onPrimary: Colors.black.withOpacity(1),
