@@ -1,9 +1,10 @@
 import 'dart:ffi';
 
+import 'package:duos_ui/providers/disposable_provider.dart';
 import 'package:flutter/material.dart';
 import '../widgets/games.dart';
 
-class Profile with ChangeNotifier {
+class Profile extends DisposableProvider {
   String _firstName = '';
   String _lastName = '';
   String _email = '';
@@ -114,5 +115,24 @@ class Profile with ChangeNotifier {
   void setSetupStatus(bool setup) {
     _doneSetup = setup;
     notifyListeners();
+  }
+
+  @override
+  void disposeValues() {
+    _firstName = '';
+    _lastName = '';
+    _email = '';
+    _gender = '';
+    _bio = '';
+    _hobbies = '';
+    _languages = '';
+    _datingPref = '';
+    _dateOfBirth = '';
+    _location = '';
+    _profilePicturePath = '';
+    _profilePictureURL = '';
+    _igns = [];
+    _games = [];
+    _doneSetup = false;
   }
 }
