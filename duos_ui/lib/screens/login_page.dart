@@ -172,7 +172,9 @@ class _LoginPageState extends State<LoginPage> {
         final token = await FirebaseAuth.instance.currentUser!.getIdToken();
         authProvider.setSub(uid);
 
-        final response = http.get(
+        final token = await FirebaseAuth.instance.currentUser!.getIdToken();
+
+        final response = await http.get(
             Uri.parse("${ApiConstants.apiBaseUrl}/user/$uid"),
             headers: ApiConstants.apiHeader(token)
         );

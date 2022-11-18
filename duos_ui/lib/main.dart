@@ -48,7 +48,8 @@ class MyApp extends StatelessWidget {
             ),
             foregroundColor: Colors.black,
           )),
-      home: ChatPage(arguments: ChatPageArguments(peerUid: "1234567", peerName: "Test Name")),
+      // home: const RootPage()
+      home: ChatPage(arguments: ChatPageArguments(peerUid: "1234567", peerName: "Test Name", peerImg: "test")),
     );
   }
 }

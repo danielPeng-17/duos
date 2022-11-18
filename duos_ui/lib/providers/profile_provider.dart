@@ -1,6 +1,9 @@
+<<<<<<< HEAD
 import 'dart:ffi';
 
 import 'package:duos_ui/providers/disposable_provider.dart';
+=======
+>>>>>>> 035f5bc (chat stuff)
 import 'package:flutter/material.dart';
 import '../widgets/games.dart';
 
