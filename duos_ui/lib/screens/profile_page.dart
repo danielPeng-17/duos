@@ -36,15 +36,17 @@ class _ProfilePageState extends State<ProfilePage> {
             padding: EdgeInsets.only(top: 20),
             alignment: Alignment.topCenter,
             child: ClipRRect(
-              child: context.read<Profile>().profilePicPath == ''
-                  ? Image.asset(
-                      'assets/images/duosDefaultProfilePic.png',
-                      scale: 4,
+              child: context.watch<Profile>().profilePicPath == ''
+                  ? CircleAvatar(
+                      radius: 110,
+                      backgroundImage: NetworkImage(
+                        context.watch<Profile>().profilePicURL.toString()
+                      ),
                     )
                   : ClipRRect(
                       borderRadius: BorderRadius.circular(100),
                       child: Image.file(
-                          File(context.read<Profile>().profilePicPath)),
+                          File(context.watch<Profile>().profilePicPath)),
                     ),
             ),
           ),
@@ -61,7 +63,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     //update UI
                   });
                   if (image != null) {
-                    context.read<Profile>().setProfilePicPath(image!.path);
+                    context.watch<Profile>().setProfilePicPath(image!.path);
                   }
                 },
                 style: ButtonStyle(
@@ -122,10 +124,10 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: Column(children: [
                     SizedBox(height: 10),
                     Text(
-                        "${context.read<Profile>().firstName} ${context.read<Profile>().lastName}",
+                        "${context.watch<Profile>().firstName} ${context.watch<Profile>().lastName}",
                         style: ProfilePage.nameStyle),
-                    Text(context.read<Profile>().email),
-                    Text(context.read<Profile>().location)
+                    Text(context.watch<Profile>().email),
+                    Text(context.watch<Profile>().location)
                   ]),
                 ),
               ),
@@ -145,7 +147,7 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Center(
             child: Column(children: [
               const SizedBox(height: 15),
-              Text("Pronouns: ${context.read<Profile>().gender}",
+              Text("Pronouns: ${context.watch<Profile>().gender}",
                   style: ProfilePage.descSmallStyle)
             ]),
           ),
@@ -162,29 +164,30 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Center(
             child: Column(children: [
               const SizedBox(height: 15),
-              Text("Hobbies: ${context.read<Profile>().hobbies}",
+              Text("Hobbies: ${context.watch<Profile>().hobbies}",
                   style: ProfilePage.descSmallStyle)
             ]),
           ),
         ),
       ),
-      Card(
-        elevation: 0,
-        color: Colors.blueGrey[50],
-        shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(15))),
-        child: SizedBox(
-          width: 325,
-          height: 50,
-          child: Center(
-            child: Column(children: [
-              const SizedBox(height: 15),
-              Text("Games: ${Games.listGames(context.read<Profile>().games)}",
-                  style: ProfilePage.descSmallStyle)
-            ]),
-          ),
-        ),
-      ),
+      // TODO: fix games => types from backend does not match up with the profile provider
+      // Card(
+      //   elevation: 0,
+      //   color: Colors.blueGrey[50],
+      //   shape: const RoundedRectangleBorder(
+      //       borderRadius: BorderRadius.all(Radius.circular(15))),
+      //   child: SizedBox(
+      //     width: 325,
+      //     height: 50,
+      //     child: Center(
+      //       child: Column(children: [
+      //         const SizedBox(height: 15),
+      //         Text("Games: ${Games.listGames(context.watch<Profile>().games)}",
+      //             style: ProfilePage.descSmallStyle)
+      //       ]),
+      //     ),
+      //   ),
+      // ),
       Card(
         elevation: 0,
         color: Colors.blueGrey[50],
@@ -196,7 +199,7 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Center(
             child: Column(children: [
               const SizedBox(height: 15),
-              Text("Dating Preference: ${context.read<Profile>().datingPref}",
+              Text("Dating Preference: ${context.watch<Profile>().datingPref}",
                   style: ProfilePage.descSmallStyle)
             ]),
           ),
@@ -213,7 +216,7 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Center(
             child: Column(children: [
               const SizedBox(height: 15),
-              Text(context.read<Profile>().bio,
+              Text(context.watch<Profile>().bio,
                   style: ProfilePage.descSmallStyle)
             ]),
           ),
