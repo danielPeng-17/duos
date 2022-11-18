@@ -128,9 +128,6 @@ class _SignUpPageState extends State<SignUpPage> {
                       if (_signupform.currentState!.validate()) {
                         signUp();
                         context.read<Profile>().setEmail(_emailController.text);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Creating Account...')),
-                        );
                       }
                     },
                     child: const Text(

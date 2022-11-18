@@ -53,7 +53,7 @@ class RootPage extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return const Center(child: Text('An error has occurred'));
-          } else if (snapshot.hasData) {
+          } else if (snapshot.hasData && context.watch<Profile>().doneSetup == true) {
             return const ContainerPage();
           } else {
             return const JoinPage();

@@ -56,7 +56,7 @@ class _ContainerPageState extends State<ContainerPage> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.deepPurpleAccent,
+        selectedItemColor: Colors.deepPurple,
         unselectedItemColor: Colors.grey,
         onTap: _onItemTapped,
       ),

@@ -19,7 +19,8 @@ class Profile extends DisposableProvider {
   String _profilePictureURL = '';
   List<String> _igns = [];
   List<Games> _games = [];
-  bool _doneSetup = false;
+  List<String> _categories = [];
+  bool _doneSetup = true;
 
   String get firstName => _firstName;
   String get lastName => _lastName;
@@ -35,6 +36,7 @@ class Profile extends DisposableProvider {
   String get profilePicURL => _profilePictureURL;
   List<String> get igns => _igns;
   List<Games> get games => _games;
+  List<String> get categories => _categories;
   bool get doneSetup => _doneSetup;
 
   void setFirstName(String s) {
@@ -112,6 +114,11 @@ class Profile extends DisposableProvider {
     notifyListeners();
   }
 
+  void setCategories(List<String> categories) {
+    _categories = categories;
+    notifyListeners();
+  }
+
   void setSetupStatus(bool setup) {
     _doneSetup = setup;
     notifyListeners();
@@ -133,6 +140,6 @@ class Profile extends DisposableProvider {
     _profilePictureURL = '';
     _igns = [];
     _games = [];
-    _doneSetup = false;
+    _doneSetup = true;
   }
 }

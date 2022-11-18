@@ -17,6 +17,7 @@ class _ProfileCreationAgeState extends State<ProfileCreationAge> {
 
   @override
   void initState() {
+    context.read<Profile>().setSetupStatus(false);
     dateInput.text = ""; //set the initial value of text field
     super.initState();
   }
