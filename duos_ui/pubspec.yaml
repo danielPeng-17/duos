@@ -47,6 +47,8 @@ dependencies:
   http: ^0.13.5
   flutter_slidable: ^2.0.0
   loading_indicator: ^3.1.0
+  file_picker: ^5.2.2
+  firebase_storage: ^11.0.5
 
 dev_dependencies:
   flutter_test:
