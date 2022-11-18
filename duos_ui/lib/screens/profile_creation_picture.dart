@@ -56,8 +56,6 @@ class _ProfileCreationPictureState extends State<ProfileCreationPicture> {
 
   void uploadAllPhotos() async {
     imageURL =  await uploadPhoto();
-
-    print(imageURL);
   }
 
   @override
@@ -152,15 +150,12 @@ class _ProfileCreationPictureState extends State<ProfileCreationPicture> {
               label: const Text(""),
               onPressed: () async {
                 await uploadPhoto();
-                print("ON PRESS");
-                print("image url = $imageURL");
                 if(imageURL != "") {
                   context.read<Profile>().setProfilePicURL(imageURL);
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) =>
                       const ProfileCreationName()));
                 } else if (imageURL == "") {
-                  print("No photo selected");
                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                     content: Text('No photo selected'),
                     duration: Duration(seconds: 2),
