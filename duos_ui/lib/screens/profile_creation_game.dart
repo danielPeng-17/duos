@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:textfield_search/textfield_search.dart';
 import 'package:provider/provider.dart';
 import 'package:duos_ui/providers/profile_provider.dart';
+import 'package:duos_ui/screens/profile_creation_picture.dart';
 
 class ProfileCreationGame extends StatefulWidget {
   const ProfileCreationGame({Key? key}) : super(key: key);
@@ -139,7 +140,7 @@ class _ProfileCreationGameState extends State<ProfileCreationGame> {
                         context.read<Profile>().setGames(listofchosengames);
 
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const ProfileCreationName()));
+                            builder: (context) => const ProfileCreationPicture()));
 
                         // Validate returns true if the form is valid, or false otherwise.
                         // if (_formKey.currentState!.validate()) {

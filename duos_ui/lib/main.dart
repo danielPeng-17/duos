@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
       title: 'Duos',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          primarySwatch: Colors.purple,
+          primarySwatch: Colors.deepPurple,
           appBarTheme: const AppBarTheme(
             backgroundColor: Colors.transparent,
             elevation: 0,
