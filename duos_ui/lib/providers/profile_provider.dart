@@ -18,6 +18,7 @@ class Profile with ChangeNotifier {
   String _profilePictureURL = '';
   List<String> _igns = [];
   List<Games> _games = [];
+  List<String> _categories = [];
   bool _doneSetup = false;
 
   String get firstName => _firstName;
@@ -34,6 +35,7 @@ class Profile with ChangeNotifier {
   String get profilePicURL => _profilePictureURL;
   List<String> get igns => _igns;
   List<Games> get games => _games;
+  List<String> get categories => _categories;
   bool get doneSetup => _doneSetup;
 
   void setFirstName(String s) {
@@ -108,6 +110,11 @@ class Profile with ChangeNotifier {
 
   void setGames(List<Games> games) {
     _games = games;
+    notifyListeners();
+  }
+
+  void setCategories(List<String> categories) {
+    _categories = categories;
     notifyListeners();
   }
 

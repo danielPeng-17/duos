@@ -354,7 +354,9 @@ class _SettingsPageState extends State<SettingsPage> {
                   child: Align(
                     alignment: Alignment.center,
                     child: ElevatedButton(
-                      onPressed: () => FirebaseAuth.instance.signOut(),
+                      onPressed: () => {
+                        FirebaseAuth.instance.signOut()
+                      },
                       style: ElevatedButton.styleFrom(
                         primary: Colors.black.withOpacity(0),
                         onPrimary: Colors.black.withOpacity(1),

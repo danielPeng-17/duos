@@ -115,7 +115,7 @@ class _ProfileCreationNameState extends State<ProfileCreationName> {
                           width: 100,
                           height: 100),
                       label: Text(""),
-                      onPressed: () {
+                      onPressed: () async {
                         if (_nameform.currentState!.validate()) {
                           context
                               .read<Profile>()
@@ -127,8 +127,8 @@ class _ProfileCreationNameState extends State<ProfileCreationName> {
 
                           context.read<Profile>().setSetupStatus(true);
 
-                          _createProfile();
-
+                          await _createProfile();
+                          if (!mounted) return;
                           Navigator.of(context)
                               .popUntil((route) => route.isFirst);
                         }
@@ -176,6 +176,7 @@ class _ProfileCreationNameState extends State<ProfileCreationName> {
         "igns": context.read<Profile>().igns,
       },
       "uid": uid,
+      "categories": context.read<Profile>().categories
     });
 
     try {

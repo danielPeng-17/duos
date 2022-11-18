@@ -27,22 +27,23 @@ class _HomePageState extends State<HomePage> {
     user.getIdTokenResult(true).then((result) {
       token = result.token;
       _getProfiles().then((profiles) {
-
-        _profiles.addAll(profiles);
-        if (_profiles.isNotEmpty) {
-          Future.delayed(const Duration(milliseconds: 1000), () {
-            setState(() {
-              _currentProfile = _profiles.removeFirst();
-              existingMatches = true;
-              loading = false;
+          _profiles.addAll(profiles);
+          if (_profiles.isNotEmpty) {
+            Future.delayed(const Duration(milliseconds: 1000), () {
+              setState(() {
+                _currentProfile = _profiles.removeFirst();
+                existingMatches = true;
+                loading = false;
+              });
             });
-          });
-        } else {
-          setState(() {
-            existingMatches = false;
-            loading = false;
-          });
-        }
+          } else {
+            Future.delayed(const Duration(milliseconds: 1000), () {
+              setState(() {
+                existingMatches = false;
+                loading = false;
+              });
+            });
+          }
       });
     });
     super.initState();
@@ -329,12 +330,14 @@ class _HomePageState extends State<HomePage> {
               ? Container(
                   alignment: Alignment.center,
                   child: const LoadingIndicator(
-                      indicatorType: Indicator.ballPulse,
+                      indicatorType: Indicator.pacman,
                       colors: [
-                        Colors.purple,
+                        Colors.yellow,
+                        Colors.orange,
+/*                        Colors.purple,
                         Colors.pink,
                         Colors.red,
-                        Colors.yellow
+                        Colors.yellow*/
                       ],
                       strokeWidth: 2,
                       backgroundColor: Colors.transparent,
@@ -345,7 +348,7 @@ class _HomePageState extends State<HomePage> {
                   height: MediaQuery.of(context).size.height,
                   alignment: Alignment.center,
                   child: const Text(
-                    "No one wants you",
+                    "No more matches",
                     style: TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.w600,
