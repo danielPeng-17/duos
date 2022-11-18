@@ -125,10 +125,10 @@ class _ProfileCreationNameState extends State<ProfileCreationName> {
                               .read<Profile>()
                               .setLastName(lastNameInput.text);
 
-                          context.read<Profile>().setSetupStatus(true);
-
                           await _createProfile();
+
                           if (!mounted) return;
+                          context.read<Profile>().setSetupStatus(true);
                           Navigator.of(context)
                               .popUntil((route) => route.isFirst);
                         }
@@ -171,7 +171,7 @@ class _ProfileCreationNameState extends State<ProfileCreationName> {
         "hobbies": context.read<Profile>().hobbies,
         "languages": context.read<Profile>().languages,
         "location": context.read<Profile>().location,
-        "profile_picture_url": "https://images.unsplash.com/photo-1506691318991-c91e7df669b1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=673&q=80",
+        "profile_picture_url": context.read<Profile>().profilePicURL,
         "dating_pref": context.read<Profile>().datingPref,
         "igns": context.read<Profile>().igns,
       },

@@ -20,7 +20,7 @@ class Profile extends DisposableProvider {
   List<String> _igns = [];
   List<Games> _games = [];
   List<String> _categories = [];
-  bool _doneSetup = false;
+  bool _doneSetup = true;
 
   String get firstName => _firstName;
   String get lastName => _lastName;
@@ -140,6 +140,6 @@ class Profile extends DisposableProvider {
     _profilePictureURL = '';
     _igns = [];
     _games = [];
-    _doneSetup = false;
+    _doneSetup = true;
   }
 }
