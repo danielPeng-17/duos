@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-
+import 'package:duos_ui/providers/providers.dart';
 import 'package:duos_ui/screens/profile_creation_name.dart';
 
 class ProfileCreationPicture extends StatefulWidget {
@@ -147,8 +147,9 @@ class _ProfileCreationPictureState extends State<ProfileCreationPicture> {
               label: const Text(""),
               onPressed: () async {
                 await uploadPhoto();
+                if (!mounted) return;
                 if(imageURL != "") {
-                  context.read<Profile>().setProfilePicURL(imageURL);
+                  context.read<ProfileProvider>().setProfilePicURL(imageURL);
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) =>
                       const ProfileCreationName()));

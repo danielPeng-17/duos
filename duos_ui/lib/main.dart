@@ -15,8 +15,8 @@ Future main() async {
 
   runApp(MultiProvider(
     providers: [
-      ChangeNotifierProvider<Profile>(
-          create: (_) => Profile()
+      ChangeNotifierProvider<ProfileProvider>(
+          create: (_) => ProfileProvider()
       ),
       ChangeNotifierProvider<AuthProvider>(
           create: (_) => AuthProvider()
@@ -67,7 +67,7 @@ class RootPage extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return const Center(child: Text('An error has occurred'));
-          } else if (snapshot.hasData && context.watch<Profile>().doneSetup == true) {
+          } else if (snapshot.hasData && context.watch<ProfileProvider>().doneSetup == true) {
             return const ContainerPage();
           } else {
             return const JoinPage();
