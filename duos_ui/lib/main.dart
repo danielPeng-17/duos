@@ -48,8 +48,8 @@ class MyApp extends StatelessWidget {
             ),
             foregroundColor: Colors.black,
           )),
-      // home: const RootPage()
-      home: ChatPage(arguments: ChatPageArguments(peerUid: "1234567", peerName: "Test Name", peerImg: "test")),
+      home: const RootPage()
+      // home: ChatPage(arguments: ChatPageArguments(peerUid: "1234567", peerName: "Test Name", peerImg: "test")),
     );
   }
 }
