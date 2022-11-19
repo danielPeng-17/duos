@@ -42,13 +42,9 @@ class ChatPageState extends State<ChatPage> {
     chatProvider = context.read<ChatProvider>();
     authProvider = context.read<AuthProvider>();
 
-    listScrollController.addListener(_scrollListener);
     readLocal();
   }
 
-  _scrollListener() {
-    //  scroll to bottom of list scroll container
-  }
 
   void readLocal() {
     // uid1 = authProvider.sub;
@@ -62,32 +58,30 @@ class ChatPageState extends State<ChatPage> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-            backgroundColor: Colors.transparent,
-            centerTitle: true,
-            title: const Text(
-              "Name Here",
-              style: TextStyle(color: Colors.black),
-            ),
-            leading: const Material(
-              child: IconButton(
-                onPressed: (null),
-                icon: Icon(Icons.arrow_back),
-              ),
-            ),
-            actions: const [
+          backgroundColor: Colors.transparent,
+          centerTitle: true,
+          title: Row(
+            children: const [
               Padding(
-                padding: EdgeInsets.only(right: 24),
+                padding: EdgeInsets.only(right: 12, left: 20),
                 child: Avatar.small(url: "https://picsum.photos/200/300"),
               ),
+              Text(
+                "Name Here",
+                style: TextStyle(color: Colors.black),
+              ),
             ],
-            shape: const Border(
-                bottom: BorderSide(color: Colors.black, width: 4)),
-            elevation: 0),
+          ),
+          leading: const Material(
+            child: IconButton(
+              onPressed: (null),
+              icon: Icon(Icons.arrow_back),
+            ),
+          ),
+          elevation: 0,
+        ),
         body: Column(
-          children: <Widget>[
-            buildListMessage(),
-            messageInput()
-          ],
+          children: <Widget>[buildListMessage(), messageInput()],
         ),
       ),
     );
@@ -97,18 +91,19 @@ class ChatPageState extends State<ChatPage> {
     return Flexible(
       child: uid2.isNotEmpty
           ? StreamBuilder<QuerySnapshot>(
-        stream: chatProvider.getActiveChatMessagesSnapshot(uid1, uid2, limit),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        stream:
+        chatProvider.getActiveChatMessagesSnapshot(uid1, uid2, limit),
+        builder: (BuildContext context,
+            AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasData) {
             listMessage = snapshot.data!.docs;
             if (listMessage.isNotEmpty) {
               return ListView.builder(
                 padding: const EdgeInsets.all(10),
                 itemBuilder: (context, index) =>
-                    buildItem(index, snapshot.data?.docs[index]),
+                    buildItem(index, snapshot.data!.docs[index]),
                 itemCount: snapshot.data?.docs.length,
                 reverse: true,
-                controller: listScrollController,
               );
             } else {
               return const Center(child: Text("No message here yet..."));
@@ -130,19 +125,29 @@ class ChatPageState extends State<ChatPage> {
     );
   }
 
-  Widget buildItem(int index, dynamic data) {
-    print("in here >>>>>>>>>>>>>>>>>>");
-    print(data);
-    return Row(
-      children: [
-        Container(
-          padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
-          width: 200,
+  Widget buildItem(int index, DocumentSnapshot data) {
+    final message = data.get("content").toString();
+    final senderId = data.get("sender_id").toString();
+    // final time =
+    //     DateTime.fromMillisecondsSinceEpoch(data.get("timestamp") * 1000);
+
+    return Container(
+      padding: const EdgeInsets.only(left: 12, right: 12, top: 4, bottom: 4),
+      child: Align(
+        alignment: (senderId == uid2 ? Alignment.topLeft : Alignment.topRight),
+        child: Container(
           decoration: BoxDecoration(
-              color: Colors.grey, borderRadius: BorderRadius.circular(8)),
-          child: const Text("hello world"),
+            borderRadius: BorderRadius.circular(20),
+            color: (senderId == uid2 ? Colors.grey.shade200 : Colors.blue[200]),
+          ),
+          padding:
+          const EdgeInsets.only(top: 15, bottom: 15, left: 18, right: 18),
+          child: Text(
+            message,
+            style: const TextStyle(fontSize: 16),
+          ),
         ),
-      ],
+      ),
     );
   }
 
@@ -162,18 +167,26 @@ class ChatPageState extends State<ChatPage> {
         children: [
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.only(left: 16),
+              padding: const EdgeInsets.only(left: 14, bottom: 8, top: 8),
               child: TextField(
                 controller: textEditingController,
-                decoration: const InputDecoration(
-                    hintText: "Aa",
-                    border: InputBorder.none,
+                textInputAction: TextInputAction.go,
+                onSubmitted: (text) => sendMessage(text),
+                decoration: InputDecoration(
+                  hintText: "Aa",
+                  hintStyle: TextStyle(color: Colors.grey[800]),
+                  contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
+                  filled: true,
+                  fillColor: Colors.white70,
                 ),
               ),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 12, right: 24),
+            padding: const EdgeInsets.only(left: 8, right: 14),
             child: IconButton(
               icon: const Icon(Icons.send_sharp),
               onPressed: () => sendMessage(textEditingController.text),
@@ -185,104 +198,3 @@ class ChatPageState extends State<ChatPage> {
     );
   }
 }
-
-
-class _DateLabel extends StatelessWidget {
-  const _DateLabel({
-    Key? key,
-    required this.label,
-  }) : super(key: key);
-
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 32.0),
-        child: Text(label),
-      ),
-    );
-  }
-}
-
-class _MessageTile extends StatelessWidget {
-  const _MessageTile({
-    Key? key,
-    required this.message,
-  }) : super(key: key);
-
-  final String message;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.lightBlue[50],
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(18),
-                  topRight: Radius.circular(18),
-                  bottomRight: Radius.circular(18),
-                ),
-              ),
-              child: Padding(
-                padding:
-                const EdgeInsets.symmetric(horizontal: 12.0, vertical: 20),
-                child: Text(message),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class OwnMessageTile extends StatelessWidget {
-  const OwnMessageTile({
-    Key? key,
-    required this.message,
-  }) : super(key: key);
-
-  final String message;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      child: Align(
-        alignment: Alignment.centerRight,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.lightBlue[50],
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(18),
-                  topRight: Radius.circular(18),
-                  bottomLeft: Radius.circular(18),
-                ),
-              ),
-              child: Padding(
-                padding:
-                const EdgeInsets.symmetric(horizontal: 12.0, vertical: 20),
-                child: Text(message),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-

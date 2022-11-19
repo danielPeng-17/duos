@@ -16,7 +16,7 @@ class ChatProvider {
       final now = Timestamp.now();
 
       FirebaseFirestore.instance.runTransaction((transaction) async {
-        firebaseFirestore.collection("user_chats").doc(chatId).update({uid1Seen: now});
+        firebaseFirestore.collection("user_chats").doc(chatId).set({uid1Seen: now});
       });
     } catch(e) {
       log("Error: $e");
@@ -52,11 +52,8 @@ class ChatProvider {
       log('Error sending message. Missing uid1 or uid2 or content');
     }
 
-    print("IN HERE 1 >>>>>>>>");
-
     try {
       final chatId = ChatUtils.getChatId(uid1, uid2);
-      print("IN HERE 2 >>>>>>>>");
       final now = Timestamp.now();
 
       final message = ({
@@ -64,16 +61,13 @@ class ChatProvider {
         "timestamp": now,
         "content": content
       });
-      print("IN HERE 3 >>>>>>>>");
+
       FirebaseFirestore.instance.runTransaction((transaction) async {
-        print("IN HERE 4 >>>>>>>>");
         firebaseFirestore.collection("user_chats").doc(chatId).collection("messages").add(message);
-        firebaseFirestore.collection("user_chats").doc(chatId).update({"last_updated": now});
-        print("IN HERE 5 >>>>>>>>");
+        firebaseFirestore.collection("user_chats").doc(chatId).set({"last_updated": now});
       });
     } catch(e) {
       log("Error: $e");
-      print("IN HERE 6 >>>>>>>>");
     }
   }
 
