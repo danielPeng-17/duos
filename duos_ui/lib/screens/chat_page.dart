@@ -30,7 +30,8 @@ class ChatPageState extends State<ChatPage> {
   List<QueryDocumentSnapshot> listMessage = [];
   int limit = 25;
 
-  final ScrollController listScrollController = ScrollController();
+  TextEditingController textEditingController = TextEditingController();
+  ScrollController listScrollController = ScrollController();
 
   late ChatProvider chatProvider;
   late AuthProvider authProvider;
@@ -52,8 +53,8 @@ class ChatPageState extends State<ChatPage> {
   void readLocal() {
     // uid1 = authProvider.sub;
     // uid2 = widget.arguments.peerUid;
-    uid1 = "hUy3VSkxeTaCqTmbJRTeZnGtxO33";
-    uid2 = "j31OC5G5ILZb7t8WygODsWskJMh2";
+    uid1 = "PbsHaVsmcZQtspSJvAPlzgCPmP72";
+    uid2 = "zmUYi77QgaSPX6lmSSx0LlT67EV2";
   }
 
   @override
@@ -145,26 +146,37 @@ class ChatPageState extends State<ChatPage> {
     );
   }
 
+  void sendMessage(String content) {
+    String message = content.trim();
+    if (message.isNotEmpty) {
+      textEditingController.clear();
+      chatProvider.sendMessage(uid1, uid2, message);
+    }
+  }
+
   Widget messageInput() {
     return SafeArea(
       bottom: true,
       top: false,
       child: Row(
-        children: const [
+        children: [
           Expanded(
             child: Padding(
-              padding: EdgeInsets.only(left: 16),
+              padding: const EdgeInsets.only(left: 16),
               child: TextField(
-                decoration: InputDecoration(
-                    hintText: "Aa", border: InputBorder.none),
+                controller: textEditingController,
+                decoration: const InputDecoration(
+                    hintText: "Aa",
+                    border: InputBorder.none,
+                ),
               ),
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(left: 12, right: 24),
+            padding: const EdgeInsets.only(left: 12, right: 24),
             child: IconButton(
-              icon: Icon(Icons.send_sharp),
-              onPressed: (null),
+              icon: const Icon(Icons.send_sharp),
+              onPressed: () => sendMessage(textEditingController.text),
               color: Colors.blue,
             ),
           )
