@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-import 'package:duos_ui/providers/profile_provider.dart';
+import 'package:duos_ui/providers/providers.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -16,7 +16,7 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  final GlobalKey<FormState> contactform = GlobalKey<FormState>();
+  final GlobalKey<FormState> _contactForm = GlobalKey<FormState>();
   final TextEditingController _phoneInput = TextEditingController();
   final TextEditingController _emailInput = TextEditingController();
 
@@ -26,7 +26,7 @@ class _SettingsPageState extends State<SettingsPage> {
       resizeToAvoidBottomInset: false,
       body: Center(
         child: Form(
-          key: contactform,
+          key: _contactForm,
           child: ListView(
             //Listview is a fix in order to prevent overflow, (scrollable) works well needs formatting
             //crossAxisAlignment: CrossAxisAlignment.start,
@@ -194,7 +194,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         children: [
                           Expanded(
                             child: Padding(
-                              padding: EdgeInsets.all(6.0),
+                              padding: const EdgeInsets.all(6.0),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -246,7 +246,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         children: [
                           Expanded(
                             child: Padding(
-                              padding: EdgeInsets.all(6.0),
+                              padding: const EdgeInsets.all(6.0),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -298,7 +298,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         children: [
                           Expanded(
                             child: Padding(
-                              padding: EdgeInsets.all(6.0),
+                              padding: const EdgeInsets.all(6.0),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -350,7 +350,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         children: [
                           Expanded(
                             child: Padding(
-                              padding: EdgeInsets.all(6.0),
+                              padding: const EdgeInsets.all(6.0),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -386,7 +386,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     alignment: Alignment.center,
                     child: ElevatedButton(
                       onPressed: () {
-                        context.read<Profile>().disposeValues();
+                        context.read<ProfileProvider>().disposeValues();
                         FirebaseAuth.instance.signOut();
                       },
                       style: ElevatedButton.styleFrom(
@@ -401,7 +401,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         children: [
                           Expanded(
                             child: Padding(
-                              padding: EdgeInsets.all(6.0),
+                              padding: const EdgeInsets.all(6.0),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                                 crossAxisAlignment: CrossAxisAlignment.start,

@@ -8,7 +8,7 @@ class SettingsPageTOS extends StatefulWidget {
 }
 
 class _SettingsPageTOSState extends State<SettingsPageTOS> {
-  final GlobalKey<FormState> _contactform = GlobalKey<FormState>();
+  final GlobalKey<FormState> _contactForm = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,7 @@ class _SettingsPageTOSState extends State<SettingsPageTOS> {
       resizeToAvoidBottomInset: false,
       body: Center(
         child: Form(
-          key: _contactform,
+          key: _contactForm,
           child: ListView(
             //Listview is a fix in order to prevent overflow, (scrollable) works well needs formatting
             //crossAxisAlignment: CrossAxisAlignment.start,

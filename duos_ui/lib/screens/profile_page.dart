@@ -4,8 +4,7 @@ import 'package:duos_ui/screens/profile_creation_age.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:duos_ui/providers/profile_provider.dart';
-import 'package:duos_ui/widgets/games.dart';
+import 'package:duos_ui/providers/providers.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -33,20 +32,20 @@ class _ProfilePageState extends State<ProfilePage> {
       Stack(
         children: [
           Container(
-            padding: EdgeInsets.only(top: 20),
+            padding: const EdgeInsets.only(top: 20),
             alignment: Alignment.topCenter,
             child: ClipRRect(
-              child: context.watch<Profile>().profilePicPath == ''
+              child: context.watch<ProfileProvider>().profilePicPath == ''
                   ? CircleAvatar(
                       radius: 110,
                       backgroundImage: NetworkImage(
-                        context.watch<Profile>().profilePicURL.toString()
+                        context.watch<ProfileProvider>().profilePicURL.toString()
                       ),
                     )
                   : ClipRRect(
                       borderRadius: BorderRadius.circular(100),
                       child: Image.file(
-                          File(context.watch<Profile>().profilePicPath)),
+                          File(context.watch<ProfileProvider>().profilePicPath)),
                     ),
             ),
           ),
@@ -63,7 +62,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     //update UI
                   });
                   if (image != null) {
-                    context.watch<Profile>().setProfilePicPath(image!.path);
+                    if (!mounted) return;
+                    context.watch<ProfileProvider>().setProfilePicPath(image!.path);
                   }
                 },
                 style: ButtonStyle(
@@ -110,7 +110,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: const Icon(Icons.edit),
               )),
           Container(
-            padding: EdgeInsets.only(top: 250),
+            padding: const EdgeInsets.only(top: 250),
             alignment: Alignment.topCenter,
             child: Card(
               elevation: 0,
@@ -124,10 +124,10 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: Column(children: [
                     SizedBox(height: 10),
                     Text(
-                        "${context.watch<Profile>().firstName} ${context.watch<Profile>().lastName}",
+                        "${context.watch<ProfileProvider>().firstName} ${context.watch<ProfileProvider>().lastName}",
                         style: ProfilePage.nameStyle),
-                    Text(context.watch<Profile>().email),
-                    Text(context.watch<Profile>().location)
+                    Text(context.watch<ProfileProvider>().email),
+                    Text(context.watch<ProfileProvider>().location)
                   ]),
                 ),
               ),
@@ -147,7 +147,7 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Center(
             child: Column(children: [
               const SizedBox(height: 15),
-              Text("Pronouns: ${context.watch<Profile>().gender}",
+              Text("Pronouns: ${context.watch<ProfileProvider>().gender}",
                   style: ProfilePage.descSmallStyle)
             ]),
           ),
@@ -164,7 +164,7 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Center(
             child: Column(children: [
               const SizedBox(height: 15),
-              Text("Hobbies: ${context.watch<Profile>().hobbies}",
+              Text("Hobbies: ${context.watch<ProfileProvider>().hobbies}",
                   style: ProfilePage.descSmallStyle)
             ]),
           ),
@@ -199,7 +199,7 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Center(
             child: Column(children: [
               const SizedBox(height: 15),
-              Text("Dating Preference: ${context.watch<Profile>().datingPref}",
+              Text("Dating Preference: ${context.watch<ProfileProvider>().datingPref}",
                   style: ProfilePage.descSmallStyle)
             ]),
           ),
@@ -216,7 +216,7 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Center(
             child: Column(children: [
               const SizedBox(height: 15),
-              Text(context.watch<Profile>().bio,
+              Text(context.watch<ProfileProvider>().bio,
                   style: ProfilePage.descSmallStyle)
             ]),
           ),

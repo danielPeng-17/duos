@@ -1,11 +1,9 @@
-import 'package:duos_ui/screens/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:duos_ui/providers/profile_provider.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-import 'package:firebase_core/firebase_core.dart' as firebase_core;
+
 import 'package:duos_ui/screens/profile_creation_name.dart';
 
 class ProfileCreationPicture extends StatefulWidget {

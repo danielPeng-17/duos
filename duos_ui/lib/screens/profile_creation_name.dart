@@ -1,10 +1,11 @@
-import 'package:duos_ui/screens/home_page.dart';
+import 'package:duos_ui/constants/api_constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:duos_ui/providers/profile_provider.dart';
+import 'package:duos_ui/providers/providers.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+import 'package:provider/provider.dart';
 
 class ProfileCreationName extends StatefulWidget {
   const ProfileCreationName({Key? key}) : super(key: key);
@@ -14,7 +15,7 @@ class ProfileCreationName extends StatefulWidget {
 }
 
 class _ProfileCreationNameState extends State<ProfileCreationName> {
-  final GlobalKey<FormState> _nameform = GlobalKey<FormState>();
+  final GlobalKey<FormState> _nameForm = GlobalKey<FormState>();
   TextEditingController firstNameInput = TextEditingController();
   TextEditingController lastNameInput = TextEditingController();
 
@@ -31,7 +32,7 @@ class _ProfileCreationNameState extends State<ProfileCreationName> {
       resizeToAvoidBottomInset: false,
       body: Center(
         child: Form(
-          key: _nameform,
+          key: _nameForm,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -116,19 +117,19 @@ class _ProfileCreationNameState extends State<ProfileCreationName> {
                           height: 100),
                       label: Text(""),
                       onPressed: () async {
-                        if (_nameform.currentState!.validate()) {
+                        if (_nameForm.currentState!.validate()) {
                           context
-                              .read<Profile>()
+                              .read<ProfileProvider>()
                               .setFirstName(firstNameInput.text);
 
                           context
-                              .read<Profile>()
+                              .read<ProfileProvider>()
                               .setLastName(lastNameInput.text);
 
                           await _createProfile();
 
                           if (!mounted) return;
-                          context.read<Profile>().setSetupStatus(true);
+                          context.read<ProfileProvider>().setSetupStatus(true);
                           Navigator.of(context)
                               .popUntil((route) => route.isFirst);
                         }
@@ -154,29 +155,27 @@ class _ProfileCreationNameState extends State<ProfileCreationName> {
     dynamic user = FirebaseAuth.instance.currentUser!;
     String uid = user.uid;
     String? token = await user.getIdToken();
-    const apiMatchingEndpoint = "http://10.0.2.2:3000/user";
-    final headers = {
-      "Content-type": 'application/json',
-      "Authorization": token ?? '',
-    };
+    final apiMatchingEndpoint = "${ApiConstants.apiBaseUrl}/user";
+    final headers = ApiConstants.apiHeader(token ?? '');
+
     if (!mounted) return;
     final json = jsonEncode({
       "info": {
-        "first_name": context.read<Profile>().firstName,
-        "last_name": context.read<Profile>().lastName,
-        "email": context.read<Profile>().email,
-        "gender": context.read<Profile>().gender,
-        "bio": context.read<Profile>().bio,
-        "date_of_birth": context.read<Profile>().dob,
-        "hobbies": context.read<Profile>().hobbies,
-        "languages": context.read<Profile>().languages,
-        "location": context.read<Profile>().location,
-        "profile_picture_url": context.read<Profile>().profilePicURL,
-        "dating_pref": context.read<Profile>().datingPref,
-        "igns": context.read<Profile>().igns,
+        "first_name": context.read<ProfileProvider>().firstName,
+        "last_name": context.read<ProfileProvider>().lastName,
+        "email": context.read<ProfileProvider>().email,
+        "gender": context.read<ProfileProvider>().gender,
+        "bio": context.read<ProfileProvider>().bio,
+        "date_of_birth": context.read<ProfileProvider>().dob,
+        "hobbies": context.read<ProfileProvider>().hobbies,
+        "languages": context.read<ProfileProvider>().languages,
+        "location": context.read<ProfileProvider>().location,
+        "profile_picture_url": context.read<ProfileProvider>().profilePicURL,
+        "dating_pref": context.read<ProfileProvider>().datingPref,
+        "igns": context.read<ProfileProvider>().igns,
       },
       "uid": uid,
-      "categories": context.read<Profile>().categories
+      "categories": context.read<ProfileProvider>().categories
     });
 
     try {

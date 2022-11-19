@@ -1,11 +1,8 @@
-import 'package:duos_ui/screens/home_page.dart';
 import 'package:duos_ui/screens/profile_creation_age.dart';
-import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:duos_ui/screens/forgot_password_page.dart';
 import 'package:provider/provider.dart';
-import 'package:duos_ui/providers/profile_provider.dart';
+import 'package:duos_ui/providers/providers.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -15,7 +12,7 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  final GlobalKey<FormState> _signupform = GlobalKey<FormState>();
+  final GlobalKey<FormState> _signupForm = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _passwordConfirmController = TextEditingController();
@@ -36,7 +33,7 @@ class _SignUpPageState extends State<SignUpPage> {
         elevation: 0,
       ),
       body: Form(
-        key: _signupform,
+        key: _signupForm,
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
@@ -125,9 +122,9 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                   child: TextButton(
                     onPressed: () {
-                      if (_signupform.currentState!.validate()) {
+                      if (_signupForm.currentState!.validate()) {
                         signUp();
-                        context.read<Profile>().setEmail(_emailController.text);
+                        context.read<ProfileProvider>().setEmail(_emailController.text);
                       }
                     },
                     child: const Text(
@@ -167,6 +164,6 @@ class _SignUpPageState extends State<SignUpPage> {
 
     if (!mounted) return;
     Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => ProfileCreationAge()));
+        .push(MaterialPageRoute(builder: (context) => const ProfileCreationAge()));
   }
 }

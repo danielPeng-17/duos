@@ -10,7 +10,7 @@ class SettingsPagePreferences extends StatefulWidget {
 }
 
 class _SettingsPagePreferencesState extends State<SettingsPagePreferences> {
-  final GlobalKey<FormState> settingsform = GlobalKey<FormState>();
+  final GlobalKey<FormState> _settingsForm = GlobalKey<FormState>();
   final TextEditingController _gameInput = TextEditingController();
   final TextEditingController _ageInput = TextEditingController();
   final TextEditingController _genderInput = TextEditingController();
@@ -87,7 +87,7 @@ class _SettingsPagePreferencesState extends State<SettingsPagePreferences> {
       resizeToAvoidBottomInset: false,
       body: Center(
         child: Form(
-          key: settingsform,
+          key: _settingsForm,
           child: ListView(
             //Listview is a fix in order to prevent overflow, (scrollable) works well needs formatting
             //crossAxisAlignment: CrossAxisAlignment.start,
@@ -110,7 +110,7 @@ class _SettingsPagePreferencesState extends State<SettingsPagePreferences> {
                 child: Text("Favourite games", style: TextStyle(fontSize: 12)),
               ),
               Padding(
-                padding: EdgeInsets.symmetric(
+                padding: const EdgeInsets.symmetric(
                   horizontal: 30,
                 ),
                 child: ToggleButtons(
