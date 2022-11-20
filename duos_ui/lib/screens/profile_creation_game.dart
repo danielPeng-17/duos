@@ -1,9 +1,9 @@
 import 'package:duos_ui/screens/profile_creation_name.dart';
 import 'package:duos_ui/widgets/games.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:duos_ui/providers/profile_provider.dart';
+import 'package:duos_ui/providers/providers.dart';
 import 'package:duos_ui/screens/profile_creation_picture.dart';
+import 'package:provider/provider.dart';
 
 class ProfileCreationGame extends StatefulWidget {
   const ProfileCreationGame({Key? key}) : super(key: key);
@@ -145,9 +145,9 @@ class _ProfileCreationGameState extends State<ProfileCreationGame> {
                           }
                           index++;
                         }
-                        print(listOfChosenCategories);
-                        context.read<Profile>().setCategories(listOfChosenCategories);
-                        context.read<Profile>().setGames(listofchosengames);
+
+                        context.read<ProfileProvider>().setCategories(listOfChosenCategories);
+                        context.read<ProfileProvider>().setGames(listofchosengames);
 
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => const ProfileCreationPicture()));

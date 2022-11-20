@@ -1,201 +1,195 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:duos_ui/widgets/avatar.dart';
 import 'package:duos_ui/widgets/icon.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../providers/auth_provider.dart';
+import '../providers/chat_provider.dart';
 
-class ChatPage extends StatelessWidget {
-  ChatPage({Key? key}) : super(key: key);
+class ChatPageArguments {
+  final String peerUid;
+  final String peerName;
+  final String peerImg;
 
-  final ValueNotifier<String> personName = ValueNotifier("Kevin");
+  ChatPageArguments(
+      {required this.peerUid, required this.peerName, required this.peerImg});
+}
+
+class ChatPage extends StatefulWidget {
+  const ChatPage({Key? key, required this.arguments}) : super(key: key);
+
+  final ChatPageArguments arguments;
+
+  @override
+  ChatPageState createState() => ChatPageState();
+}
+
+class ChatPageState extends State<ChatPage> {
+  late String uid1;
+  late String uid2;
+  List<QueryDocumentSnapshot> listMessage = [];
+  int limit = 25;
+
+  TextEditingController textEditingController = TextEditingController();
+  ScrollController listScrollController = ScrollController();
+
+  late ChatProvider chatProvider;
+  late AuthProvider authProvider;
+
+  @override
+  void initState() {
+    super.initState();
+    chatProvider = context.read<ChatProvider>();
+    authProvider = context.read<AuthProvider>();
+
+    readLocal();
+  }
+
+
+  void readLocal() {
+    // uid1 = authProvider.sub;
+    // uid2 = widget.arguments.peerUid;
+    uid1 = "PbsHaVsmcZQtspSJvAPlzgCPmP72";
+    uid2 = "zmUYi77QgaSPX6lmSSx0LlT67EV2";
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-            backgroundColor: Colors.transparent,
-            centerTitle: true,
-            title: Text(
-              personName.value,
-              style: const TextStyle(color: Colors.black),
-            ),
-            leading: const Material(
-              child: IconButton(
-                onPressed: (null),
-                icon: Icon(Icons.arrow_back),
-              ),
-            ),
-            actions: [
+          backgroundColor: Colors.transparent,
+          centerTitle: true,
+          title: Row(
+            children: const [
               Padding(
-                padding: const EdgeInsets.only(right: 24),
+                padding: EdgeInsets.only(right: 12, left: 20),
                 child: Avatar.small(url: "https://picsum.photos/200/300"),
               ),
+              Text(
+                "Name Here",
+                style: TextStyle(color: Colors.black),
+              ),
             ],
-            shape: Border(bottom: BorderSide(color: Colors.black, width: 4)),
-            elevation: 0),
+          ),
+          leading: const Material(
+            child: IconButton(
+              onPressed: (null),
+              icon: Icon(Icons.arrow_back),
+            ),
+          ),
+          elevation: 0,
+        ),
         body: Column(
-          children: [Expanded(child: DemoMessage()), ActionBar()],
+          children: <Widget>[buildListMessage(), messageInput()],
         ),
       ),
     );
   }
-}
 
-class DemoMessage extends StatelessWidget {
-  const DemoMessage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        _DateLabel(label: "Yesterday"),
-        _MessageTile(message: "Hey how is it going"),
-        OwnMessageTile(message: "how is your day"),
-        _MessageTile(message: "it is good"),
-        _MessageTile(message: "how about you"),
-        OwnMessageTile(message: "it could be better"),
-      ],
-    );
-  }
-}
-
-class _DateLabel extends StatelessWidget {
-  const _DateLabel({
-    Key? key,
-    required this.label,
-  }) : super(key: key);
-
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 32.0),
-        child: Text(label),
+  Widget buildListMessage() {
+    return Flexible(
+      child: uid2.isNotEmpty
+          ? StreamBuilder<QuerySnapshot>(
+        stream:
+        chatProvider.getActiveChatMessagesSnapshot(uid1, uid2, limit),
+        builder: (BuildContext context,
+            AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasData) {
+            listMessage = snapshot.data!.docs;
+            if (listMessage.isNotEmpty) {
+              return ListView.builder(
+                padding: const EdgeInsets.all(10),
+                itemBuilder: (context, index) =>
+                    buildItem(index, snapshot.data!.docs[index]),
+                itemCount: snapshot.data?.docs.length,
+                reverse: true,
+              );
+            } else {
+              return const Center(child: Text("No message here yet..."));
+            }
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(
+                color: Colors.amberAccent,
+              ),
+            );
+          }
+        },
+      )
+          : const Center(
+        child: CircularProgressIndicator(
+          color: Colors.amberAccent,
+        ),
       ),
     );
   }
-}
 
-class _MessageTile extends StatelessWidget {
-  const _MessageTile({
-    Key? key,
-    required this.message,
-  }) : super(key: key);
+  Widget buildItem(int index, DocumentSnapshot data) {
+    final message = data.get("content").toString();
+    final senderId = data.get("sender_id").toString();
+    // final time =
+    //     DateTime.fromMillisecondsSinceEpoch(data.get("timestamp") * 1000);
 
-  final String message;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+    return Container(
+      padding: const EdgeInsets.only(left: 12, right: 12, top: 4, bottom: 4),
       child: Align(
-        alignment: Alignment.centerLeft,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.lightBlue[50],
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(18),
-                  topRight: Radius.circular(18),
-                  bottomRight: Radius.circular(18),
-                ),
-              ),
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12.0, vertical: 20),
-                child: Text(message),
-              ),
-            ),
-          ],
+        alignment: (senderId == uid2 ? Alignment.topLeft : Alignment.topRight),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: (senderId == uid2 ? Colors.grey.shade200 : Colors.blue[200]),
+          ),
+          padding:
+          const EdgeInsets.only(top: 15, bottom: 15, left: 18, right: 18),
+          child: Text(
+            message,
+            style: const TextStyle(fontSize: 16),
+          ),
         ),
       ),
     );
   }
-}
 
-class OwnMessageTile extends StatelessWidget {
-  const OwnMessageTile({
-    Key? key,
-    required this.message,
-  }) : super(key: key);
-
-  final String message;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      child: Align(
-        alignment: Alignment.centerRight,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.lightBlue[50],
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(18),
-                  topRight: Radius.circular(18),
-                  bottomLeft: Radius.circular(18),
-                ),
-              ),
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12.0, vertical: 20),
-                child: Text(message),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+  void sendMessage(String content) {
+    String message = content.trim();
+    if (message.isNotEmpty) {
+      textEditingController.clear();
+      chatProvider.sendMessage(uid1, uid2, message);
+    }
   }
-}
 
-class ActionBar extends StatelessWidget {
-  const ActionBar({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
+  Widget messageInput() {
     return SafeArea(
       bottom: true,
       top: false,
       child: Row(
         children: [
-          Container(
-            decoration: BoxDecoration(
-              border: Border(
-                right:
-                    BorderSide(color: Theme.of(context).dividerColor, width: 2),
-              ),
-            ),
-            child: const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: IconButton(
-                onPressed: (null),
-                icon: Icon(Icons.camera_alt_rounded),
-              ),
-            ),
-          ),
-          const Expanded(
+          Expanded(
             child: Padding(
-              padding: EdgeInsets.only(left: 16),
+              padding: const EdgeInsets.only(left: 14, bottom: 8, top: 8),
               child: TextField(
+                controller: textEditingController,
+                textInputAction: TextInputAction.go,
+                onSubmitted: (text) => sendMessage(text),
                 decoration: InputDecoration(
-                    hintText: "say hi!", border: InputBorder.none),
+                  hintText: "Aa",
+                  hintStyle: TextStyle(color: Colors.grey[800]),
+                  contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
+                  filled: true,
+                  fillColor: Colors.white70,
+                ),
               ),
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.only(left: 12, right: 24),
+          Padding(
+            padding: const EdgeInsets.only(left: 8, right: 14),
             child: IconButton(
-              icon: Icon(Icons.send_sharp),
-              onPressed: (null),
+              icon: const Icon(Icons.send_sharp),
+              onPressed: () => sendMessage(textEditingController.text),
               color: Colors.blue,
             ),
           )

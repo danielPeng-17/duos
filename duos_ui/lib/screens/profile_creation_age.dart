@@ -1,8 +1,9 @@
 import 'package:duos_ui/screens/profile_creation_bio.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:duos_ui/providers/providers.dart';
 import 'package:provider/provider.dart';
-import 'package:duos_ui/providers/profile_provider.dart';
+
 
 class ProfileCreationAge extends StatefulWidget {
   const ProfileCreationAge({Key? key}) : super(key: key);
@@ -17,7 +18,7 @@ class _ProfileCreationAgeState extends State<ProfileCreationAge> {
 
   @override
   void initState() {
-    context.read<Profile>().setSetupStatus(false);
+    context.read<ProfileProvider>().setSetupStatus(false);
     dateInput.text = ""; //set the initial value of text field
     super.initState();
   }
@@ -97,13 +98,11 @@ class _ProfileCreationAgeState extends State<ProfileCreationAge> {
                       lastDate: DateTime(2030));
 
                   if (pickedDate != null) {
-                    print(
-                        pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
                     String formattedDate =
                         DateFormat('yyyy-MM-dd').format(pickedDate);
-                    print(formattedDate);
 
-                    context.read<Profile>().setDateofBirth(formattedDate);
+                    if (!mounted) return;
+                    context.read<ProfileProvider>().setDateofBirth(formattedDate);
                     //formatted date output using intl package =>  2021-03-16
 
                     //no longer need to use default state, can use provider ^ above
@@ -129,7 +128,7 @@ class _ProfileCreationAgeState extends State<ProfileCreationAge> {
                           "assets/images/profile_creation_next.png",
                           width: 100,
                           height: 100),
-                      label: Text(""),
+                      label: const Text(""),
                       onPressed: () {
                         if (_ageform.currentState!.validate()) {
                           Navigator.of(context).push(MaterialPageRoute(

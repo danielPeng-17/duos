@@ -8,7 +8,7 @@ class SettingsPagePrivacy extends StatefulWidget {
 }
 
 class _SettingsPagePrivacyState extends State<SettingsPagePrivacy> {
-  final GlobalKey<FormState> _privform = GlobalKey<FormState>();
+  final GlobalKey<FormState> _privForm = GlobalKey<FormState>();
   bool isSwitched = false;
 
   @override
@@ -31,7 +31,7 @@ class _SettingsPagePrivacyState extends State<SettingsPagePrivacy> {
       resizeToAvoidBottomInset: false,
       body: Center(
         child: Form(
-          key: _privform,
+          key: _privForm,
           child: ListView(
             //Listview is a fix in order to prevent overflow, (scrollable) works well needs formatting
             //crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,7 +62,7 @@ class _SettingsPagePrivacyState extends State<SettingsPagePrivacy> {
                     children: [
                       Expanded(
                         child: Padding(
-                          padding: EdgeInsets.all(15.0),
+                          padding: const EdgeInsets.all(15.0),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -95,7 +95,6 @@ class _SettingsPagePrivacyState extends State<SettingsPagePrivacy> {
                                 onChanged: (value) {
                                   setState(() {
                                     isSwitched = value;
-                                    print(isSwitched);
                                   });
                                 },
                                 activeTrackColor: Colors.lightGreenAccent,

@@ -12,7 +12,7 @@ class ProfileCreationBio extends StatefulWidget {
 }
 
 class _ProfileCreationBioState extends State<ProfileCreationBio> {
-  final GlobalKey<FormState> _bioform = GlobalKey<FormState>();
+  final GlobalKey<FormState> _bioForm = GlobalKey<FormState>();
   TextEditingController descInput = TextEditingController();
   TextEditingController hobbiesInput = TextEditingController();
   TextEditingController languagesInput = TextEditingController();
@@ -37,7 +37,7 @@ class _ProfileCreationBioState extends State<ProfileCreationBio> {
       resizeToAvoidBottomInset: true,
       body: Center(
         child: Form(
-          key: _bioform,
+          key: _bioForm,
           child: ListView(
             //Listview is a fix in order to prevent overflow, (scrollable) works well needs formatting
             //crossAxisAlignment: CrossAxisAlignment.start,
@@ -218,22 +218,22 @@ class _ProfileCreationBioState extends State<ProfileCreationBio> {
                             height: 100),
                         label: Text(""),
                         onPressed: () {
-                          if (_bioform.currentState!.validate()) {
-                            context.read<Profile>().setBio(descInput.text);
+                          if (_bioForm.currentState!.validate()) {
+                            context.read<ProfileProvider>().setBio(descInput.text);
                             context
-                                .read<Profile>()
+                                .read<ProfileProvider>()
                                 .setHobbies(hobbiesInput.text);
                             context
-                                .read<Profile>()
+                                .read<ProfileProvider>()
                                 .setDatingPref(datingPrefInput.text);
                             context
-                                .read<Profile>()
+                                .read<ProfileProvider>()
                                 .setLanguages(languagesInput.text);
                             context
-                                .read<Profile>()
+                                .read<ProfileProvider>()
                                 .setGender(pronounsInput.text);
                             context
-                                .read<Profile>()
+                                .read<ProfileProvider>()
                                 .setLocation(locationInput.text);
 
                             Navigator.of(context).push(MaterialPageRoute(

@@ -1,13 +1,12 @@
 import 'dart:convert';
-
 import 'package:duos_ui/screens/sign_up_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:duos_ui/screens/forgot_password_page.dart';
-import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-
-import '../providers/profile_provider.dart';
+import '../constants/api_constants.dart';
+import 'package:duos_ui/providers/providers.dart';
+import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -18,7 +17,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   late String uid;
-  final GlobalKey<FormState> _signinform = GlobalKey<FormState>();
+  final GlobalKey<FormState> _signInForm = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
@@ -32,13 +31,14 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         //backgroundColor: Colors.white,
         elevation: 0,
       ),
       body: Form(
-        key: _signinform,
+        key: _signInForm,
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
@@ -63,7 +63,7 @@ class _LoginPageState extends State<LoginPage> {
                     if (email!.isEmpty) {
                       return 'Empty';
                     }
-                    if (email != null) {
+                    if (email.isNotEmpty) {
                       bool emailValid = RegExp(
                               r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                           .hasMatch(email);
@@ -119,7 +119,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 child: TextButton(
                   onPressed: () {
-                    if (_signinform.currentState!.validate()) {
+                    if (_signInForm.currentState!.validate()) {
                       signIn();
                     }
                   },
@@ -156,6 +156,7 @@ class _LoginPageState extends State<LoginPage> {
       barrierDismissible: false,
       builder: (context) => const Center(child: CircularProgressIndicator()),
     );
+    late String uid;
 
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
@@ -169,30 +170,28 @@ class _LoginPageState extends State<LoginPage> {
 
       if (uid.isNotEmpty) {
         final token = await FirebaseAuth.instance.currentUser!.getIdToken();
-
         final response = await http.get(
-            Uri.parse("http://10.0.2.2:3000/user/$uid"),
-            headers: {
-              "content-type": "application/json",
-              "authorization": 'Bearer $token',
-            });
+            Uri.parse("${ApiConstants.apiBaseUrl}/user/$uid"),
+            headers: ApiConstants.apiHeader(token)
+        );
+
         final decodedRes = jsonDecode(response.body);
-        print(decodedRes);
+
         if(!mounted) return;
+        context.read<AuthProvider>().setSub(uid);
         if (decodedRes.isNotEmpty) {
-          print(decodedRes["info"]["first_name"]);
-          context.read<Profile>().setFirstName(decodedRes["info"]["first_name"]);
-          context.read<Profile>().setLastName(decodedRes["info"]["last_name"]);
-          context.read<Profile>().setEmail(decodedRes["info"]["email"]);
-          context.read<Profile>().setGender(decodedRes["info"]["gender"]);
-          context.read<Profile>().setBio(decodedRes["info"]["bio"]);
-          context.read<Profile>().setDateofBirth(decodedRes["info"]["date_of_birth"]);
-          context.read<Profile>().setHobbies(decodedRes["info"]["hobbies"]);
-          context.read<Profile>().setProfilePicURL(decodedRes["info"]["profile_picture_url"]);
-          context.read<Profile>().setDatingPref(decodedRes["info"]["dating_pref"]);
-          // context.read<Profile>().setCategories(decodedRes["categories"]);
-          context.read<Profile>().setLanguages(decodedRes["info"]["languages"]);
-          context.read<Profile>().setLocation(decodedRes["info"]["location"]);
+          context.read<ProfileProvider>().setFirstName(decodedRes["info"]["first_name"]);
+          context.read<ProfileProvider>().setLastName(decodedRes["info"]["last_name"]);
+          context.read<ProfileProvider>().setEmail(decodedRes["info"]["email"]);
+          context.read<ProfileProvider>().setGender(decodedRes["info"]["gender"]);
+          context.read<ProfileProvider>().setBio(decodedRes["info"]["bio"]);
+          context.read<ProfileProvider>().setDateofBirth(decodedRes["info"]["date_of_birth"]);
+          context.read<ProfileProvider>().setHobbies(decodedRes["info"]["hobbies"]);
+          context.read<ProfileProvider>().setProfilePicURL(decodedRes["info"]["profile_picture_url"]);
+          context.read<ProfileProvider>().setDatingPref(decodedRes["info"]["dating_pref"]);
+          // context.read<ProfileProvider>().setCategories(decodedRes["categories"]);
+          context.read<ProfileProvider>().setLanguages(decodedRes["info"]["languages"]);
+          context.read<ProfileProvider>().setLocation(decodedRes["info"]["location"]);
 
         }
       }
