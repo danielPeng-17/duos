@@ -129,7 +129,6 @@ class ContactsPageState extends State<ContactsPage> {
                 .contains(_searchFieldController.text.toLowerCase())
         ? GestureDetector(
             onTap: () {
-              contactsProvider.setSeenTimestampForChat(uid, contact.uid);
               Navigator.push(
                 context,
                 MaterialPageRoute(
