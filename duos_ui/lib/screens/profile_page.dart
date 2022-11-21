@@ -32,7 +32,7 @@ class _ProfilePageState extends State<ProfilePage> {
       Stack(
         children: [
           Container(
-            padding: const EdgeInsets.only(top: 20),
+            padding: const EdgeInsets.only(top: 30),
             alignment: Alignment.topCenter,
             child: ClipRRect(
               child: context.watch<ProfileProvider>().profilePicPath == ''

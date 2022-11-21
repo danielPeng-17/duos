@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class ChatUtils {
+class Utils {
     static String getChatId(String uid1, String uid2) {
         List<String> temp = <String>[uid1, uid2];
         temp.sort();

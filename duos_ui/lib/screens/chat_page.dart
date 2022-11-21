@@ -31,7 +31,6 @@ class ChatPageState extends State<ChatPage> {
   int limit = 25;
 
   TextEditingController textEditingController = TextEditingController();
-  ScrollController listScrollController = ScrollController();
 
   late ChatProvider chatProvider;
   late AuthProvider authProvider;
@@ -42,11 +41,6 @@ class ChatPageState extends State<ChatPage> {
     chatProvider = context.read<ChatProvider>();
     authProvider = context.read<AuthProvider>();
 
-    readLocal();
-  }
-
-
-  void readLocal() {
     // uid1 = authProvider.sub;
     // uid2 = widget.arguments.peerUid;
     uid1 = "PbsHaVsmcZQtspSJvAPlzgCPmP72";

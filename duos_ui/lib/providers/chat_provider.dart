@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:duos_ui/utils/chat_utils.dart';
+import 'package:duos_ui/utils/utils.dart';
 import 'dart:developer';
 
 class ChatProvider {
@@ -7,36 +7,10 @@ class ChatProvider {
 
   ChatProvider({required this.firebaseFirestore});
 
-  // For chat contacts
-  // When user clicks on a chat, set the lastSeen to now
-  void setSeenTimestampForChat(String uid1, String uid2) {
-    try {
-      final chatId = ChatUtils.getChatId(uid1, uid2);
-      final uid1Seen = "${uid1}_last_seen";
-      final now = Timestamp.now();
-
-      FirebaseFirestore.instance.runTransaction((transaction) async {
-        firebaseFirestore.collection("user_chats").doc(chatId).set({uid1Seen: now});
-      });
-    } catch(e) {
-      log("Error: $e");
-    }
-  }
-
-  // For chat contacts
-  // Allows user to see which chats got new messages
-  Stream<QuerySnapshot> getChatsSnapshot(String uid1) {
-    return firebaseFirestore
-        .collection("user_chats")
-        .where('users', arrayContains: [uid1])
-        .orderBy('last_updated', descending: true)
-        .snapshots();
-  }
-
   // For chat
   // Get messages for active chat
   Stream<QuerySnapshot> getActiveChatMessagesSnapshot(String uid1, String uid2, int limit) {
-    final chatId = ChatUtils.getChatId(uid1, uid2);
+    final chatId = Utils.getChatId(uid1, uid2);
     return firebaseFirestore
         .collection("user_chats")
         .doc(chatId)
@@ -53,7 +27,7 @@ class ChatProvider {
     }
 
     try {
-      final chatId = ChatUtils.getChatId(uid1, uid2);
+      final chatId = Utils.getChatId(uid1, uid2);
       final now = Timestamp.now();
 
       final message = ({

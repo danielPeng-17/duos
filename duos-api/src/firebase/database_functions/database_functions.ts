@@ -56,8 +56,22 @@ export const addMatch = async (firstUid: string, secondUid: string) => {
     const document = doc(collection(database, "user_profiles"), user1.id);
     const document2 = doc(collection(database, "user_profiles"), user2.id);
 
-    await updateDoc(document, { matched: arrayUnion(secondUid) });
-    await updateDoc(document2, { matched: arrayUnion(firstUid) });
+    const user1Data = {
+        profile_picture_url: user1.get("info.profile_picture_url"),
+        first_name: user1.get("info.first_name"),
+        last_name: user1.get("info.last_name"),
+        uid: firstUid
+    }
+
+    const user2Data = {
+        profile_picture_url: user2.get("info.profile_picture_url"),
+        first_name: user2.get("info.first_name"),
+        last_name: user2.get("info.last_name"),
+        uid: secondUid
+    }
+
+    await updateDoc(document, { matched: arrayUnion(user2Data) });
+    await updateDoc(document2, { matched: arrayUnion(user1Data) });
 }
 export const updateUserAsync = async (uid: string, editedUser: User) => {
     const user = await getUserDocAsync(uid);

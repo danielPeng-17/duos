@@ -1,4 +1,4 @@
-import { Controller, Get, Req, Param, Body, Request, Post } from '@nestjs/common';
+import { Controller, Get, Param, Post } from '@nestjs/common';
 import { User } from 'src/models/user';
 import { MatchingService } from './matching.service';
 
@@ -29,13 +29,7 @@ export class MatchingController {
     @Post(':id/like/:other')
     likedProfile(@Param('id') id: string, @Param('other') likedId: string): Promise<likePayload> {
         //get userID
-        const payload = this.matchingService.LikePerson(id, likedId)
-
-        return payload
+        const payload = this.matchingService.LikePerson(id, likedId);
+        return payload;
     }
-
-    // @Get('test')
-    // test(@Req() request: Request) {
-    //     return ' Hello' + request['user']?.email + '!';
-    // }
 }

@@ -1,9 +1,7 @@
 import { User } from "src/models/user";
 import { Injectable } from '@nestjs/common';
-import { addALiked, addMatch, createNewUserAsync, getAllUsersInCategory, getUserAsync, removeALiked } from "src/firebase/database_functions/database_functions";
+import { addALiked, addMatch, getAllUsersInCategory, getUserAsync, removeALiked } from "src/firebase/database_functions/database_functions";
 import { likePayload } from "./matching.controller";
-
-
 
 @Injectable()
 export class MatchingService {

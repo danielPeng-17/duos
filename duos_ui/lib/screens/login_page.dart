@@ -8,6 +8,8 @@ import '../constants/api_constants.dart';
 import 'package:duos_ui/providers/providers.dart';
 import 'package:http/http.dart' as http;
 
+import '../models/contacts.dart';
+
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
@@ -180,6 +182,9 @@ class _LoginPageState extends State<LoginPage> {
         if(!mounted) return;
         context.read<AuthProvider>().setSub(uid);
         if (decodedRes.isNotEmpty) {
+          final matched = decodedRes["matched"];
+          List<Contacts> contacts = List<Contacts>.from(matched.map((contact) => Contacts.fromJson(contact)));
+          context.read<ContactsProvider>().setContacts(contacts);
           context.read<ProfileProvider>().setFirstName(decodedRes["info"]["first_name"]);
           context.read<ProfileProvider>().setLastName(decodedRes["info"]["last_name"]);
           context.read<ProfileProvider>().setEmail(decodedRes["info"]["email"]);
