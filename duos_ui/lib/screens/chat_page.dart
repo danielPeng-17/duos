@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:duos_ui/utils/utils.dart';
 import 'package:duos_ui/widgets/avatar.dart';
 import 'package:duos_ui/widgets/icon.dart';
 import 'package:flutter/material.dart';
@@ -41,10 +42,8 @@ class ChatPageState extends State<ChatPage> {
     chatProvider = context.read<ChatProvider>();
     authProvider = context.read<AuthProvider>();
 
-    // uid1 = authProvider.sub;
-    // uid2 = widget.arguments.peerUid;
-    uid1 = "PbsHaVsmcZQtspSJvAPlzgCPmP72";
-    uid2 = "zmUYi77QgaSPX6lmSSx0LlT67EV2";
+    uid1 = authProvider.sub;
+    uid2 = widget.arguments.peerUid;
   }
 
   @override
@@ -55,21 +54,22 @@ class ChatPageState extends State<ChatPage> {
           backgroundColor: Colors.transparent,
           centerTitle: true,
           title: Row(
-            children: const [
+            children: [
               Padding(
-                padding: EdgeInsets.only(right: 12, left: 20),
-                child: Avatar.small(url: "https://picsum.photos/200/300"),
+                padding: const EdgeInsets.only(right: 12, left: 20),
+                child: Avatar.small(url: widget.arguments.peerImg),
               ),
               Text(
-                "Name Here",
-                style: TextStyle(color: Colors.black),
+                widget.arguments.peerName,
+                style: const TextStyle(color: Colors.black),
               ),
             ],
           ),
-          leading: const Material(
+          leading: Material(
             child: IconButton(
-              onPressed: (null),
-              icon: Icon(Icons.arrow_back),
+              onPressed: () => Navigator.pop(context),
+              icon: const Icon(Icons.arrow_back),
+              color: Colors.grey[400],
             ),
           ),
           elevation: 0,
@@ -85,63 +85,111 @@ class ChatPageState extends State<ChatPage> {
     return Flexible(
       child: uid2.isNotEmpty
           ? StreamBuilder<QuerySnapshot>(
-        stream:
-        chatProvider.getActiveChatMessagesSnapshot(uid1, uid2, limit),
-        builder: (BuildContext context,
-            AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.hasData) {
-            listMessage = snapshot.data!.docs;
-            if (listMessage.isNotEmpty) {
-              return ListView.builder(
-                padding: const EdgeInsets.all(10),
-                itemBuilder: (context, index) =>
-                    buildItem(index, snapshot.data!.docs[index]),
-                itemCount: snapshot.data?.docs.length,
-                reverse: true,
-              );
-            } else {
-              return const Center(child: Text("No message here yet..."));
-            }
-          } else {
-            return const Center(
+              stream:
+                  chatProvider.getActiveChatMessagesSnapshot(uid1, uid2, limit),
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (snapshot.hasData) {
+                  listMessage = snapshot.data!.docs;
+                  if (listMessage.isNotEmpty) {
+                    return ListView.builder(
+                      padding: const EdgeInsets.all(10),
+                      itemBuilder: (context, index) {
+                        final data = snapshot.data!.docs[index];
+                        bool showDate = false;
+
+                        if (index == snapshot.data!.docs.length - 1) {
+                          showDate = true;
+                        } else {
+                          final previousMessageDate =
+                              (data.get("timestamp") as Timestamp).toDate();
+                          final currentMessageDate =
+                              (snapshot.data!.docs[index + 1].get("timestamp")
+                                      as Timestamp)
+                                  .toDate();
+
+                          if (previousMessageDate
+                              .isBefore(currentMessageDate)) {
+                            showDate = true;
+                          }
+                        }
+
+                        return buildItem(index, data, showDate);
+                      },
+                      itemCount: snapshot.data!.docs.length,
+                      reverse: true,
+                    );
+                  } else {
+                    return const Center(child: Text("No messages yet..."));
+                  }
+                } else {
+                  return const Center(
+                    child: CircularProgressIndicator(
+                      color: Colors.amberAccent,
+                    ),
+                  );
+                }
+              },
+            )
+          : const Center(
               child: CircularProgressIndicator(
                 color: Colors.amberAccent,
               ),
-            );
-          }
-        },
-      )
-          : const Center(
-        child: CircularProgressIndicator(
-          color: Colors.amberAccent,
-        ),
-      ),
+            ),
     );
   }
 
-  Widget buildItem(int index, DocumentSnapshot data) {
+  Widget buildItem(int index, DocumentSnapshot data, bool showDate) {
     final message = data.get("content").toString();
     final senderId = data.get("sender_id").toString();
-    // final time =
-    //     DateTime.fromMillisecondsSinceEpoch(data.get("timestamp") * 1000);
+    final time = Utils.formatDate(
+        data.get("timestamp") as Timestamp, "MMM. d, yyyy", true);
 
-    return Container(
-      padding: const EdgeInsets.only(left: 12, right: 12, top: 4, bottom: 4),
-      child: Align(
-        alignment: (senderId == uid2 ? Alignment.topLeft : Alignment.topRight),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            color: (senderId == uid2 ? Colors.grey.shade200 : Colors.blue[200]),
-          ),
+    return Column(
+      children: [
+        showDate
+            ? Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Text(time),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: 16,
+                      right: 16,
+                    ),
+                    child: Divider(
+                      color: Colors.grey[400],
+                    ),
+                  ),
+                ],
+              )
+            : Column(),
+        Container(
+          margin: EdgeInsets.fromLTRB(
+              senderId == uid1 ? 48.0 : 0, 0, senderId == uid1 ? 0 : 48.0, 0),
           padding:
-          const EdgeInsets.only(top: 15, bottom: 15, left: 18, right: 18),
-          child: Text(
-            message,
-            style: const TextStyle(fontSize: 16),
+              const EdgeInsets.only(left: 12, right: 12, top: 4, bottom: 4),
+          child: Align(
+            alignment:
+                (senderId == uid2 ? Alignment.topLeft : Alignment.topRight),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: (senderId == uid2
+                    ? Colors.grey.shade200
+                    : Colors.blue[200]),
+              ),
+              padding: const EdgeInsets.only(
+                  top: 15, bottom: 15, left: 18, right: 18),
+              child: Text(
+                message,
+                style: const TextStyle(fontSize: 16),
+              ),
+            ),
           ),
         ),
-      ),
+      ],
     );
   }
 
@@ -157,36 +205,36 @@ class ChatPageState extends State<ChatPage> {
     return SafeArea(
       bottom: true,
       top: false,
-      child: Row(
+      child: Flex(
+        direction: Axis.horizontal,
         children: [
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.only(left: 14, bottom: 8, top: 8),
+              padding:
+                  const EdgeInsets.only(left: 16, bottom: 8, top: 8, right: 16),
               child: TextField(
                 controller: textEditingController,
                 textInputAction: TextInputAction.go,
                 onSubmitted: (text) => sendMessage(text),
                 decoration: InputDecoration(
                   hintText: "Aa",
-                  hintStyle: TextStyle(color: Colors.grey[800]),
-                  contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+                  hintStyle: TextStyle(color: Colors.grey[400]),
+                  contentPadding:
+                      const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30.0),
                   ),
                   filled: true,
                   fillColor: Colors.white70,
+                  suffixIcon: IconButton(
+                    icon: const Icon(Icons.send_sharp),
+                    onPressed: () => sendMessage(textEditingController.text),
+                    color: Colors.grey[400],
+                  ),
                 ),
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 8, right: 14),
-            child: IconButton(
-              icon: const Icon(Icons.send_sharp),
-              onPressed: () => sendMessage(textEditingController.text),
-              color: Colors.blue,
-            ),
-          )
         ],
       ),
     );

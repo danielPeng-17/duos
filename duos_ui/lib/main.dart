@@ -17,7 +17,7 @@ Future main() async {
     providers: [
       ChangeNotifierProvider<ProfileProvider>(create: (_) => ProfileProvider()),
       ChangeNotifierProvider<AuthProvider>(create: (_) => AuthProvider()),
-      ChangeNotifierProvider<ContactsProvider>(
+      Provider<ContactsProvider>(
           create: (_) => ContactsProvider(firebaseFirestore: firebaseFirestore)),
       Provider<ChatProvider>(
           create: (_) => ChatProvider(firebaseFirestore: firebaseFirestore)),

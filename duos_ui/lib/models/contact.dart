@@ -1,18 +1,18 @@
-class Contacts {
+class Contact {
   String uid;
   String firstName;
   String lastName;
   String profileUrl;
 
-  Contacts({
+  Contact({
     required this.uid,
     required this.firstName,
     required this.lastName,
     required this.profileUrl
   });
 
-  factory Contacts.fromJson(dynamic json) {
-    return Contacts(
+  factory Contact.fromJson(dynamic json) {
+    return Contact(
       uid: json["uid"],
       firstName: json["first_name"],
       lastName: json["last_name"],

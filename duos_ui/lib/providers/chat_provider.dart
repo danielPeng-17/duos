@@ -39,6 +39,10 @@ class ChatProvider {
       FirebaseFirestore.instance.runTransaction((transaction) async {
         firebaseFirestore.collection("user_chats").doc(chatId).collection("messages").add(message);
         firebaseFirestore.collection("user_chats").doc(chatId).set({"last_updated": now});
+        firebaseFirestore.collection("last_messages").doc(chatId).set({
+          "users": [uid1, uid2],
+          ...message
+        });
       });
     } catch(e) {
       log("Error: $e");

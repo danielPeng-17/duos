@@ -1,23 +1,13 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../models/contacts.dart';
 import '../utils/utils.dart';
-import 'disposable_provider.dart';
-import 'package:duos_ui/constants/constants.dart';
 
-class ContactsProvider extends DisposableProvider {
-  List<Contacts> _contacts = [];
+
+class ContactsProvider {
   final FirebaseFirestore firebaseFirestore;
 
   ContactsProvider({required this.firebaseFirestore});
-
-  List<Contacts> get contacts => _contacts;
-
-  void setContacts(List<Contacts> c) {
-    _contacts = c;
-    notifyListeners();
-  }
 
   // For chat contacts
   // When user clicks on a chat, set the lastSeen to now
@@ -28,33 +18,27 @@ class ContactsProvider extends DisposableProvider {
       final now = Timestamp.now();
 
       FirebaseFirestore.instance.runTransaction((transaction) async {
-        firebaseFirestore.collection("user_chats").doc(chatId).set({uid1Seen: now});
+        firebaseFirestore
+            .collection("user_chats")
+            .doc(chatId)
+            .set({uid1Seen: now});
       });
-    } catch(e) {
+    } catch (e) {
       log("Error: $e");
     }
   }
 
-  // For chat contacts
-  // Allows user to see which chats got new messages
-  Stream<QuerySnapshot> getChatsSnapshot(String uid1) {
+  Stream<QuerySnapshot> getLastMessageStream(String uid) {
     return firebaseFirestore
-        .collection("user_chats")
-        .where('users', arrayContains: [uid1])
-        .orderBy('last_updated', descending: true)
+        .collection("last_messages")
+        .where("users", arrayContains: uid)
         .snapshots();
   }
 
-  void setUserStatus(String uid, Status status) {
-
-  }
-
-  void getUserStatus() {
-
-  }
-
-  @override
-  void disposeValues() {
-    _contacts = [];
+  Stream<QuerySnapshot> getContactsStream(String uid) {
+    return firebaseFirestore
+        .collection("user_profiles")
+        .where("uid", isEqualTo: uid)
+        .snapshots();
   }
 }
