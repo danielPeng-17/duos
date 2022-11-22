@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:duos_ui/utils/utils.dart';
 import 'package:duos_ui/widgets/avatar.dart';
-import 'package:duos_ui/widgets/icon.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
@@ -101,15 +100,14 @@ class ChatPageState extends State<ChatPage> {
                         if (index == snapshot.data!.docs.length - 1) {
                           showDate = true;
                         } else {
-                          final previousMessageDate =
-                              (data.get("timestamp") as Timestamp).toDate();
                           final currentMessageDate =
+                              (data.get("timestamp") as Timestamp).toDate();
+                          final previousMessageDate =
                               (snapshot.data!.docs[index + 1].get("timestamp")
                                       as Timestamp)
                                   .toDate();
 
-                          if (previousMessageDate
-                              .isBefore(currentMessageDate)) {
+                          if (!Utils.isSameDate(currentMessageDate, previousMessageDate)) {
                             showDate = true;
                           }
                         }

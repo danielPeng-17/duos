@@ -57,32 +57,6 @@ class _HomePageState extends State<HomePage> {
         centerTitle: true,
         title: Image.asset('assets/images/duosBlackLogo.png',
             fit: BoxFit.contain, height: 60),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.menu),
-            tooltip: 'Adjust preferences',
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute<void>(
-                  builder: (BuildContext context) {
-                    return Scaffold(
-                      appBar: AppBar(
-                        title: const Text('Preferences'),
-                      ),
-                      body: const Center(
-                        child: Text(
-                          'Preference setting page',
-                          style: TextStyle(fontSize: 24),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              );
-            },
-          ),
-        ],
       ),
       body: (existingMatches && !loading)
           ? Container(

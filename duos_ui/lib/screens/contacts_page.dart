@@ -9,6 +9,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:duos_ui/providers/chat_provider.dart';
 import 'package:duos_ui/models/models.dart';
 import 'package:intl/intl.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:duos_ui/providers/providers.dart';
 
@@ -76,37 +77,41 @@ class ContactsPageState extends State<ContactsPage> {
             ),
             const SizedBox(height: 10),
             Flexible(
-                child: StreamBuilder(
-              stream: contactsProvider.getContactsStream(uid),
-              builder: (context, contactsSnapshot) {
-                if (contactsSnapshot.hasData) {
-                  final matched = contactsSnapshot.data?.docs[0]["matched"];
-                  List<Contact> contacts = List<Contact>.from(
-                      matched.map((contact) => Contact.fromJson(contact)));
-                  return StreamBuilder(
-                      stream: contactsProvider.getLastMessageStream(uid),
-                      builder: (context, lastMessageSnapshot) {
-                        if (contactsSnapshot.hasData) {
-                          final lastMessagesSnapshotDocs =
-                              lastMessageSnapshot.data!.docs;
+              child: StreamBuilder(
+                stream: contactsProvider.getContactsStream(uid),
+                builder: (context, contactsSnapshot) {
+                  if (contactsSnapshot.hasData) {
+                    final matched = contactsSnapshot.data?.docs[0]["matched"];
+                    List<Contact> contacts = List<Contact>.from(
+                        matched.map((contact) => Contact.fromJson(contact)));
+                    return StreamBuilder(
+                        stream: contactsProvider.getLastMessageStream(uid),
+                        builder: (context, lastMessageSnapshot) {
+                          if (contactsSnapshot.hasData) {
+                            List<LastMessage> lastMessages = [];
 
-                          List<LastMessage> lastMessages =
-                              List<LastMessage>.from(
-                                  lastMessagesSnapshotDocs.map((message) =>
-                                      LastMessage.fromDocument(message)));
+                            if (lastMessageSnapshot.hasData) {
+                              final lastMessagesSnapshotDocs = lastMessageSnapshot.data!.docs;
 
-                          return ListView.builder(
-                            itemCount: contacts.length,
-                            itemBuilder: (context, index) =>
-                                contactsTile(contacts[index], lastMessages),
-                          );
-                        }
-                        return Container();
-                      });
-                }
-                return Container();
-              },
-            )),
+                              lastMessages =
+                                  List<LastMessage>.from(
+                                      lastMessagesSnapshotDocs.map((message) =>
+                                          LastMessage.fromDocument(message))) ?? [];
+                            }
+
+                            return ListView.builder(
+                              itemCount: contacts.length,
+                              itemBuilder: (context, index) =>
+                                  contactsTile(contacts[index], lastMessages),
+                            );
+                          }
+                          return Container();
+                        });
+                  }
+                  return Container();
+                },
+              ),
+            ),
           ],
         ),
       ),
@@ -171,7 +176,7 @@ class ContactsPageState extends State<ContactsPage> {
                               style:
                                   const TextStyle(fontWeight: FontWeight.w600),
                             ),
-                            Text(lastMessage.senderId != ""
+                            Text(lastMessages.isNotEmpty && lastMessage.senderId != ""
                                 ? "${lastMessage.senderId == uid ? 'You: ' : ''} ${lastMessage.content}  •  ${Utils.formatDate(lastMessage.timestamp, "MMM. d, ''yy", true)}"
                                 : "No messages yet")
                           ],

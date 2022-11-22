@@ -3,10 +3,6 @@ import 'package:duos_ui/screens/sign_up_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:duos_ui/screens/forgot_password_page.dart';
-import 'package:provider/provider.dart';
-import '../constants/api_constants.dart';
-import 'package:duos_ui/providers/providers.dart';
-import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -164,37 +160,9 @@ class _LoginPageState extends State<LoginPage> {
         password: _passwordController.text.trim(),
       ).then((value) {
         if (value.user != null) {
-          uid = value.user!.uid;
+
         }
       });
-
-      if (uid.isNotEmpty) {
-        final token = await FirebaseAuth.instance.currentUser!.getIdToken();
-        final response = await http.get(
-            Uri.parse("${ApiConstants.apiBaseUrl}/user/$uid"),
-            headers: ApiConstants.apiHeader(token)
-        );
-
-        final decodedRes = jsonDecode(response.body);
-
-        if(!mounted) return;
-        context.read<AuthProvider>().setSub(uid);
-        if (decodedRes.isNotEmpty) {
-          context.read<ProfileProvider>().setFirstName(decodedRes["info"]["first_name"]);
-          context.read<ProfileProvider>().setLastName(decodedRes["info"]["last_name"]);
-          context.read<ProfileProvider>().setEmail(decodedRes["info"]["email"]);
-          context.read<ProfileProvider>().setGender(decodedRes["info"]["gender"]);
-          context.read<ProfileProvider>().setBio(decodedRes["info"]["bio"]);
-          context.read<ProfileProvider>().setDateofBirth(decodedRes["info"]["date_of_birth"]);
-          context.read<ProfileProvider>().setHobbies(decodedRes["info"]["hobbies"]);
-          context.read<ProfileProvider>().setProfilePicURL(decodedRes["info"]["profile_picture_url"]);
-          context.read<ProfileProvider>().setDatingPref(decodedRes["info"]["dating_pref"]);
-          // context.read<ProfileProvider>().setCategories(decodedRes["categories"]);
-          context.read<ProfileProvider>().setLanguages(decodedRes["info"]["languages"]);
-          context.read<ProfileProvider>().setLocation(decodedRes["info"]["location"]);
-
-        }
-      }
     } on FirebaseAuthException catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(e.message!)),

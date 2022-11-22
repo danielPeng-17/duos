@@ -5,7 +5,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:duos_ui/screens/join_page.dart';
 import 'package:provider/provider.dart';
 import 'package:duos_ui/screens/container_page.dart';
-import 'package:duos_ui/screens/chat_page.dart';
 import 'package:duos_ui/providers/providers.dart';
 
 Future main() async {
@@ -46,7 +45,6 @@ class MyApp extends StatelessWidget {
               foregroundColor: Colors.black,
             )),
         home: const RootPage()
-        // home: ChatPage(arguments: ChatPageArguments(peerUid: "1234567", peerName: "Test Name", peerImg: "test")),
         );
   }
 }
