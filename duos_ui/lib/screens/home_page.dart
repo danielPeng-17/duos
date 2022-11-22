@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'package:duos_ui/constants/api_constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -27,23 +28,23 @@ class _HomePageState extends State<HomePage> {
     user.getIdTokenResult(true).then((result) {
       token = result.token;
       _getProfiles().then((profiles) {
-          _profiles.addAll(profiles);
-          if (_profiles.isNotEmpty) {
-            Future.delayed(const Duration(milliseconds: 1000), () {
-              setState(() {
-                _currentProfile = _profiles.removeFirst();
-                existingMatches = true;
-                loading = false;
-              });
+        _profiles.addAll(profiles);
+        if (_profiles.isNotEmpty) {
+          Future.delayed(const Duration(milliseconds: 1000), () {
+            setState(() {
+              _currentProfile = _profiles.removeFirst();
+              existingMatches = true;
+              loading = false;
             });
-          } else {
-            Future.delayed(const Duration(milliseconds: 1000), () {
-              setState(() {
-                existingMatches = false;
-                loading = false;
-              });
+          });
+        } else {
+          Future.delayed(const Duration(milliseconds: 1000), () {
+            setState(() {
+              existingMatches = false;
+              loading = false;
             });
-          }
+          });
+        }
       });
     });
     super.initState();
@@ -112,6 +113,7 @@ class _HomePageState extends State<HomePage> {
                                 image: NetworkImage(_currentProfile["info"]
                                     ["profile_picture_url"]),
                                 fit: BoxFit.cover,
+
                               ),
                             ),
                             child: Stack(
@@ -328,21 +330,30 @@ class _HomePageState extends State<HomePage> {
             )
           : (loading
               ? Container(
+                  margin: const EdgeInsets.only(left: 150, right: 150),
                   alignment: Alignment.center,
-                  child: const LoadingIndicator(
-                      indicatorType: Indicator.pacman,
-                      colors: [
-                        Colors.yellow,
-                        Colors.orange,
-/*                        Colors.purple,
-                        Colors.pink,
-                        Colors.red,
-                        Colors.yellow*/
-                      ],
-                      strokeWidth: 2,
-                      backgroundColor: Colors.transparent,
-                      pathBackgroundColor: Colors.transparent),
-                )
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const LoadingIndicator(
+                        indicatorType: Indicator.circleStrokeSpin,
+                        colors: [
+                          Colors.black,
+                        ],
+                        strokeWidth: 4,
+                        backgroundColor: Colors.transparent,
+                        pathBackgroundColor: Colors.transparent,
+                      ),
+                      Container(
+                        margin: const EdgeInsets.only(top: 30),
+                        child: const Text(
+                          "Loading . . .",
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                        ),
+                      ),
+                    ],
+                  ))
               : Container(
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height,
@@ -377,11 +388,9 @@ class _HomePageState extends State<HomePage> {
   Future postLikeProfile() async {
     final String uid = user.uid;
     final apiMatchingEndpoint =
-        "http://10.0.2.2:3000/matching/$uid/like/${_currentProfile["uid"]}";
-    final headers = {
-      "Content-type": 'application/json',
-      "Authorization": token ?? '',
-    };
+        "${ApiConstants.apiBaseUrl}/matching/$uid/like/${_currentProfile["uid"]}";
+    final headers = ApiConstants.apiHeader(token ?? '');
+
     try {
       final res =
           await http.post(Uri.parse(apiMatchingEndpoint), headers: headers);

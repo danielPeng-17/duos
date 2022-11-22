@@ -10,7 +10,6 @@ export class UserController {
 
     @Get(':uid')
     getUser(@Param('uid') uid: string){
-        console.log(this.userService.GetUser(uid));
         return this.userService.GetUser(uid);
     }
 

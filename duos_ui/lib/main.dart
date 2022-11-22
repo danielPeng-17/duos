@@ -15,15 +15,12 @@ Future main() async {
 
   runApp(MultiProvider(
     providers: [
-      ChangeNotifierProvider<ProfileProvider>(
-          create: (_) => ProfileProvider()
-      ),
-      ChangeNotifierProvider<AuthProvider>(
-          create: (_) => AuthProvider()
-      ),
+      ChangeNotifierProvider<ProfileProvider>(create: (_) => ProfileProvider()),
+      ChangeNotifierProvider<AuthProvider>(create: (_) => AuthProvider()),
+      Provider<ContactsProvider>(
+          create: (_) => ContactsProvider(firebaseFirestore: firebaseFirestore)),
       Provider<ChatProvider>(
-          create: (_) => ChatProvider(firebaseFirestore: firebaseFirestore)
-      )
+          create: (_) => ChatProvider(firebaseFirestore: firebaseFirestore)),
     ],
     child: const MyApp(),
   ));
@@ -36,21 +33,21 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Duos',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-          primarySwatch: Colors.deepPurple,
-          appBarTheme: const AppBarTheme(
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            iconTheme: IconThemeData(
-              color: Colors.black,
-            ),
-            foregroundColor: Colors.black,
-          )),
-      home: const RootPage()
-      // home: ChatPage(arguments: ChatPageArguments(peerUid: "1234567", peerName: "Test Name", peerImg: "test")),
-    );
+        title: 'Duos',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+            primarySwatch: Colors.deepPurple,
+            appBarTheme: const AppBarTheme(
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              iconTheme: IconThemeData(
+                color: Colors.black,
+              ),
+              foregroundColor: Colors.black,
+            )),
+        home: const RootPage()
+        // home: ChatPage(arguments: ChatPageArguments(peerUid: "1234567", peerName: "Test Name", peerImg: "test")),
+        );
   }
 }
 
@@ -67,7 +64,8 @@ class RootPage extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return const Center(child: Text('An error has occurred'));
-          } else if (snapshot.hasData && context.watch<ProfileProvider>().doneSetup == true) {
+          } else if (snapshot.hasData &&
+              context.watch<ProfileProvider>().doneSetup == true) {
             return const ContainerPage();
           } else {
             return const JoinPage();
