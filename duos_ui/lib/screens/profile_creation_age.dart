@@ -12,12 +12,11 @@ class ProfileCreationAge extends StatefulWidget {
 }
 
 class _ProfileCreationAgeState extends State<ProfileCreationAge> {
-  final GlobalKey<FormState> _ageform = GlobalKey<FormState>();
+  final GlobalKey<FormState> _ageForm = GlobalKey<FormState>();
   TextEditingController dateInput = TextEditingController();
 
   @override
   void initState() {
-    context.read<ProfileProvider>().setSetupStatus(false);
     dateInput.text = ""; //set the initial value of text field
     super.initState();
   }
@@ -35,7 +34,7 @@ class _ProfileCreationAgeState extends State<ProfileCreationAge> {
       body: Container(
         margin: const EdgeInsets.symmetric(horizontal: 25),
         child: Form(
-          key: _ageform,
+          key: _ageForm,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -140,7 +139,7 @@ class _ProfileCreationAgeState extends State<ProfileCreationAge> {
                           height: 80),
                       label: const Text(""),
                       onPressed: () {
-                        if (_ageform.currentState!.validate()) {
+                        if (_ageForm.currentState!.validate()) {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) =>
                                   const ProfileCreationBio()));

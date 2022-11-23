@@ -171,6 +171,7 @@ class _SignUpPageState extends State<SignUpPage> {
     }
 
     if (!mounted) return;
+    context.read<ProfileProvider>().setSetupStatus(false);
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => const ProfileCreationAge()));
   }

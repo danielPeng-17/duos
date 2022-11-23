@@ -128,19 +128,14 @@ class _ProfileCreationNameState extends State<ProfileCreationName> {
                           height: 100),
                       label: const Text(""),
                       onPressed: () async {
-                        print(">>>>>>>> in here 7");
                         if (_nameForm.currentState!.validate()) {
-                          print(">>>>>>>> in here 8");
                           context.read<ProfileProvider>().setFirstName(firstNameInput.text);
-                          print(">>>>>>>> in here 9");
                           context.read<ProfileProvider>().setLastName(lastNameInput.text);
-                          print(">>>>>>>> in here 10");
+
                           await _createProfile();
-                          print(">>>>>>>> in here 11");
+
                           if (!mounted) return;
-                          print(">>>>>>>> in here 12");
                           context.read<ProfileProvider>().setSetupStatus(true);
-                          print(">>>>>>>> in here 13");
                           Navigator.of(context).popUntil((route) => route.isFirst);
                         }
 
@@ -163,20 +158,13 @@ class _ProfileCreationNameState extends State<ProfileCreationName> {
   }
 
   Future _createProfile() async {
-    print(">>>>>>>> in here 14");
     dynamic user = FirebaseAuth.instance.currentUser;
-    print(">>>>>>>> in here 15");
     String uid = user.uid;
-    print(">>>>>>>> in here 16");
     String? token = await user.getIdToken();
-    print(">>>>>>>> in here 17 " + token!);
     final apiMatchingEndpoint = "${ApiConstants.apiBaseUrl}/user";
-    print(">>>>>>>> in here 8");
     final headers = ApiConstants.apiHeader(token ?? '');
 
-    print(">>>>>>>> in here 1");
     if (!mounted) return;
-    print(">>>>>>>> in here 2");
     final json = jsonEncode({
       "info": {
         "first_name": context.read<ProfileProvider>().firstName,
@@ -195,14 +183,10 @@ class _ProfileCreationNameState extends State<ProfileCreationName> {
       "uid": uid,
       "categories": context.read<ProfileProvider>().categories
     });
-    print(">>>>>>>> in here 3");
     try {
-      print(">>>>>>>> in here 4");
       await http.post(Uri.parse(apiMatchingEndpoint), headers: headers, body: json);
-      print(">>>>>>>> in here 5");
     } catch (err) {
       // ignore
-      print(">>>>>>>> in here 6");
     }
   }
 }
