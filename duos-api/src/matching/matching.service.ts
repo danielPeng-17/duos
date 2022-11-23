@@ -8,9 +8,7 @@ export class MatchingService {
     /**
      * Creates a new user in the firebase database
      */
-    constructor() {
-
-    }
+    constructor() {}
 
     public async GetNewPotentialMatches(id: string): Promise<User[]> {
         //TODO 

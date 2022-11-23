@@ -68,9 +68,12 @@ class _SignUpPageState extends State<SignUpPage> {
                       return 'Enter Valid Email';
                     }
                   },
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Email',
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.all(20.0),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                    hintText: 'Email',
                     //hintText:
                   ),
                   textInputAction: TextInputAction.next,
@@ -86,10 +89,12 @@ class _SignUpPageState extends State<SignUpPage> {
                     if (val!.isEmpty) return 'Empty';
                     return null;
                   },
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Password',
-                    hintText: 'Create password',
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.all(20.0),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                    hintText: 'Password',
                   ),
                 ),
               ),
@@ -104,9 +109,11 @@ class _SignUpPageState extends State<SignUpPage> {
                     if (val != _passwordController.text) return 'Not Matching';
                     return null;
                   },
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Confirm Password',
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.all(20.0),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
                     hintText: 'Confirm password',
                   ),
                 ),
@@ -157,6 +164,7 @@ class _SignUpPageState extends State<SignUpPage> {
         password: _passwordController.text.trim(),
       );
     } on FirebaseAuthException catch (e) {
+      print(e.message);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(e.message!)),
       );

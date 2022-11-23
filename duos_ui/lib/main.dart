@@ -1,6 +1,7 @@
 import 'package:duos_ui/screens/profile_creation_age.dart';
 import 'package:duos_ui/screens/profile_creation_bio.dart';
 import 'package:duos_ui/screens/profile_creation_game.dart';
+import 'package:duos_ui/screens/profile_creation_name.dart';
 import 'package:duos_ui/screens/profile_creation_picture.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +49,7 @@ class MyApp extends StatelessWidget {
               ),
               foregroundColor: Colors.black,
             )),
-        home: const ProfileCreationPicture()
+        home: const RootPage()
         );
   }
 }

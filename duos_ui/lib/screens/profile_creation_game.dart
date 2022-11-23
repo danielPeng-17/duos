@@ -44,7 +44,6 @@ class _ProfileCreationGameState extends State<ProfileCreationGame> {
         child: ListView(
           children: <Widget>[
             const SizedBox(
-              width: 250,
               height: 80,
             ),
             // const Padding(
