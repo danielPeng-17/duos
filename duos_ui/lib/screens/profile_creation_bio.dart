@@ -35,170 +35,152 @@ class _ProfileCreationBioState extends State<ProfileCreationBio> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      body: Center(
+      body: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 25),
         child: Form(
           key: _bioForm,
           child: ListView(
             //Listview is a fix in order to prevent overflow, (scrollable) works well needs formatting
             //crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              const Padding(
-                padding: EdgeInsets.only(top: 20.0),
-                child: SizedBox(
-                  width: 250,
-                  height: 100,
-                ),
+              const SizedBox(
+                height: 80,
               ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                child: Text.rich(
-                  TextSpan(
-                    children: <InlineSpan>[
-                      WidgetSpan(
-                        child: Icon(
-                          Icons.create_sharp,
-                          color: Colors.black,
-                          size: 25,
-                        ),
-                      ),
-                      TextSpan(text: ' Profile Creation'),
-                    ],
-                  ),
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                child: Text("Write your bio",
+              // const Padding(
+              //   padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              //   child: Text.rich(
+              //     TextSpan(
+              //       children: <InlineSpan>[
+              //         WidgetSpan(
+              //           child: Icon(
+              //             Icons.create_sharp,
+              //             color: Colors.black,
+              //             size: 25,
+              //           ),
+              //         ),
+              //         TextSpan(text: ' Profile Creation'),
+              //       ],
+              //     ),
+              //     textAlign: TextAlign.center,
+              //     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              //   ),
+              // ),
+              const Center(
+                child: Text("Your bio",
                     style:
-                        TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
+                        TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
+              ),
+              const SizedBox(
+                height: 40,
               ),
               const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 3),
-                child: Text("Description", style: TextStyle(fontSize: 12)),
+                padding: EdgeInsets.only(bottom: 3, left: 30),
+                child: Text("Description", style: TextStyle(fontSize: 16)),
               ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
-                child: TextFormField(
-                  controller: descInput,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Description is required';
-                    }
-                    return null;
-                  },
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Tell us about yourself',
+              TextFormField(
+                controller: descInput,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Description is required';
+                  }
+                  return null;
+                },
+                decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.all(20.0),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30.0),
                   ),
+                  hintText: 'Tell us about yourself',
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 3),
-                child: Text("Hobbies", style: TextStyle(fontSize: 12)),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
-                child: TextFormField(
-                  controller: hobbiesInput,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Hobbies field is required';
-                    }
-                    return null;
-                  },
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'E.g. Badminton, Chess, Gaming',
+
+              label("Hobbies"),
+              TextFormField(
+                controller: hobbiesInput,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Hobbies field is required';
+                  }
+                  return null;
+                },
+                decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.all(20.0),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30.0),
                   ),
+                  hintText: 'E.g. Badminton, Chess, Gaming',
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 3),
-                child:
-                    Text("Dating Preference", style: TextStyle(fontSize: 12)),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
-                child: TextFormField(
+
+              label("Dating Preferences"),
+              TextFormField(
                   controller: datingPrefInput,
                   validator: (value) {
                     if (value!.isEmpty) {
-                      return 'Dating preference field is required';
+                      return 'Dating preferences field is required';
                     }
                     return null;
                   },
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'E.g. Male, Female, Non-Binary',
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.all(20.0),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                    hintText: 'E.g. Male, Female, Non-Binary',
                   ),
                 ),
-              ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 3),
-                child: Text("Languages", style: TextStyle(fontSize: 12)),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
-                child: TextFormField(
-                  controller: languagesInput,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Language field is required';
-                    }
-                    return null;
-                  },
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'E.g. English, French, Spanish',
+
+              label("Languages"),
+              TextFormField(
+                controller: languagesInput,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Language field is required';
+                  }
+                  return null;
+                },
+                decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.all(20.0),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30.0),
                   ),
+                  hintText: 'E.g. English, French, Spanish',
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 3),
-                child: Text("Pronouns", style: TextStyle(fontSize: 12)),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
-                child: TextFormField(
-                  controller: pronounsInput,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Pronouns field is required';
-                    }
-                    return null;
-                  },
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'E.g. She/He/They',
+
+              label("Pronouns"),
+              TextFormField(
+                controller: pronounsInput,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Pronouns field is required';
+                  }
+                  return null;
+                },
+                decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.all(20.0),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30.0),
                   ),
+                  hintText: 'E.g. She/He/They',
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 3),
-                child: Text("Location", style: TextStyle(fontSize: 12)),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
-                child: TextFormField(
-                  controller: locationInput,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Description is required';
-                    }
-                    return null;
-                  },
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'City, Country',
+
+              label("Location"),
+              TextFormField(
+                controller: locationInput,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Location is required';
+                  }
+                  return null;
+                },
+                decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.all(20.0),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30.0),
                   ),
+                  hintText: 'City, Country',
                 ),
               ),
               Padding(
@@ -206,8 +188,8 @@ class _ProfileCreationBioState extends State<ProfileCreationBio> {
                 child: Center(
                     child: ElevatedButton.icon(
                         style: ElevatedButton.styleFrom(
-                          primary: Colors.black.withOpacity(0),
-                          onPrimary: Colors.black.withOpacity(0),
+                          foregroundColor: Colors.black.withOpacity(0),
+                          backgroundColor: Colors.black.withOpacity(0),
                           elevation: 20, // Elevation
                           shadowColor:
                               Colors.black.withOpacity(0), // Shadow Color
@@ -216,10 +198,12 @@ class _ProfileCreationBioState extends State<ProfileCreationBio> {
                             "assets/images/profile_creation_next.png",
                             width: 100,
                             height: 100),
-                        label: Text(""),
+                        label: const Text(""),
                         onPressed: () {
                           if (_bioForm.currentState!.validate()) {
-                            context.read<ProfileProvider>().setBio(descInput.text);
+                            context
+                                .read<ProfileProvider>()
+                                .setBio(descInput.text);
                             context
                                 .read<ProfileProvider>()
                                 .setHobbies(hobbiesInput.text);
@@ -254,6 +238,13 @@ class _ProfileCreationBioState extends State<ProfileCreationBio> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget label(String label) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 3, left: 30, top: 12),
+      child: Text(label, style: const TextStyle(fontSize: 16)),
     );
   }
 }
