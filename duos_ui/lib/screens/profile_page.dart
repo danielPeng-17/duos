@@ -1,8 +1,6 @@
 import 'dart:io';
 
-import 'package:duos_ui/screens/profile_creation_age.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:duos_ui/providers/providers.dart';
 
@@ -10,219 +8,174 @@ class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
 
   static const TextStyle nameStyle =
-      TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
+      TextStyle(fontSize: 34, fontWeight: FontWeight.bold, color: Colors.white);
 
-  static const TextStyle descStyle =
-      TextStyle(fontSize: 16, fontWeight: FontWeight.normal);
+  static const TextStyle headerStyle =
+      TextStyle(fontSize: 16, color: Colors.white);
 
   static const TextStyle descSmallStyle =
-      TextStyle(fontSize: 14, fontWeight: FontWeight.normal);
+      TextStyle(fontSize: 16, fontWeight: FontWeight.w300);
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  ImagePicker picker = ImagePicker();
-  XFile? image;
-
   @override
   Widget build(BuildContext context) {
-    return ListView(children: [
-      Stack(
+    return SingleChildScrollView(
+      child: Column(
         children: [
-          Container(
-            padding: const EdgeInsets.only(top: 30),
-            alignment: Alignment.topCenter,
-            child: ClipRRect(
-              child: context.watch<ProfileProvider>().profilePicPath == ''
-                  ? CircleAvatar(
-                      radius: 110,
-                      backgroundImage: NetworkImage(
-                        context.watch<ProfileProvider>().profilePicURL.toString()
-                      ),
-                    )
-                  : ClipRRect(
-                      borderRadius: BorderRadius.circular(100),
-                      child: Image.file(
-                          File(context.watch<ProfileProvider>().profilePicPath)),
+          Stack(
+            children: [
+              Container(
+                padding: const EdgeInsets.only(top: 80),
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      // ============== option 1
+                      // Color(0xff9e768f),
+                      // Color(0xff9fa4c4),
+                      // ============== option 2
+                      // Color(0xff2E4057),
+                      // Color(0xffDBCBD8),
+                      // ============== option 3
+                      Color(0xffA1BAFE),
+                      Color(0xff8D5185),
+                    ],
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    ClipRRect(
+                      child:
+                          context.watch<ProfileProvider>().profilePicPath == ''
+                              ? CircleAvatar(
+                                  radius: 110,
+                                  backgroundImage: NetworkImage(context
+                                      .watch<ProfileProvider>()
+                                      .profilePicURL
+                                      .toString()),
+                                )
+                              : ClipRRect(
+                                  borderRadius: BorderRadius.circular(100),
+                                  child: Image.file(File(context
+                                      .watch<ProfileProvider>()
+                                      .profilePicPath)),
+                                ),
                     ),
-            ),
-          ),
-          Positioned(
-              top: 200,
-              right: 60,
-              child: ElevatedButton(
-                onPressed: () async {
-                  image = await picker.pickImage(
-                      source: ImageSource.gallery,
-                      maxHeight: 200,
-                      maxWidth: 200);
-                  setState(() {
-                    //update UI
-                  });
-                  if (image != null) {
-                    if (!mounted) return;
-                    context.watch<ProfileProvider>().setProfilePicPath(image!.path);
-                  }
-                },
-                style: ButtonStyle(
-                  shape: MaterialStateProperty.all(const CircleBorder()),
-                  padding: MaterialStateProperty.all(const EdgeInsets.all(8)),
-                  backgroundColor:
-                      MaterialStateProperty.all(Colors.black.withOpacity(0.5)),
-                  // <-- Button color
-                  overlayColor:
-                      MaterialStateProperty.resolveWith<Color?>((states) {
-                    if (states.contains(MaterialState.pressed)) {
-                      return Colors.purple;
-                    } // <-- Splash color
-                  }),
-                ),
-                child: const Icon(Icons.upload),
-              )),
-          Positioned(
-              top: 200,
-              right: 15,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(
-                          builder: (context) => const ProfileCreationAge()))
-                      .then((_) => setState(
-                            //This is done to refresh the profile page upon return from editing
-                            () {},
-                          ));
-                },
-                style: ButtonStyle(
-                  shape: MaterialStateProperty.all(const CircleBorder()),
-                  padding: MaterialStateProperty.all(const EdgeInsets.all(8)),
-                  backgroundColor:
-                      MaterialStateProperty.all(Colors.black.withOpacity(0.5)),
-                  // <-- Button color
-                  overlayColor:
-                      MaterialStateProperty.resolveWith<Color?>((states) {
-                    if (states.contains(MaterialState.pressed)) {
-                      return Colors.purple;
-                    } // <-- Splash color
-                  }),
-                ),
-                child: const Icon(Icons.edit),
-              )),
-          Container(
-            padding: const EdgeInsets.only(top: 250),
-            alignment: Alignment.topCenter,
-            child: Card(
-              elevation: 0,
-              color: Colors.blueGrey[50],
-              shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(15))),
-              child: SizedBox(
-                width: 250,
-                height: 75,
-                child: Center(
-                  child: Column(children: [
-                    SizedBox(height: 10),
-                    Text(
-                        "${context.watch<ProfileProvider>().firstName} ${context.watch<ProfileProvider>().lastName}",
-                        style: ProfilePage.nameStyle),
-                    Text(context.watch<ProfileProvider>().email),
-                    Text(context.watch<ProfileProvider>().location)
-                  ]),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 20, right: 20, top: 20, bottom: 35),
+                      child: Column(
+                        children: [
+                          Text(
+                              "${context.watch<ProfileProvider>().firstName} ${context.watch<ProfileProvider>().lastName}",
+                              style: ProfilePage.nameStyle),
+                          const Padding(padding: EdgeInsets.only(top: 7)),
+                          Text(
+                            context.watch<ProfileProvider>().email,
+                            style: ProfilePage.headerStyle,
+                          ),
+                          Text(
+                            context.watch<ProfileProvider>().location,
+                            style: ProfilePage.headerStyle,
+                          )
+                        ],
+                      ),
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      padding: const EdgeInsets.only(
+                          left: 30, right: 30, top: 35, bottom: 0),
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(30),
+                          topRight: Radius.circular(30),
+                        ),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          infoTile(
+                              "My Bio", context.watch<ProfileProvider>().bio),
+                          infoTile("Dating Preferences",
+                              context.watch<ProfileProvider>().datingPref),
+                          infoTile("Hobbies",
+                              context.watch<ProfileProvider>().hobbies),
+                          const Text(
+                            "Favourite Games",
+                            style: TextStyle(
+                                fontSize: 22,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w400),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 25),
+                            child: Wrap(
+                              spacing: 10.0,
+                              children: context
+                                  .watch<ProfileProvider>()
+                                  .categories
+                                  .map<Widget>(
+                                      (category) => gameBubble(category))
+                                  .toList(),
+                            ),
+                          ),
+                          infoTile("Languages",
+                              context.watch<ProfileProvider>().languages),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ),
+            ],
           ),
         ],
       ),
-      const SizedBox(height: 50),
-      Card(
-        elevation: 0,
-        color: Colors.blueGrey[50],
-        shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(15))),
-        child: SizedBox(
-          width: 300,
-          height: 50,
-          child: Center(
-            child: Column(children: [
-              const SizedBox(height: 15),
-              Text("Pronouns: ${context.watch<ProfileProvider>().gender}",
-                  style: ProfilePage.descSmallStyle)
-            ]),
+    );
+  }
+
+  Widget infoTile(String heading, String description) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          heading,
+          style: const TextStyle(
+              fontSize: 22, color: Colors.black, fontWeight: FontWeight.w400),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 7, bottom: 25),
+          child: Text(description, style: ProfilePage.descSmallStyle),
+        ),
+      ],
+    );
+  }
+
+  Widget gameBubble(String title) {
+    return Container(
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15.0),
+          color: Colors.blue.withOpacity(0.25)),
+      child: Padding(
+        padding: const EdgeInsets.only(left: 12, right: 12, top: 7, bottom: 7),
+        child: Text(
+          title,
+          style: const TextStyle(
+            fontSize: 15,
+            color: Colors.black,
+            fontWeight: FontWeight.w400,
           ),
         ),
       ),
-      Card(
-        elevation: 0,
-        color: Colors.blueGrey[50],
-        shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(15))),
-        child: SizedBox(
-          width: 300,
-          height: 50,
-          child: Center(
-            child: Column(children: [
-              const SizedBox(height: 15),
-              Text("Hobbies: ${context.watch<ProfileProvider>().hobbies}",
-                  style: ProfilePage.descSmallStyle)
-            ]),
-          ),
-        ),
-      ),
-      // TODO: fix games => types from backend does not match up with the profile provider
-      // Card(
-      //   elevation: 0,
-      //   color: Colors.blueGrey[50],
-      //   shape: const RoundedRectangleBorder(
-      //       borderRadius: BorderRadius.all(Radius.circular(15))),
-      //   child: SizedBox(
-      //     width: 325,
-      //     height: 50,
-      //     child: Center(
-      //       child: Column(children: [
-      //         const SizedBox(height: 15),
-      //         Text("Games: ${Games.listGames(context.watch<Profile>().games)}",
-      //             style: ProfilePage.descSmallStyle)
-      //       ]),
-      //     ),
-      //   ),
-      // ),
-      Card(
-        elevation: 0,
-        color: Colors.blueGrey[50],
-        shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(15))),
-        child: SizedBox(
-          width: 300,
-          height: 50,
-          child: Center(
-            child: Column(children: [
-              const SizedBox(height: 15),
-              Text("Dating Preference: ${context.watch<ProfileProvider>().datingPref}",
-                  style: ProfilePage.descSmallStyle)
-            ]),
-          ),
-        ),
-      ),
-      Card(
-        elevation: 0,
-        color: Colors.blueGrey[50],
-        shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(15))),
-        child: SizedBox(
-          width: 300,
-          height: 150,
-          child: Center(
-            child: Column(children: [
-              const SizedBox(height: 15),
-              Text(context.watch<ProfileProvider>().bio,
-                  style: ProfilePage.descSmallStyle)
-            ]),
-          ),
-        ),
-      ),
-      const SizedBox(height: 100)
-    ]);
+    );
   }
 }

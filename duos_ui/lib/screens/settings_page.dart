@@ -110,8 +110,8 @@ class _SettingsPageState extends State<SettingsPage> {
                     alignment: Alignment.centerLeft,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.black.withOpacity(0.1),
-                        onPrimary: Colors.black.withOpacity(1),
+                        foregroundColor: Colors.black.withOpacity(1),
+                        backgroundColor: Colors.black.withOpacity(0.1),
                         elevation: 20, // Elevation
                         shadowColor:
                         Colors.black.withOpacity(0.0), // Shadow Color
@@ -131,8 +131,8 @@ class _SettingsPageState extends State<SettingsPage> {
                     child: ElevatedButton(
                       onPressed: () {},
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.black.withOpacity(0),
-                        onPrimary: Colors.black.withOpacity(1),
+                        foregroundColor: Colors.black.withOpacity(1),
+                        backgroundColor: Colors.black.withOpacity(0),
                         elevation: 20, // Elevation
                         shadowColor:
                         Colors.black.withOpacity(0), // Shadow Color
@@ -142,7 +142,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           children: [
                             Expanded(
                               child: Padding(
-                                padding: EdgeInsets.all(6.0),
+                                padding: const EdgeInsets.all(6.0),
                                 child: Column(
                                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -183,8 +183,8 @@ class _SettingsPageState extends State<SettingsPage> {
                         ),
                       ),
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.black.withOpacity(0),
-                        onPrimary: Colors.black.withOpacity(1),
+                        foregroundColor: Colors.black.withOpacity(1),
+                        backgroundColor: Colors.black.withOpacity(0),
                         elevation: 20, // Elevation
                         shadowColor:
                         Colors.black.withOpacity(0), // Shadow Color
@@ -235,8 +235,8 @@ class _SettingsPageState extends State<SettingsPage> {
                         ),
                       ),
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.black.withOpacity(0),
-                        onPrimary: Colors.black.withOpacity(1),
+                        foregroundColor: Colors.black.withOpacity(1),
+                        backgroundColor: Colors.black.withOpacity(0),
                         elevation: 20, // Elevation
                         shadowColor:
                         Colors.black.withOpacity(0), // Shadow Color
@@ -287,8 +287,8 @@ class _SettingsPageState extends State<SettingsPage> {
                         ),
                       ),
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.black.withOpacity(0),
-                        onPrimary: Colors.black.withOpacity(1),
+                        foregroundColor: Colors.black.withOpacity(1),
+                        backgroundColor: Colors.black.withOpacity(0),
                         elevation: 20, // Elevation
                         shadowColor:
                         Colors.black.withOpacity(0), // Shadow Color
@@ -339,8 +339,8 @@ class _SettingsPageState extends State<SettingsPage> {
                           ),
                       ),
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.black.withOpacity(0),
-                        onPrimary: Colors.black.withOpacity(1),
+                        foregroundColor: Colors.black.withOpacity(1),
+                        backgroundColor: Colors.black.withOpacity(0),
                         elevation: 20, // Elevation
                         shadowColor:
                         Colors.black.withOpacity(0), // Shadow Color
@@ -390,8 +390,8 @@ class _SettingsPageState extends State<SettingsPage> {
                         FirebaseAuth.instance.signOut();
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.black.withOpacity(0),
-                        onPrimary: Colors.black.withOpacity(1),
+                        foregroundColor: Colors.black.withOpacity(1),
+                        backgroundColor: Colors.black.withOpacity(0),
                         elevation: 20, // Elevation
                         shadowColor:
                         Colors.black.withOpacity(0), // Shadow Color

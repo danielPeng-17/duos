@@ -1,5 +1,3 @@
-import 'package:duos_ui/screens/profile_creation_name.dart';
-import 'package:duos_ui/widgets/games.dart';
 import 'package:flutter/material.dart';
 import 'package:duos_ui/providers/providers.dart';
 import 'package:duos_ui/screens/profile_creation_picture.dart';

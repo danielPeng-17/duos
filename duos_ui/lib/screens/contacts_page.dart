@@ -1,15 +1,7 @@
-import 'dart:convert';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:duos_ui/models/last_message.dart';
 import 'package:duos_ui/screens/chat_page.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:duos_ui/providers/chat_provider.dart';
 import 'package:duos_ui/models/models.dart';
-import 'package:intl/intl.dart';
-import 'package:loading_indicator/loading_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:duos_ui/providers/providers.dart';
 
@@ -47,7 +39,7 @@ class ContactsPageState extends State<ContactsPage> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 50),
+            const SizedBox(height: 70),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: TextField(
@@ -75,7 +67,6 @@ class ContactsPageState extends State<ContactsPage> {
                 ),
               ),
             ),
-            const SizedBox(height: 10),
             Flexible(
               child: StreamBuilder(
                 stream: contactsProvider.getContactsStream(uid),
@@ -91,12 +82,12 @@ class ContactsPageState extends State<ContactsPage> {
                             List<LastMessage> lastMessages = [];
 
                             if (lastMessageSnapshot.hasData) {
-                              final lastMessagesSnapshotDocs = lastMessageSnapshot.data!.docs;
+                              final lastMessagesSnapshotDocs =
+                                  lastMessageSnapshot.data!.docs;
 
-                              lastMessages =
-                                  List<LastMessage>.from(
-                                      lastMessagesSnapshotDocs.map((message) =>
-                                          LastMessage.fromDocument(message))) ?? [];
+                              lastMessages = List<LastMessage>.from(
+                                  lastMessagesSnapshotDocs.map((message) =>
+                                      LastMessage.fromDocument(message)));
                             }
 
                             return ListView.builder(
@@ -176,7 +167,8 @@ class ContactsPageState extends State<ContactsPage> {
                               style:
                                   const TextStyle(fontWeight: FontWeight.w600),
                             ),
-                            Text(lastMessages.isNotEmpty && lastMessage.senderId != ""
+                            Text(lastMessages.isNotEmpty &&
+                                    lastMessage.senderId != ""
                                 ? "${lastMessage.senderId == uid ? 'You: ' : ''} ${lastMessage.content}  •  ${Utils.formatDate(lastMessage.timestamp, "MMM. d, ''yy", true)}"
                                 : "No messages yet")
                           ],

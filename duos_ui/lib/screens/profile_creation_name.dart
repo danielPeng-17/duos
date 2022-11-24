@@ -116,8 +116,8 @@ class _ProfileCreationNameState extends State<ProfileCreationName> {
                 child: Center(
                   child: ElevatedButton.icon(
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.black.withOpacity(0),
-                        onPrimary: Colors.black.withOpacity(0),
+                        foregroundColor: Colors.black.withOpacity(0),
+                        backgroundColor: Colors.black.withOpacity(0),
                         elevation: 20, // Elevation
                         shadowColor:
                             Colors.black.withOpacity(0), // Shadow Color
@@ -178,7 +178,6 @@ class _ProfileCreationNameState extends State<ProfileCreationName> {
         "location": context.read<ProfileProvider>().location,
         "profile_picture_url": context.read<ProfileProvider>().profilePicURL,
         "dating_pref": context.read<ProfileProvider>().datingPref,
-        "igns": context.read<ProfileProvider>().igns,
       },
       "uid": uid,
       "categories": context.read<ProfileProvider>().categories

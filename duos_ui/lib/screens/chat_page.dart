@@ -107,7 +107,8 @@ class ChatPageState extends State<ChatPage> {
                                       as Timestamp)
                                   .toDate();
 
-                          if (!Utils.isSameDate(currentMessageDate, previousMessageDate)) {
+                          if (!Utils.isSameDate(
+                              currentMessageDate, previousMessageDate)) {
                             showDate = true;
                           }
                         }
@@ -150,7 +151,10 @@ class ChatPageState extends State<ChatPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  Text(time),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Text(time),
+                  ),
                   Padding(
                     padding: const EdgeInsets.only(
                       left: 16,

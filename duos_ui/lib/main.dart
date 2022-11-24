@@ -1,8 +1,3 @@
-import 'package:duos_ui/screens/profile_creation_age.dart';
-import 'package:duos_ui/screens/profile_creation_bio.dart';
-import 'package:duos_ui/screens/profile_creation_game.dart';
-import 'package:duos_ui/screens/profile_creation_name.dart';
-import 'package:duos_ui/screens/profile_creation_picture.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -22,7 +17,8 @@ Future main() async {
       ChangeNotifierProvider<ProfileProvider>(create: (_) => ProfileProvider()),
       ChangeNotifierProvider<AuthProvider>(create: (_) => AuthProvider()),
       Provider<ContactsProvider>(
-          create: (_) => ContactsProvider(firebaseFirestore: firebaseFirestore)),
+          create: (_) =>
+              ContactsProvider(firebaseFirestore: firebaseFirestore)),
       Provider<ChatProvider>(
           create: (_) => ChatProvider(firebaseFirestore: firebaseFirestore)),
     ],
@@ -40,7 +36,10 @@ class MyApp extends StatelessWidget {
         title: 'Duos',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-            primarySwatch: Colors.deepPurple,
+            colorScheme: ColorScheme.fromSwatch().copyWith(
+              primary: const Color(0xff8D5185),
+              secondary: const Color(0xffA1BAFE),
+            ),
             appBarTheme: const AppBarTheme(
               backgroundColor: Colors.transparent,
               elevation: 0,
@@ -49,8 +48,7 @@ class MyApp extends StatelessWidget {
               ),
               foregroundColor: Colors.black,
             )),
-        home: const RootPage()
-        );
+        home: const RootPage());
   }
 }
 

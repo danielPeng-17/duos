@@ -69,7 +69,7 @@ class ContainerPageState extends State<ContainerPage> {
         context.read<ProfileProvider>().setHobbies(decodedRes["info"]["hobbies"]);
         context.read<ProfileProvider>().setProfilePicURL(decodedRes["info"]["profile_picture_url"]);
         context.read<ProfileProvider>().setDatingPref(decodedRes["info"]["dating_pref"]);
-        // context.read<ProfileProvider>().setCategories(decodedRes["categories"]);
+        context.read<ProfileProvider>().setCategories(List<String>.from(decodedRes['categories']));
         context.read<ProfileProvider>().setLanguages(decodedRes["info"]["languages"]);
         context.read<ProfileProvider>().setLocation(decodedRes["info"]["location"]);
       }
@@ -108,7 +108,7 @@ class ContainerPageState extends State<ContainerPage> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.deepPurple,
+        selectedItemColor: const Color(0xff8D5185),
         unselectedItemColor: Colors.grey,
         onTap: _onItemTapped,
       ),

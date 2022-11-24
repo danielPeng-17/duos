@@ -1,6 +1,5 @@
 import 'package:duos_ui/screens/profile_creation_game.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:duos_ui/providers/profile_provider.dart';
 
