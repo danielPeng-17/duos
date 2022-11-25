@@ -1,6 +1,6 @@
-import { IsArray, IsNotEmpty, IsString, ValidateNested } from 'class-validator';
+import { IsArray, IsNotEmpty, IsOptional, IsString, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
-import { UserInformation } from "src/models/user_info";
+import { UserInformation, UserInformationUpdateDto } from "src/models/user_info";
 /*
 Fields here are not final and based on the initial diagram, change them as needed.
 */
@@ -14,6 +14,24 @@ export class UserDto {
     @IsNotEmpty()
     uid: string;
 
+    @IsArray()
+    @IsNotEmpty()
+    categories: string[];
+}
+
+
+export class UpdateUserDto {
+    @IsOptional()
+    @ValidateNested({each: true})
+    @Type(() => UserInformationUpdateDto)
+    info: UserInformationUpdateDto;
+
+    @IsOptional()
+    @IsString()
+    @IsNotEmpty()
+    uid: string;
+
+    @IsOptional()
     @IsArray()
     @IsNotEmpty()
     categories: string[];

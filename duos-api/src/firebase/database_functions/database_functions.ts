@@ -1,6 +1,21 @@
 import database from "../config";
 import { collection, addDoc, getDoc, doc, query, where, getDocs, DocumentReference, updateDoc, arrayRemove, arrayUnion } from "firebase/firestore";
 import { User } from "src/models/user"
+import { UpdateUserDto } from "../../user/Dtos/userDto";
+
+export function convertObjectToDotNotation(obj,jsonString={}, current='') {
+    for(const key in obj) {
+      let value = obj[key];
+      let newKey = (current ? current + "." + key : key);  // joined key with dot
+      if(value && typeof value === "object") {
+        convertObjectToDotNotation(value, jsonString, newKey);  // it's a nested object, so do it again
+      } else {
+        jsonString[newKey] = value;  // it's not an object, so set the property
+      }
+    }
+    return jsonString;
+  }
+  
 
 export const getUserDocAsync = async (uid) => {
     const q = query(collection(database, "user_profiles"), where("uid", "==", uid));
@@ -77,5 +92,12 @@ export const updateUserAsync = async (uid: string, editedUser: User) => {
     const user = await getUserDocAsync(uid);
     const docRef = doc(collection(database, "user_profiles"), user.id);
     const updateDocument = JSON.stringify(editedUser);
+    await updateDoc(docRef, JSON.parse(updateDocument));
+}
+
+export const updatePartialUserAsync = async (uid: string, editedPartialUser: UpdateUserDto) => {
+    const user = await getUserDocAsync(uid);
+    const docRef = doc(collection(database, "user_profiles"), user.id);
+    const updateDocument = JSON.stringify(convertObjectToDotNotation(editedPartialUser));
     await updateDoc(docRef, JSON.parse(updateDocument));
 }
