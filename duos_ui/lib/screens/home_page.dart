@@ -31,6 +31,7 @@ class _HomePageState extends State<HomePage> {
         _profiles.addAll(profiles);
         if (_profiles.isNotEmpty) {
           Future.delayed(const Duration(milliseconds: 1000), () {
+            if (!mounted) return;
             setState(() {
               _currentProfile = _profiles.removeFirst();
               existingMatches = true;
@@ -39,6 +40,7 @@ class _HomePageState extends State<HomePage> {
           });
         } else {
           Future.delayed(const Duration(milliseconds: 1000), () {
+            if (!mounted) return;
             setState(() {
               existingMatches = false;
               loading = false;
@@ -57,32 +59,6 @@ class _HomePageState extends State<HomePage> {
         centerTitle: true,
         title: Image.asset('assets/images/duosBlackLogo.png',
             fit: BoxFit.contain, height: 60),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.menu),
-            tooltip: 'Adjust preferences',
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute<void>(
-                  builder: (BuildContext context) {
-                    return Scaffold(
-                      appBar: AppBar(
-                        title: const Text('Preferences'),
-                      ),
-                      body: const Center(
-                        child: Text(
-                          'Preference setting page',
-                          style: TextStyle(fontSize: 24),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              );
-            },
-          ),
-        ],
       ),
       body: (existingMatches && !loading)
           ? Container(
@@ -422,6 +398,7 @@ class _HomePageState extends State<HomePage> {
         },
       );
     }
+    if (!mounted) return;
     setState(() {
       if (_profiles.isNotEmpty) {
         _currentProfile = _profiles.removeFirst();
@@ -433,6 +410,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void skipProfile() {
+    if (!mounted) return;
     setState(() {
       if (_profiles.isNotEmpty) {
         _profiles.addLast(_currentProfile);
@@ -452,7 +430,6 @@ class _GameBubble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 30,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15.0),
           color: Colors.blue.withOpacity(0.25)),
@@ -461,7 +438,7 @@ class _GameBubble extends StatelessWidget {
         child: Text(
           title,
           style: const TextStyle(
-            fontSize: 14,
+            fontSize: 15,
             color: Colors.black,
             fontWeight: FontWeight.w400,
           ),

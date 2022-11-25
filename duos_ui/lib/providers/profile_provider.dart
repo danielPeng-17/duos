@@ -1,6 +1,4 @@
 import 'package:duos_ui/providers/disposable_provider.dart';
-import 'package:flutter/material.dart';
-import '../widgets/games.dart';
 
 class ProfileProvider extends DisposableProvider {
   String _firstName = '';
@@ -15,8 +13,6 @@ class ProfileProvider extends DisposableProvider {
   String _location = '';
   String _profilePicturePath = '';
   String _profilePictureURL = '';
-  List<String> _igns = [];
-  List<Games> _games = [];
   List<String> _categories = [];
   bool _doneSetup = true;
 
@@ -32,8 +28,6 @@ class ProfileProvider extends DisposableProvider {
   String get location => _location;
   String get profilePicPath => _profilePicturePath;
   String get profilePicURL => _profilePictureURL;
-  List<String> get igns => _igns;
-  List<Games> get games => _games;
   List<String> get categories => _categories;
   bool get doneSetup => _doneSetup;
 
@@ -97,21 +91,6 @@ class ProfileProvider extends DisposableProvider {
     notifyListeners();
   }
 
-  void setIgns(List<String> igns) {
-    _igns = igns;
-    notifyListeners();
-  }
-
-  void addIgn(String ign) {
-    _igns.add(ign);
-    notifyListeners();
-  }
-
-  void setGames(List<Games> games) {
-    _games = games;
-    notifyListeners();
-  }
-
   void setCategories(List<String> categories) {
     _categories = categories;
     notifyListeners();
@@ -136,8 +115,7 @@ class ProfileProvider extends DisposableProvider {
     _location = '';
     _profilePicturePath = '';
     _profilePictureURL = '';
-    _igns = [];
-    _games = [];
+    _categories = [];
     _doneSetup = true;
   }
 }

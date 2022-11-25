@@ -20,7 +20,7 @@ class _ProfileCreationPictureState extends State<ProfileCreationPicture> {
   String imageURL = "";
 
   Future<void> selectPhoto() async {
-      result = await FilePicker.platform.pickFiles(
+    result = await FilePicker.platform.pickFiles(
       allowMultiple: false,
       type: FileType.custom,
       allowedExtensions: ['png', 'jpg'],
@@ -35,11 +35,11 @@ class _ProfileCreationPictureState extends State<ProfileCreationPicture> {
     });
   }
 
-
   Future<String> uploadPhoto() async {
-    final firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
+    final firebase_storage.FirebaseStorage storage =
+        firebase_storage.FirebaseStorage.instance;
 
-    if(result != null) {
+    if (result != null) {
       final path = result?.files.single.path!;
       final fileName = result?.files.single.name;
       final file = File(path!);
@@ -52,121 +52,134 @@ class _ProfileCreationPictureState extends State<ProfileCreationPicture> {
   }
 
   void uploadAllPhotos() async {
-    imageURL =  await uploadPhoto();
+    imageURL = await uploadPhoto();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Center(
+      body: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 25),
         child: SingleChildScrollView(
           child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-          const Padding(
-          padding: EdgeInsets.only(top: 20.0),
-          child: SizedBox(
-            width: 250,
-            height: 100,
-          ),
-        ),
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          child: Text.rich(
-            TextSpan(
-              children: <InlineSpan>[
-                WidgetSpan(
-                  child: Icon(
-                    Icons.create_sharp,
-                    color: Colors.black,
-                    size: 25,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              const SizedBox(
+                height: 120,
+              ),
+              // const Padding(
+              //   padding: EdgeInsets.symmetric(horizontal: 16),
+              //   child: Text.rich(
+              //     TextSpan(
+              //       children: <InlineSpan>[
+              //         WidgetSpan(
+              //           child: Icon(
+              //             Icons.create_sharp,
+              //             color: Colors.black,
+              //             size: 25,
+              //           ),
+              //         ),
+              //         TextSpan(text: ' Profile Creation'),
+              //       ],
+              //     ),
+              //     textAlign: TextAlign.center,
+              //     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              //   ),
+              // ),
+              const Center(
+                child: Text(
+                  "Add photos",
+                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                ),
+              ),
+              const SizedBox(
+                height: 70,
+              ),
+              Center(
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.all(Radius.circular(20)),
+                  child: Container(
+                    height: MediaQuery.of(context).size.height * 0.4,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                    ),
+                    child: pickedFile != null
+                        ? Image.file(
+                            File(pickedFile!.path!),
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                          )
+                        : Image.asset(
+                            "assets/images/no_image.jpg",
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                          ),
                   ),
                 ),
-                TextSpan(text: ' Profile Creation'),
-              ],
-            ),
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-        ),
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-          child: Text("Add photos",
-              style:
-              TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
-        ),
-        Center(
-          child: ClipRRect(
-            borderRadius: const BorderRadius.all(Radius.circular(20)),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                height: MediaQuery
-                    .of(context)
-                    .size
-                    .height * 0.4,
-                width: MediaQuery
-                    .of(context)
-                    .size
-                    .width,
-                child: pickedFile != null
-                    ? Image.file(
-                  File(pickedFile!.path!),
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                )
-                    : Image.network(width: double.infinity, fit: BoxFit.cover, "https://media.istockphoto.com/id/1147544807/vector/thumbnail-image-vector-graphic.jpg?s=612x612&w=0&k=20&c=rnCKVbdxqkjlcs3xH87-9gocETqpspHFXu5dIGB4wuM="),
-            ),
-          ),
-        ),
-      Padding(
-        padding:
-        const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-        child: ElevatedButton(
-          onPressed: selectPhoto,
-          child: const Text('Select Photo'),
-        ),
-      ),
-      const SizedBox(height: 32),
-      Padding(
-        padding: const EdgeInsets.symmetric(vertical: 20.0),
-        child: Center(
-          child: ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(
-                primary: Colors.black.withOpacity(0),
-                onPrimary: Colors.black.withOpacity(0),
-                elevation: 20, // Elevation
-                shadowColor:
-                Colors.black.withOpacity(0), // Shadow Color
               ),
-              icon: Image.asset(
-                  "assets/images/profile_creation_next.png",
-                  width: 100,
-                  height: 100),
-              label: const Text(""),
-              onPressed: () async {
-                await uploadPhoto();
-                if (!mounted) return;
-                if(imageURL != "") {
-                  context.read<ProfileProvider>().setProfilePicURL(imageURL);
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) =>
-                      const ProfileCreationName()));
-                } else if (imageURL == "") {
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                    content: Text('No photo selected'),
-                    duration: Duration(seconds: 2),
-                  ));
-                }
-              }),
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  child: ElevatedButton(
+                    onPressed: selectPhoto,
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.deepPurpleAccent[200],
+                      minimumSize: const Size(250, 50),
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                      ),
+                    ),
+                    child: const Text(
+                      'Select Photo',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 28),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20.0),
+                child: Center(
+                  child: ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.black.withOpacity(0),
+                      backgroundColor: Colors.black.withOpacity(0),
+                      elevation: 20, // Elevation
+                      shadowColor: Colors.black.withOpacity(0), // Shadow Color
+                    ),
+                    icon: Image.asset("assets/images/profile_creation_next.png",
+                        width: 100, height: 100),
+                    label: const Text(""),
+                    onPressed: () async {
+                      await uploadPhoto();
+                      if (!mounted) return;
+                      if (imageURL != "") {
+                        context
+                            .read<ProfileProvider>()
+                            .setProfilePicURL(imageURL);
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const ProfileCreationName()));
+                      } else if (imageURL == "") {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('No photo selected'),
+                            duration: Duration(seconds: 2),
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
-      ],
-    ),)
-    ,
-    )
-    ,
     );
   }
 }

@@ -55,12 +55,12 @@ class JoinPage extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 680),
+            padding: const EdgeInsets.only(top: 700),
             child: Center(
               child: RichText(
                 text: TextSpan(
                   style: const TextStyle(
-                    fontSize: 15,
+                    fontSize: 16,
                     color: Colors.black,
                   ),
                   children: <TextSpan>[
