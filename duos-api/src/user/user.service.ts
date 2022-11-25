@@ -1,7 +1,8 @@
 import { throwError } from "rxjs";
 import { User } from "src/models/user";
 import { Injectable } from '@nestjs/common';
-import { createNewUserAsync, getUserAsync, updateUserAsync } from "src/firebase/database_functions/database_functions";
+import { createNewUserAsync, getUserAsync, updatePartialUserAsync, updateUserAsync } from "src/firebase/database_functions/database_functions";
+import { UpdateUserDto } from "./Dtos/userDto";
 
 @Injectable()
 export class UserService
@@ -43,4 +44,12 @@ export class UserService
         }
         return updateUserAsync(uid, editedUser);
    }
+
+   public EditPartialUser(uid: string, userInfo: UpdateUserDto){
+        if(!uid) {
+            throwError(() => new Error("Id is empty or null"));
+        }
+        return updatePartialUserAsync(uid, userInfo);
+   }
+
 }

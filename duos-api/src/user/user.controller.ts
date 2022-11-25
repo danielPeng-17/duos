@@ -1,5 +1,5 @@
-import { Controller, Post, Body, Get, Param, Put} from '@nestjs/common';
-import { UserDto } from 'src/user/Dtos/userDto';
+import { Controller, Post, Body, Get, Param, Put, Patch} from '@nestjs/common';
+import { UserDto, UpdateUserDto } from 'src/user/Dtos/userDto';
 import { User } from 'src/models/user';
 import { UserService } from './user.service';
 
@@ -25,5 +25,11 @@ export class UserController {
         let user = new User(editUser.uid, editUser.info, editUser.categories);
         this.userService.EditUser(id, user);
         return editUser;
+    }
+
+    @Patch(':id')
+    patchUser(@Param('id') id: string, @Body() partialUser: UpdateUserDto): UserDto {
+        this.userService.EditPartialUser(id, partialUser);
+        return partialUser;
     }
 }
