@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:duos_ui/constants/api_constants.dart';
 import 'package:duos_ui/screens/settings_preferences.dart';
-import 'package:duos_ui/screens/settings_profile.dart';
 import 'package:duos_ui/screens/settings_notifications.dart';
 import 'package:duos_ui/screens/settings_privacy.dart';
 import 'package:duos_ui/screens/settings_terms_of_service.dart';
@@ -10,19 +9,33 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:duos_ui/providers/providers.dart';
 
-class SettingsPage extends StatefulWidget {
-  const SettingsPage({Key? key}) : super(key: key);
+class EditProfile extends StatefulWidget {
+  const EditProfile({Key? key}) : super(key: key);
 
   @override
-  State<SettingsPage> createState() => _SettingsPageState();
+  State<EditProfile> createState() => _EditProfileState();
 }
 
-class _SettingsPageState extends State<SettingsPage> {
+class _EditProfileState extends State<EditProfile> {
   final GlobalKey<FormState> _contactForm = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black.withOpacity(0.0),
+        centerTitle: true,
+        leading: InkWell(
+          onTap: (){
+            Navigator.pop(context);
+          },
+          child: const Icon(
+
+            Icons.arrow_back_ios,
+            color: Colors.black54,
+          ),
+        ),
+      ),
       resizeToAvoidBottomInset: false,
       body: Container(
         margin: const EdgeInsets.symmetric(horizontal: 25),
@@ -42,12 +55,12 @@ class _SettingsPageState extends State<SettingsPage> {
                     children: <InlineSpan>[
                       WidgetSpan(
                         child: Icon(
-                          Icons.settings,
+                          Icons.person,
                           color: Colors.black,
                           size: 30,
                         ),
                       ),
-                      TextSpan(text: ' Settings'),
+                      TextSpan(text: ' Edit Profile'),
                     ],
                   ),
                   textAlign: TextAlign.left,
@@ -73,51 +86,45 @@ class _SettingsPageState extends State<SettingsPage> {
                   child: Align(
                     alignment: Alignment.center,
                     child: ElevatedButton(
-                      onPressed: () => Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const EditProfile(),
-                        ),
-                      ),
+                      onPressed: () {},
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.black.withOpacity(1),
                         backgroundColor: Colors.black.withOpacity(0),
                         elevation: 20, // Elevation
                         shadowColor:
-                            Colors.black.withOpacity(0), // Shadow Color
+                        Colors.black.withOpacity(0), // Shadow Color
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 6),
                               child: Column(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
+                                MainAxisAlignment.spaceAround,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisSize: MainAxisSize.min,
                                 children: const [
-                                  Text('Edit Profile'),
+                                  Text('Bio'),
                                 ],
                               ),
                             ),
-                          ),
                           Flexible(
                             fit: FlexFit.tight,
                               child: Column(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
+                                MainAxisAlignment.spaceAround,
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 mainAxisSize: MainAxisSize.min,
                                 children: const [
-                                  Icon(Icons.edit),
+                                  Icon(Icons.arrow_right),
                                 ],
+                              ),
                             ),
-                          ),
                         ],
                       ),
                     ),
-                  )),
+                  ),
+              ),
               Container(
                   padding: const EdgeInsets.only(top: 6),
                   decoration: const BoxDecoration(
@@ -151,7 +158,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: const [
-                                Text('Preferences'),
+                                Text('Languages'),
                               ],
                             ),
                           ),
@@ -162,14 +169,15 @@ class _SettingsPageState extends State<SettingsPage> {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               mainAxisSize: MainAxisSize.min,
                               children: const [
-                                Icon(Icons.settings),
+                                Icon(Icons.arrow_right),
                               ],
                             ),
                           ),
                         ],
                       ),
                     ),
-                  )),
+                  ),
+              ),
               Container(
                   padding: const EdgeInsets.only(top: 6),
                   decoration: const BoxDecoration(
@@ -193,7 +201,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         backgroundColor: Colors.black.withOpacity(0),
                         elevation: 20, // Elevation
                         shadowColor:
-                            Colors.black.withOpacity(0), // Shadow Color
+                        Colors.black.withOpacity(0), // Shadow Color
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -204,7 +212,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: const [
-                                Text('Privacy and Security'),
+                                Text('Hobbies'),
                               ],
                             ),
                           ),
@@ -215,14 +223,15 @@ class _SettingsPageState extends State<SettingsPage> {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               mainAxisSize: MainAxisSize.min,
                               children: const [
-                                Icon(Icons.lock),
+                                Icon(Icons.arrow_right),
                               ],
                             ),
                           ),
                         ],
                       ),
                     ),
-                  )),
+                  ),
+              ),
               Container(
                   padding: const EdgeInsets.only(top: 6),
                   decoration: const BoxDecoration(
@@ -239,7 +248,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       onPressed: () => Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) =>
-                              const SettingsPageNotifications(),
+                          const SettingsPageNotifications(),
                         ),
                       ),
                       style: ElevatedButton.styleFrom(
@@ -257,7 +266,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: const [
-                                Text('Notifications'),
+                                Text('Dating Preferences'),
                               ],
                             ),
                           ),
@@ -268,107 +277,14 @@ class _SettingsPageState extends State<SettingsPage> {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               mainAxisSize: MainAxisSize.min,
                               children: const [
-                                Icon(Icons.notifications),
+                                Icon(Icons.arrow_right),
                               ],
                             ),
                           ),
                         ],
                       ),
                     ),
-                  )),
-              Container(
-                padding: const EdgeInsets.only(top: 6),
-                decoration: const BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      color: Color(0xffCDCDCD),
-                      width: 0.8,
-                    ),
                   ),
-                ),
-                child: Align(
-                  alignment: Alignment.center,
-                  child: ElevatedButton(
-                    onPressed: () => Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => const SettingsPageTOS(),
-                      ),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.black.withOpacity(1),
-                      backgroundColor: Colors.black.withOpacity(0),
-                      elevation: 20, // Elevation
-                      shadowColor: Colors.black.withOpacity(0), // Shadow Color
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Expanded(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: const [
-                                Text('Terms of Service'),
-                              ],
-                            ),
-                          ),
-                        Flexible(
-                          fit: FlexFit.tight,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            mainAxisSize: MainAxisSize.min,
-                            children: const [
-                              Icon(Icons.person),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              Align(
-                alignment: Alignment.center,
-                child: ElevatedButton(
-                  onPressed: () {
-                    context.read<ProfileProvider>().disposeValues();
-                    FirebaseAuth.instance.signOut();
-                  },
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.black.withOpacity(1),
-                    backgroundColor: Colors.black.withOpacity(0),
-                    elevation: 20, // Elevation
-                    shadowColor: Colors.black.withOpacity(0), // Shadow Color
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: const [
-                              Text('Sign Out'),
-                            ],
-                          ),
-                        ),
-                      Flexible(
-                        fit: FlexFit.tight,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            mainAxisSize: MainAxisSize.min,
-                            children: const [
-                              Icon(Icons.arrow_right_alt_sharp),
-                            ],
-                          ),
-                        ),
-                    ],
-                  ),
-                ),
               ),
             ],
           ),

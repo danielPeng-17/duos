@@ -147,7 +147,7 @@ class _ProfileCreationBioState extends State<ProfileCreationBio> {
                 ),
               ),
 
-              label("Pronouns"),
+              label("Gender"),
               TextFormField(
                 controller: pronounsInput,
                 validator: (value) {
