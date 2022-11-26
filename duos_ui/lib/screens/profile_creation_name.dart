@@ -109,45 +109,52 @@ class _ProfileCreationNameState extends State<ProfileCreationName> {
                 ),
               ),
               const SizedBox(
-                height: 50,
+                height: 40,
               ),
-              Padding(
+              Container(
                 padding: const EdgeInsets.symmetric(vertical: 20.0),
-                child: Center(
-                  child: ElevatedButton.icon(
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.black.withOpacity(0),
-                        backgroundColor: Colors.black.withOpacity(0),
-                        elevation: 20, // Elevation
-                        shadowColor:
-                            Colors.black.withOpacity(0), // Shadow Color
+                width: MediaQuery.of(context).size.width,
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.0),
                       ),
-                      icon: Image.asset(
-                          "assets/images/profile_creation_next.png",
-                          width: 100,
-                          height: 100),
-                      label: const Text(""),
-                      onPressed: () async {
-                        if (_nameForm.currentState!.validate()) {
-                          context.read<ProfileProvider>().setFirstName(firstNameInput.text);
-                          context.read<ProfileProvider>().setLastName(lastNameInput.text);
+                    ),
+                  ),
+                  onPressed: () async {
+                    if (_nameForm.currentState!.validate()) {
+                      context
+                          .read<ProfileProvider>()
+                          .setFirstName(firstNameInput.text);
+                      context
+                          .read<ProfileProvider>()
+                          .setLastName(lastNameInput.text);
 
-                          await _createProfile();
+                      await _createProfile();
 
-                          if (!mounted) return;
-                          context.read<ProfileProvider>().setSetupStatus(true);
-                          Navigator.of(context).popUntil((route) => route.isFirst);
-                        }
+                      if (!mounted) return;
+                      context.read<ProfileProvider>().setSetupStatus(true);
+                      Navigator.of(context).popUntil((route) => route.isFirst);
+                    }
 
-                        // Validate returns true if the form is valid, or false otherwise.
-                        // if (_formKey.currentState!.validate()) {
-                        //   // If the form is valid, display a snackbar. In the real world,
-                        //   // you'd often call a server or save the information in a database.
-                        //   ScaffoldMessenger.of(context).showSnackBar(
-                        //     const SnackBar(content: Text('Processing Data')),
-                        //   );
-                        // }
-                      }),
+                    // Validate returns true if the form is valid, or false otherwise.
+                    // if (_formKey.currentState!.validate()) {
+                    //   // If the form is valid, display a snackbar. In the real world,
+                    //   // you'd often call a server or save the information in a database.
+                    //   ScaffoldMessenger.of(context).showSnackBar(
+                    //     const SnackBar(content: Text('Processing Data')),
+                    //   );
+                    // }
+                  },
+                  child: const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 12),
+                    child: Text(
+                      "Complete setup",
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+                    ),
+                  ),
                 ),
               ),
             ],
@@ -183,7 +190,8 @@ class _ProfileCreationNameState extends State<ProfileCreationName> {
       "categories": context.read<ProfileProvider>().categories
     });
     try {
-      await http.post(Uri.parse(apiMatchingEndpoint), headers: headers, body: json);
+      await http.post(Uri.parse(apiMatchingEndpoint),
+          headers: headers, body: json);
     } catch (err) {
       // ignore
     }

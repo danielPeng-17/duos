@@ -76,41 +76,47 @@ class _ProfileCreationGameState extends State<ProfileCreationGame> {
             gameButton('overwatch2.jpg', 3),
             gameButton('minecraft.jpeg', 4),
             gameButton('fortnite.jpg', 5),
-            Padding(
+            Container(
               padding: const EdgeInsets.symmetric(vertical: 20.0),
-              child: Center(
-                child: ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.black.withOpacity(0),
-                    backgroundColor: Colors.black.withOpacity(0),
-                    elevation: 20,
-                    shadowColor: Colors.black.withOpacity(0),
+              width: MediaQuery.of(context).size.width,
+              child: ElevatedButton(
+                style: ButtonStyle(
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
                   ),
-                  icon: Image.asset("assets/images/profile_creation_next.png",
-                      width: 100, height: 100),
-                  label: const Text(""),
-                  onPressed: () {
-                    List<String> listOfChosenCategories = [];
+                ),
+                onPressed: () {
+                  List<String> listOfChosenCategories = [];
 
-                    for (var i = 0; i < _selectedGames.length; i++) {
-                      if (_selectedGames[i] == true) {
-                        listOfChosenCategories.add(gameNames[i]);
-                      }
+                  for (var i = 0; i < _selectedGames.length; i++) {
+                    if (_selectedGames[i] == true) {
+                      listOfChosenCategories.add(gameNames[i]);
                     }
-                    context.read<ProfileProvider>().setCategories(listOfChosenCategories);
+                  }
+                  context
+                      .read<ProfileProvider>()
+                      .setCategories(listOfChosenCategories);
 
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const ProfileCreationPicture()));
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const ProfileCreationPicture()));
 
-                    // Validate returns true if the form is valid, or false otherwise.
-                    // if (_formKey.currentState!.validate()) {
-                    //   // If the form is valid, display a snackbar. In the real world,
-                    //   // you'd often call a server or save the information in a database.
-                    //   ScaffoldMessenger.of(context).showSnackBar(
-                    //     const SnackBar(content: Text('Processing Data')),
-                    //   );
-                    // }
-                  },
+                  // Validate returns true if the form is valid, or false otherwise.
+                  // if (_formKey.currentState!.validate()) {
+                  //   // If the form is valid, display a snackbar. In the real world,
+                  //   // you'd often call a server or save the information in a database.
+                  //   ScaffoldMessenger.of(context).showSnackBar(
+                  //     const SnackBar(content: Text('Processing Data')),
+                  //   );
+                  // }
+                },
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 12),
+                  child: Text(
+                    "Continue",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+                  ),
                 ),
               ),
             ),
