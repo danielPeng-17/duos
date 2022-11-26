@@ -121,58 +121,66 @@ class _ProfileCreationPictureState extends State<ProfileCreationPicture> {
                 ),
               ),
               Center(
-                child: Padding(
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
                   padding: const EdgeInsets.symmetric(vertical: 16),
-                  child: ElevatedButton(
+                  child: OutlinedButton(
                     onPressed: selectPhoto,
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
-                      backgroundColor: Colors.deepPurpleAccent[200],
-                      minimumSize: const Size(250, 50),
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      backgroundColor: const Color(0xff7794e0),
                       shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                        borderRadius: BorderRadius.all(Radius.circular(32)),
                       ),
                     ),
-                    child: const Text(
-                      'Select Photo',
-                      style: TextStyle(fontSize: 20),
+                    child: const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 12),
+                      child: Text(
+                        "Select Photo",
+                        style:
+                        TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+                      ),
                     ),
                   ),
                 ),
               ),
               const SizedBox(height: 28),
-              Padding(
+              Container(
                 padding: const EdgeInsets.symmetric(vertical: 20.0),
-                child: Center(
-                  child: ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.black.withOpacity(0),
-                      backgroundColor: Colors.black.withOpacity(0),
-                      elevation: 20, // Elevation
-                      shadowColor: Colors.black.withOpacity(0), // Shadow Color
+                width: MediaQuery.of(context).size.width,
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
                     ),
-                    icon: Image.asset("assets/images/profile_creation_next.png",
-                        width: 100, height: 100),
-                    label: const Text(""),
-                    onPressed: () async {
-                      await uploadPhoto();
-                      if (!mounted) return;
-                      if (imageURL != "") {
-                        context
-                            .read<ProfileProvider>()
-                            .setProfilePicURL(imageURL);
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const ProfileCreationName()));
-                      } else if (imageURL == "") {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('No photo selected'),
-                            duration: Duration(seconds: 2),
-                          ),
-                        );
-                      }
-                    },
+                  ),
+                  onPressed: () async {
+                    await uploadPhoto();
+                    if (!mounted) return;
+                    if (imageURL != "") {
+                      context
+                          .read<ProfileProvider>()
+                          .setProfilePicURL(imageURL);
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const ProfileCreationName()));
+                    } else if (imageURL == "") {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('No photo selected'),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
+                    }
+                  },
+                  child: const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 12),
+                    child: Text(
+                      "Continue",
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+                    ),
                   ),
                 ),
               ),

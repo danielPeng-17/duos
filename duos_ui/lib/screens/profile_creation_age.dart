@@ -122,37 +122,42 @@ class _ProfileCreationAgeState extends State<ProfileCreationAge> {
                   } else {}
                 },
               ),
-              Padding(
+              const SizedBox(
+                height: 40,
+              ),
+              Container(
                 padding: const EdgeInsets.symmetric(vertical: 20.0),
-                child: Center(
-                  child: ElevatedButton.icon(
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.black.withOpacity(0),
-                        backgroundColor: Colors.black.withOpacity(0),
-                        elevation: 20, // Elevation
-                        shadowColor:
-                            Colors.black.withOpacity(0), // Shadow Color
+                width: MediaQuery.of(context).size.width,
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.0),
                       ),
-                      icon: Image.asset(
-                          "assets/images/profile_creation_next.png",
-                          width: 80,
-                          height: 80),
-                      label: const Text(""),
-                      onPressed: () {
-                        if (_ageForm.currentState!.validate()) {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) =>
-                                  const ProfileCreationBio()));
-                        }
-                        // Validate returns true if the form is valid, or false otherwise.
-                        // if (_formKey.currentState!.validate()) {
-                        //   // If the form is valid, display a snackbar. In the real world,
-                        //   // you'd often call a server or save the information in a database.
-                        //   ScaffoldMessenger.of(context).showSnackBar(
-                        //     const SnackBar(content: Text('Processing Data')),
-                        //   );
-                        // }
-                      }),
+                    ),
+                  ),
+                  onPressed: () {
+                    if (_ageForm.currentState!.validate()) {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const ProfileCreationBio()));
+                    }
+                    // Validate returns true if the form is valid, or false otherwise.
+                    // if (_formKey.currentState!.validate()) {
+                    //   // If the form is valid, display a snackbar. In the real world,
+                    //   // you'd often call a server or save the information in a database.
+                    //   ScaffoldMessenger.of(context).showSnackBar(
+                    //     const SnackBar(content: Text('Processing Data')),
+                    //   );
+                    // }
+                  },
+                  child: const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 12),
+                    child: Text(
+                      "Continue",
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+                    ),
+                  ),
                 ),
               ),
             ],
