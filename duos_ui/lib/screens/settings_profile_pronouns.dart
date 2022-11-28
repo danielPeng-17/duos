@@ -7,27 +7,27 @@ import 'package:duos_ui/constants/api_constants.dart';
 import 'package:provider/provider.dart';
 import 'package:duos_ui/providers/providers.dart';
 
-class SettingsPageGender extends StatefulWidget {
-  const SettingsPageGender({Key? key}) : super(key: key);
+class EditProfileDatingPref extends StatefulWidget {
+  const EditProfileDatingPref({Key? key}) : super(key: key);
 
   @override
-  State<SettingsPageGender> createState() => _SettingsPageGenderState();
+  State<EditProfileDatingPref> createState() => _EditProfileDatingPrefState();
 }
 
-class _SettingsPageGenderState extends State<SettingsPageGender> {
+class _EditProfileDatingPrefState extends State<EditProfileDatingPref> {
   final GlobalKey<FormState> _settingsForm = GlobalKey<FormState>();
   late AuthProvider authProvider;
   late ProfileProvider profileProvider;
-  String prefGenderDropDown = '';
+  String pronounsDropDown = '';
 
-  var genders = ['Men', 'Women', 'Both men and women'];
+  var pronouns = ['She/Her', 'He/Him', 'They/Them'];
 
   @override
   void initState() {
     super.initState();
     authProvider = context.read<AuthProvider>();
     profileProvider = context.read<ProfileProvider>();
-    prefGenderDropDown = profileProvider.datingPref;
+    pronounsDropDown = profileProvider.gender;
   }
 
   @override
@@ -38,7 +38,7 @@ class _SettingsPageGenderState extends State<SettingsPageGender> {
         centerTitle: true,
         leading: InkWell(
           onTap: () async {
-            await updatePrefGender();
+            await updateGender();
 
             if (!mounted) return;
             Navigator.pop(context);
@@ -65,7 +65,7 @@ class _SettingsPageGenderState extends State<SettingsPageGender> {
                 child: Text.rich(
                   TextSpan(
                     children: <InlineSpan>[
-                      TextSpan(text: ' Preferred Gender'),
+                      TextSpan(text: ' Pronouns'),
                     ],
                   ),
                   textAlign: TextAlign.left,
@@ -86,21 +86,21 @@ class _SettingsPageGenderState extends State<SettingsPageGender> {
                     alignment: Alignment.centerLeft,
                     child: DropdownButtonFormField(
                       decoration: const InputDecoration(
-                          border: OutlineInputBorder(
+                        border: OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(30.0))
-                          ),
-                          ),
+                        ),
+                      ),
                       value:
-                          prefGenderDropDown.isNotEmpty ? prefGenderDropDown : null,
-                      items: genders.map((String gender) {
+                      pronounsDropDown.isNotEmpty ? pronounsDropDown : null,
+                      items: pronouns.map((String pronouns) {
                         return DropdownMenuItem(
-                          value: gender,
-                          child: Text(gender),
+                          value: pronouns,
+                          child: Text(pronouns),
                         );
                       }).toList(),
                       onChanged: (String? newValue) {
                         setState(() {
-                          prefGenderDropDown = newValue!;
+                          pronounsDropDown = newValue!;
                         });
                       },
                     ),
@@ -114,17 +114,17 @@ class _SettingsPageGenderState extends State<SettingsPageGender> {
     );
   }
 
-  Future updatePrefGender() async {
+  Future updateGender() async {
     String uid = authProvider.sub;
-    final apiPrefGender = "${ApiConstants.apiBaseUrl}/user/$uid";
+    final apiEmail = "${ApiConstants.apiBaseUrl}/user/$uid";
     String token = await FirebaseAuth.instance.currentUser!.getIdToken();
     final headers = ApiConstants.apiHeader(token ?? '');
 
     final data = {
-      "info": {"dating pref": prefGenderDropDown.trim()}
+      "info": {"gender": pronounsDropDown.trim()}
     };
     final encodedJson = jsonEncode(data);
 
-    http.patch(Uri.parse(apiPrefGender), headers: headers, body: encodedJson);
+    http.patch(Uri.parse(apiEmail), headers: headers, body: encodedJson);
   }
 }

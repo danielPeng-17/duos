@@ -7,27 +7,26 @@ import 'package:duos_ui/constants/api_constants.dart';
 import 'package:provider/provider.dart';
 import 'package:duos_ui/providers/providers.dart';
 
-class SettingsPageGender extends StatefulWidget {
-  const SettingsPageGender({Key? key}) : super(key: key);
+class EditProfileHobbies extends StatefulWidget {
+  const EditProfileHobbies({Key? key}) : super(key: key);
 
   @override
-  State<SettingsPageGender> createState() => _SettingsPageGenderState();
+  State<EditProfileHobbies> createState() => _EditProfileHobbiesState();
 }
 
-class _SettingsPageGenderState extends State<SettingsPageGender> {
-  final GlobalKey<FormState> _settingsForm = GlobalKey<FormState>();
+class _EditProfileHobbiesState extends State<EditProfileHobbies> {
+  final GlobalKey<FormState> _contactForm = GlobalKey<FormState>();
   late AuthProvider authProvider;
   late ProfileProvider profileProvider;
-  String prefGenderDropDown = '';
-
-  var genders = ['Men', 'Women', 'Both men and women'];
+  String hobbiesText = '';
+  TextEditingController hobbiesController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     authProvider = context.read<AuthProvider>();
     profileProvider = context.read<ProfileProvider>();
-    prefGenderDropDown = profileProvider.datingPref;
+    hobbiesController.text = profileProvider.hobbies;
   }
 
   @override
@@ -38,8 +37,8 @@ class _SettingsPageGenderState extends State<SettingsPageGender> {
         centerTitle: true,
         leading: InkWell(
           onTap: () async {
-            await updatePrefGender();
-
+            hobbiesText = hobbiesController.text;
+            updateBio();
             if (!mounted) return;
             Navigator.pop(context);
           },
@@ -53,6 +52,7 @@ class _SettingsPageGenderState extends State<SettingsPageGender> {
       body: Container(
         margin: const EdgeInsets.symmetric(horizontal: 25),
         child: Form(
+          key: _contactForm,
           child: ListView(
             //Listview is a fix in order to prevent overflow, (scrollable) works well needs formatting
             //crossAxisAlignment: CrossAxisAlignment.start,
@@ -65,7 +65,7 @@ class _SettingsPageGenderState extends State<SettingsPageGender> {
                 child: Text.rich(
                   TextSpan(
                     children: <InlineSpan>[
-                      TextSpan(text: ' Preferred Gender'),
+                      TextSpan(text: ' Edit Hobbies'),
                     ],
                   ),
                   textAlign: TextAlign.left,
@@ -76,36 +76,25 @@ class _SettingsPageGenderState extends State<SettingsPageGender> {
                 padding: EdgeInsets.only(top: 10.0),
                 child: SizedBox(
                   width: 50,
-                  height: 5,
+                  height: 10,
                 ),
               ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: DropdownButtonFormField(
-                      decoration: const InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(30.0))
-                          ),
-                          ),
-                      value:
-                          prefGenderDropDown.isNotEmpty ? prefGenderDropDown : null,
-                      items: genders.map((String gender) {
-                        return DropdownMenuItem(
-                          value: gender,
-                          child: Text(gender),
-                        );
-                      }).toList(),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          prefGenderDropDown = newValue!;
-                        });
-                      },
-                    ),
+              TextFormField(
+                controller: hobbiesController,
+                maxLines: 10,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Description is required';
+                  }
+                  return null;
+                },
+                decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.all(20.0),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20.0),
                   ),
-                ],
+                  hintText: 'Tell us about yourself',
+                ),
               ),
             ],
           ),
@@ -114,17 +103,18 @@ class _SettingsPageGenderState extends State<SettingsPageGender> {
     );
   }
 
-  Future updatePrefGender() async {
+  Future updateBio() async {
     String uid = authProvider.sub;
-    final apiPrefGender = "${ApiConstants.apiBaseUrl}/user/$uid";
+    final apiBio = "${ApiConstants.apiBaseUrl}/user/$uid";
     String token = await FirebaseAuth.instance.currentUser!.getIdToken();
     final headers = ApiConstants.apiHeader(token ?? '');
 
     final data = {
-      "info": {"dating pref": prefGenderDropDown.trim()}
+      "info": {"hobbies": hobbiesText.trim()}
     };
     final encodedJson = jsonEncode(data);
 
-    http.patch(Uri.parse(apiPrefGender), headers: headers, body: encodedJson);
+    http.patch(Uri.parse(apiBio), headers: headers, body: encodedJson);
   }
 }
+

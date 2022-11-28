@@ -65,7 +65,7 @@ class _ProfileCreationGameState extends State<ProfileCreationGame> {
             // ),
             const Center(
               child: Text(
-                "You favourite games",
+                "Your favourite games",
                 style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
               ),
             ),

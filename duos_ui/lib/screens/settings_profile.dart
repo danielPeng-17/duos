@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'package:duos_ui/constants/api_constants.dart';
-import 'package:duos_ui/screens/settings_preferences.dart';
-import 'package:duos_ui/screens/settings_notifications.dart';
-import 'package:duos_ui/screens/settings_privacy.dart';
-import 'package:duos_ui/screens/settings_terms_of_service.dart';
+import 'package:duos_ui/screens/settings_profile_bio.dart';
+import 'package:duos_ui/screens/settings_profile_pronouns.dart';
+import 'package:duos_ui/screens/settings_profile_hobbies.dart';
+import 'package:duos_ui/screens/settings_profile_languages.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
@@ -86,7 +86,11 @@ class _EditProfileState extends State<EditProfile> {
                   child: Align(
                     alignment: Alignment.center,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const EditProfileBio(),
+                        ),
+                      ),
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.black.withOpacity(1),
                         backgroundColor: Colors.black.withOpacity(0),
@@ -140,7 +144,7 @@ class _EditProfileState extends State<EditProfile> {
                     child: ElevatedButton(
                       onPressed: () => Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => const SettingsPagePreferences(),
+                          builder: (context) => const EditProfileLanguages(),
                         ),
                       ),
                       style: ElevatedButton.styleFrom(
@@ -193,7 +197,7 @@ class _EditProfileState extends State<EditProfile> {
                     child: ElevatedButton(
                       onPressed: () => Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => const SettingsPagePrivacy(),
+                          builder: (context) => const EditProfileHobbies(),
                         ),
                       ),
                       style: ElevatedButton.styleFrom(
@@ -248,7 +252,7 @@ class _EditProfileState extends State<EditProfile> {
                       onPressed: () => Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) =>
-                          const SettingsPageNotifications(),
+                          const EditProfileDatingPref(),
                         ),
                       ),
                       style: ElevatedButton.styleFrom(
@@ -266,7 +270,7 @@ class _EditProfileState extends State<EditProfile> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: const [
-                                Text('Dating Preferences'),
+                                Text('Pronouns'),
                               ],
                             ),
                           ),
