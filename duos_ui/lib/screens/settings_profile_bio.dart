@@ -40,6 +40,7 @@ class _EditProfileBioState extends State<EditProfileBio> {
             bioText = bioController.text;
             updateBio();
             if (!mounted) return;
+            context.read<ProfileProvider>().setBio(bioText.trim());
             Navigator.pop(context);
           },
           child: const Icon(
@@ -84,7 +85,7 @@ class _EditProfileBioState extends State<EditProfileBio> {
                 maxLines: 10,
                 validator: (value) {
                   if (value!.isEmpty) {
-                    return 'Description is required';
+                    return 'Bio field is required';
                   }
                   return null;
                 },
@@ -93,7 +94,7 @@ class _EditProfileBioState extends State<EditProfileBio> {
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20.0),
                   ),
-                  hintText: 'Tell us about yourself',
+                  hintText: 'Write your own bio',
                 ),
               ),
             ],

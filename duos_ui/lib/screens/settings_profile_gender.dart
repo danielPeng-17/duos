@@ -18,16 +18,16 @@ class _EditProfileDatingPrefState extends State<EditProfileDatingPref> {
   final GlobalKey<FormState> _settingsForm = GlobalKey<FormState>();
   late AuthProvider authProvider;
   late ProfileProvider profileProvider;
-  String pronounsDropDown = '';
+  String myGenderDropDown = '';
 
-  var pronouns = ['She/Her', 'He/Him', 'They/Them'];
+  var myGenders = ['Man', 'Woman', 'Other'];
 
   @override
   void initState() {
     super.initState();
     authProvider = context.read<AuthProvider>();
     profileProvider = context.read<ProfileProvider>();
-    pronounsDropDown = profileProvider.gender;
+    myGenderDropDown = profileProvider.gender;
   }
 
   @override
@@ -39,8 +39,8 @@ class _EditProfileDatingPrefState extends State<EditProfileDatingPref> {
         leading: InkWell(
           onTap: () async {
             await updateGender();
-
             if (!mounted) return;
+            context.read<ProfileProvider>().setGender(myGenderDropDown);
             Navigator.pop(context);
           },
           child: const Icon(
@@ -65,7 +65,7 @@ class _EditProfileDatingPrefState extends State<EditProfileDatingPref> {
                 child: Text.rich(
                   TextSpan(
                     children: <InlineSpan>[
-                      TextSpan(text: ' Pronouns'),
+                      TextSpan(text: ' My Gender'),
                     ],
                   ),
                   textAlign: TextAlign.left,
@@ -91,16 +91,16 @@ class _EditProfileDatingPrefState extends State<EditProfileDatingPref> {
                         ),
                       ),
                       value:
-                      pronounsDropDown.isNotEmpty ? pronounsDropDown : null,
-                      items: pronouns.map((String pronouns) {
+                      myGenderDropDown.isNotEmpty ? myGenderDropDown : null,
+                      items: myGenders.map((String myGenders) {
                         return DropdownMenuItem(
-                          value: pronouns,
-                          child: Text(pronouns),
+                          value: myGenders,
+                          child: Text(myGenders),
                         );
                       }).toList(),
                       onChanged: (String? newValue) {
                         setState(() {
-                          pronounsDropDown = newValue!;
+                          myGenderDropDown = newValue!;
                         });
                       },
                     ),
@@ -116,15 +116,15 @@ class _EditProfileDatingPrefState extends State<EditProfileDatingPref> {
 
   Future updateGender() async {
     String uid = authProvider.sub;
-    final apiEmail = "${ApiConstants.apiBaseUrl}/user/$uid";
+    final apiGender = "${ApiConstants.apiBaseUrl}/user/$uid";
     String token = await FirebaseAuth.instance.currentUser!.getIdToken();
     final headers = ApiConstants.apiHeader(token ?? '');
 
     final data = {
-      "info": {"gender": pronounsDropDown.trim()}
+      "info": {"gender": myGenderDropDown.trim()}
     };
     final encodedJson = jsonEncode(data);
 
-    http.patch(Uri.parse(apiEmail), headers: headers, body: encodedJson);
+    http.patch(Uri.parse(apiGender), headers: headers, body: encodedJson);
   }
 }

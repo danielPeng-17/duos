@@ -40,6 +40,7 @@ class _EditProfileHobbiesState extends State<EditProfileHobbies> {
             hobbiesText = hobbiesController.text;
             updateBio();
             if (!mounted) return;
+            context.read<ProfileProvider>().setHobbies(hobbiesText.trim());
             Navigator.pop(context);
           },
           child: const Icon(
@@ -84,7 +85,7 @@ class _EditProfileHobbiesState extends State<EditProfileHobbies> {
                 maxLines: 10,
                 validator: (value) {
                   if (value!.isEmpty) {
-                    return 'Description is required';
+                    return 'Hobbies field is required';
                   }
                   return null;
                 },
@@ -93,7 +94,7 @@ class _EditProfileHobbiesState extends State<EditProfileHobbies> {
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20.0),
                   ),
-                  hintText: 'Tell us about yourself',
+                  hintText: 'Write your own hobbies',
                 ),
               ),
             ],

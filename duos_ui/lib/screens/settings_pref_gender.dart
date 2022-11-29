@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
@@ -39,8 +38,8 @@ class _SettingsPageGenderState extends State<SettingsPageGender> {
         leading: InkWell(
           onTap: () async {
             await updatePrefGender();
-
             if (!mounted) return;
+            context.read<ProfileProvider>().setDatingPref(prefGenderDropDown);
             Navigator.pop(context);
           },
           child: const Icon(
@@ -121,7 +120,7 @@ class _SettingsPageGenderState extends State<SettingsPageGender> {
     final headers = ApiConstants.apiHeader(token ?? '');
 
     final data = {
-      "info": {"dating pref": prefGenderDropDown.trim()}
+      "info": {"dating_pref": prefGenderDropDown.trim()}
     };
     final encodedJson = jsonEncode(data);
 

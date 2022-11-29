@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:duos_ui/constants/api_constants.dart';
 import 'package:duos_ui/screens/settings_profile_bio.dart';
-import 'package:duos_ui/screens/settings_profile_pronouns.dart';
+import 'package:duos_ui/screens/settings_profile_gender.dart';
 import 'package:duos_ui/screens/settings_profile_hobbies.dart';
 import 'package:duos_ui/screens/settings_profile_languages.dart';
 import 'package:flutter/material.dart';
@@ -108,7 +108,7 @@ class _EditProfileState extends State<EditProfile> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisSize: MainAxisSize.min,
                                 children: const [
-                                  Text('Bio'),
+                                  Text('Bio', style: TextStyle(fontSize: 18)),
                                 ],
                               ),
                             ),
@@ -162,7 +162,7 @@ class _EditProfileState extends State<EditProfile> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: const [
-                                Text('Languages'),
+                                Text('Languages', style: TextStyle(fontSize: 18)),
                               ],
                             ),
                           ),
@@ -216,7 +216,7 @@ class _EditProfileState extends State<EditProfile> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: const [
-                                Text('Hobbies'),
+                                Text('Hobbies', style: TextStyle(fontSize: 18)),
                               ],
                             ),
                           ),
@@ -270,7 +270,7 @@ class _EditProfileState extends State<EditProfile> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: const [
-                                Text('Pronouns'),
+                                Text('Gender', style: TextStyle(fontSize: 18)),
                               ],
                             ),
                           ),

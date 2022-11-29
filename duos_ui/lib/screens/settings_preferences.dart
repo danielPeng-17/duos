@@ -106,7 +106,7 @@ class _SettingsPagePreferencesState extends State<SettingsPagePreferences> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisSize: MainAxisSize.min,
                             children: const [
-                              Text('Gender'),
+                              Text('Gender', style: TextStyle(fontSize: 18)),
                             ],
                           ),
                         ),
@@ -160,7 +160,7 @@ class _SettingsPagePreferencesState extends State<SettingsPagePreferences> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisSize: MainAxisSize.min,
                             children: const [
-                              Text('Games'),
+                              Text('Games', style: TextStyle(fontSize: 18)),
                             ],
                           ),
                         ),

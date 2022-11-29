@@ -97,7 +97,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisSize: MainAxisSize.min,
                                 children: const [
-                                  Text('Edit Profile'),
+                                  Text('Edit Profile', style: TextStyle(fontSize: 18)),
                                 ],
                               ),
                             ),
@@ -151,7 +151,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: const [
-                                Text('Preferences'),
+                                Text('Preferences', style: TextStyle(fontSize: 18)),
                               ],
                             ),
                           ),
@@ -204,7 +204,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: const [
-                                Text('Privacy and Security'),
+                                Text('Privacy and Security', style: TextStyle(fontSize: 18)),
                               ],
                             ),
                           ),
@@ -257,7 +257,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: const [
-                                Text('Notifications'),
+                                Text('Notifications', style: TextStyle(fontSize: 18)),
                               ],
                             ),
                           ),
@@ -309,7 +309,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: const [
-                                Text('Terms of Service'),
+                                Text('Terms of Service', style: TextStyle(fontSize: 18)),
                               ],
                             ),
                           ),
@@ -351,7 +351,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisSize: MainAxisSize.min,
                             children: const [
-                              Text('Sign Out'),
+                              Text('Sign Out', style: TextStyle(fontSize: 18)),
                             ],
                           ),
                         ),

@@ -2,6 +2,13 @@ import 'package:duos_ui/screens/profile_creation_game.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:duos_ui/providers/profile_provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:convert';
+import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:http/http.dart' as http;
+import 'package:duos_ui/constants/api_constants.dart';
+import 'package:provider/provider.dart';
 
 class ProfileCreationBio extends StatefulWidget {
   const ProfileCreationBio({Key? key}) : super(key: key);
@@ -18,6 +25,10 @@ class _ProfileCreationBioState extends State<ProfileCreationBio> {
   TextEditingController pronounsInput = TextEditingController();
   TextEditingController datingPrefInput = TextEditingController();
   TextEditingController locationInput = TextEditingController();
+  String prefGenderDropDown = '';
+  String myGenderDropDown = '';
+  var myGenders = ['Man', 'Woman', 'Other'];
+  var genders = ['Men', 'Women', 'Both men and women'];
 
   @override
   void dispose() {
@@ -29,7 +40,6 @@ class _ProfileCreationBioState extends State<ProfileCreationBio> {
     locationInput.dispose();
     super.dispose();
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -112,23 +122,34 @@ class _ProfileCreationBioState extends State<ProfileCreationBio> {
               ),
 
               label("Dating Preferences"),
-              TextFormField(
-                  controller: datingPrefInput,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Dating preferences field is required';
-                    }
-                    return null;
-                  },
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.all(20.0),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: DropdownButtonFormField(
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(30.0))
+                        ),
+                      ),
+                      value:
+                      prefGenderDropDown.isNotEmpty ? prefGenderDropDown : null,
+                      items: genders.map((String gender) {
+                        return DropdownMenuItem(
+                          value: gender,
+                          child: Text(gender),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          prefGenderDropDown = newValue!;
+                        });
+                      },
                     ),
-                    hintText: 'E.g. Male, Female, Non-Binary',
                   ),
-                ),
-
+                ],
+              ),
               label("Languages"),
               TextFormField(
                 controller: languagesInput,
@@ -147,22 +168,34 @@ class _ProfileCreationBioState extends State<ProfileCreationBio> {
                 ),
               ),
 
-              label("Gender"),
-              TextFormField(
-                controller: pronounsInput,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Pronouns field is required';
-                  }
-                  return null;
-                },
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.all(20.0),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30.0),
+              label("My gender"),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: DropdownButtonFormField(
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(30.0))
+                        ),
+                      ),
+                      value:
+                      myGenderDropDown.isNotEmpty ? myGenderDropDown : null,
+                      items: myGenders.map((String myGenders) {
+                        return DropdownMenuItem(
+                          value: myGenders,
+                          child: Text(myGenders),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          myGenderDropDown = newValue!;
+                        });
+                      },
+                    ),
                   ),
-                  hintText: 'E.g. She/He/They',
-                ),
+                ],
               ),
 
               label("Location"),
@@ -208,13 +241,13 @@ class _ProfileCreationBioState extends State<ProfileCreationBio> {
                                 .setHobbies(hobbiesInput.text);
                             context
                                 .read<ProfileProvider>()
-                                .setDatingPref(datingPrefInput.text);
+                                .setDatingPref(prefGenderDropDown);
                             context
                                 .read<ProfileProvider>()
                                 .setLanguages(languagesInput.text);
                             context
                                 .read<ProfileProvider>()
-                                .setGender(pronounsInput.text);
+                                .setGender(myGenderDropDown);
                             context
                                 .read<ProfileProvider>()
                                 .setLocation(locationInput.text);
