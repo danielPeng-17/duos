@@ -69,8 +69,11 @@ class _LoginPageState extends State<LoginPage> {
                       return 'Enter Valid Email';
                     }
                   },
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.all(20.0),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
                     labelText: 'Email',
                     //hintText:
                   ),
@@ -88,8 +91,11 @@ class _LoginPageState extends State<LoginPage> {
                       return 'Empty';
                     }
                   },
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.all(20.0),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
                     labelText: 'Password',
                     hintText: 'Enter password',
                   ),

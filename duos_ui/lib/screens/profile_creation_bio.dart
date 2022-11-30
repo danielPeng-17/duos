@@ -40,6 +40,7 @@ class _ProfileCreationBioState extends State<ProfileCreationBio> {
     locationInput.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -129,12 +130,14 @@ class _ProfileCreationBioState extends State<ProfileCreationBio> {
                     alignment: Alignment.centerLeft,
                     child: DropdownButtonFormField(
                       decoration: const InputDecoration(
+                        contentPadding: EdgeInsets.all(20.0),
                         border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(30.0))
-                        ),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(30.0))),
                       ),
-                      value:
-                      prefGenderDropDown.isNotEmpty ? prefGenderDropDown : null,
+                      value: prefGenderDropDown.isNotEmpty
+                          ? prefGenderDropDown
+                          : null,
                       items: genders.map((String gender) {
                         return DropdownMenuItem(
                           value: gender,
@@ -176,12 +179,13 @@ class _ProfileCreationBioState extends State<ProfileCreationBio> {
                     alignment: Alignment.centerLeft,
                     child: DropdownButtonFormField(
                       decoration: const InputDecoration(
+                        contentPadding: EdgeInsets.all(20.0),
                         border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(30.0))
-                        ),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(30.0))),
                       ),
                       value:
-                      myGenderDropDown.isNotEmpty ? myGenderDropDown : null,
+                          myGenderDropDown.isNotEmpty ? myGenderDropDown : null,
                       items: myGenders.map((String myGenders) {
                         return DropdownMenuItem(
                           value: myGenders,
@@ -215,56 +219,57 @@ class _ProfileCreationBioState extends State<ProfileCreationBio> {
                   hintText: 'City, Country',
                 ),
               ),
-              Padding(
+              Container(
                 padding: const EdgeInsets.symmetric(vertical: 20.0),
-                child: Center(
-                    child: ElevatedButton.icon(
-                        style: ElevatedButton.styleFrom(
-                          foregroundColor: Colors.black.withOpacity(0),
-                          backgroundColor: Colors.black.withOpacity(0),
-                          elevation: 20, // Elevation
-                          shadowColor:
-                              Colors.black.withOpacity(0), // Shadow Color
-                        ),
-                        icon: Image.asset(
-                            "assets/images/profile_creation_next.png",
-                            width: 100,
-                            height: 100),
-                        label: const Text(""),
-                        onPressed: () {
-                          if (_bioForm.currentState!.validate()) {
-                            context
-                                .read<ProfileProvider>()
-                                .setBio(descInput.text);
-                            context
-                                .read<ProfileProvider>()
-                                .setHobbies(hobbiesInput.text);
-                            context
-                                .read<ProfileProvider>()
-                                .setDatingPref(prefGenderDropDown);
-                            context
-                                .read<ProfileProvider>()
-                                .setLanguages(languagesInput.text);
-                            context
-                                .read<ProfileProvider>()
-                                .setGender(myGenderDropDown);
-                            context
-                                .read<ProfileProvider>()
-                                .setLocation(locationInput.text);
+                width: MediaQuery.of(context).size.width,
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                    ),
+                  ),
+                  onPressed: () {
+                    if (_bioForm.currentState!.validate()) {
+                      context.read<ProfileProvider>().setBio(descInput.text);
+                      context
+                          .read<ProfileProvider>()
+                          .setHobbies(hobbiesInput.text);
+                      context
+                          .read<ProfileProvider>()
+                          .setDatingPref(prefGenderDropDown);
+                      context
+                          .read<ProfileProvider>()
+                          .setLanguages(languagesInput.text);
+                      context
+                          .read<ProfileProvider>()
+                          .setGender(myGenderDropDown);
+                      context
+                          .read<ProfileProvider>()
+                          .setLocation(locationInput.text);
 
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) =>
-                                    const ProfileCreationGame()));
-                          }
-                          // Validate returns true if the form is valid, or false otherwise.
-                          // if (_formKey.currentState!.validate()) {
-                          //   // If the form is valid, display a snackbar. In the real world,
-                          //   // you'd often call a server or save the information in a database.
-                          //   ScaffoldMessenger.of(context).showSnackBar(
-                          //     const SnackBar(content: Text('Processing Data')),
-                          //   );
-                          // }
-                        })),
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const ProfileCreationGame()));
+                      // Validate returns true if the form is valid, or false otherwise.
+                      // if (_formKey.currentState!.validate()) {
+                      //   // If the form is valid, display a snackbar. In the real world,
+                      //   // you'd often call a server or save the information in a database.
+                      //   ScaffoldMessenger.of(context).showSnackBar(
+                      //     const SnackBar(content: Text('Processing Data')),
+                      //   );
+                      // }
+                    }
+                  },
+                  child: const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 12),
+                    child: Text(
+                      "Continue",
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+                    ),
+                  ),
+                ),
               ),
             ],
           ),
