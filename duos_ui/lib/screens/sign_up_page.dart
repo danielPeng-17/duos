@@ -58,15 +58,13 @@ class _SignUpPageState extends State<SignUpPage> {
                     if (email!.isEmpty) {
                       return 'Empty';
                     }
-                    if (email != null) {
-                      bool emailValid = RegExp(
-                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                          .hasMatch(email);
-                      if (emailValid) {
-                        return null;
-                      }
-                      return 'Enter Valid Email';
+                    bool emailValid = RegExp(
+                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                        .hasMatch(email);
+                    if (emailValid) {
+                      return null;
                     }
+                    return 'Enter Valid Email';
                   },
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.all(20.0),
@@ -162,17 +160,20 @@ class _SignUpPageState extends State<SignUpPage> {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
-      );
+      ).then((value) {
+        if (value.user != null) {
+          if (!mounted) return;
+          context.read<ProfileProvider>().setSetupStatus(false);
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => const ProfileCreationAge()));
+        }
+      });
     } on FirebaseAuthException catch (e) {
-      print(e.message);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(e.message!)),
       );
+      if (!mounted) return;
+      Navigator.of(context).pop();
     }
-
-    if (!mounted) return;
-    context.read<ProfileProvider>().setSetupStatus(false);
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => const ProfileCreationAge()));
   }
 }

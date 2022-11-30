@@ -166,16 +166,16 @@ class _LoginPageState extends State<LoginPage> {
         password: _passwordController.text.trim(),
       ).then((value) {
         if (value.user != null) {
-
+          if (!mounted) return;
+          Navigator.of(context).popUntil((route) => route.isFirst);
         }
       });
     } on FirebaseAuthException catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(e.message!)),
       );
+      if (!mounted) return;
+      Navigator.of(context).pop();
     }
-
-    if (!mounted) return;
-    Navigator.of(context).popUntil((route) => route.isFirst);
   }
 }
