@@ -90,7 +90,6 @@ class _HomePageState extends State<HomePage> {
                                 image: NetworkImage(_currentProfile["info"]
                                     ["profile_picture_url"]),
                                 fit: BoxFit.cover,
-
                               ),
                             ),
                             child: Stack(
@@ -101,7 +100,7 @@ class _HomePageState extends State<HomePage> {
                                   height:
                                       MediaQuery.of(context).size.height * 0.1,
                                   width:
-                                      MediaQuery.of(context).size.width * 0.6,
+                                      MediaQuery.of(context).size.width * 0.7,
                                   child: Container(
                                     margin: const EdgeInsets.all(10),
                                     width:
@@ -118,16 +117,20 @@ class _HomePageState extends State<HomePage> {
                                               " " +
                                               _currentProfile["info"]
                                                   ["last_name"],
+                                          overflow: TextOverflow.fade,
+                                          softWrap: false,
                                           style: const TextStyle(
-                                              fontSize: 20,
+                                              fontSize: 22,
                                               color: Colors.white,
                                               fontWeight: FontWeight.w600),
                                         ),
                                         const SizedBox(height: 5),
                                         Text(
                                           _currentProfile["info"]["location"],
+                                          overflow: TextOverflow.fade,
+                                          softWrap: false,
                                           style: const TextStyle(
-                                              fontSize: 14,
+                                              fontSize: 18,
                                               color: Colors.white,
                                               fontWeight: FontWeight.w400),
                                         ),
@@ -202,8 +205,8 @@ class _HomePageState extends State<HomePage> {
                                     right: 10,
                                   ),
                                   child: Wrap(
-                                    spacing: 10.0,
-                                    runSpacing: 10.0,
+                                    spacing: 6.0,
+                                    runSpacing: 6.0,
                                     children: _currentProfile["categories"]
                                         .map<Widget>((category) =>
                                             GameBubble(title: category))
@@ -251,31 +254,31 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   Positioned(
-                      bottom: MediaQuery.of(context).size.height * 0.01,
-                      left: MediaQuery.of(context).size.width * 0.03,
-                      child: ElevatedButton(
-                        onPressed: () => skipProfile(),
-                        style: ButtonStyle(
-                          shape: MaterialStateProperty.all(
-                            const CircleBorder(),
-                          ),
-                          padding: MaterialStateProperty.all(
-                            const EdgeInsets.all(18),
-                          ),
-                          backgroundColor: MaterialStateProperty.all(
-                              Colors.black.withOpacity(0.75)),
-                          overlayColor:
-                              MaterialStateProperty.resolveWith<Color?>(
-                            (states) {
-                              if (states.contains(MaterialState.pressed)) {
-                                return Colors.red;
-                              }
-                              return null;
-                            },
-                          ),
+                    bottom: MediaQuery.of(context).size.height * 0.01,
+                    left: MediaQuery.of(context).size.width * 0.03,
+                    child: ElevatedButton(
+                      onPressed: () => skipProfile(),
+                      style: ButtonStyle(
+                        shape: MaterialStateProperty.all(
+                          const CircleBorder(),
                         ),
-                        child: const Icon(Icons.close),
-                      )),
+                        padding: MaterialStateProperty.all(
+                          const EdgeInsets.all(18),
+                        ),
+                        backgroundColor: MaterialStateProperty.all(
+                            Colors.black.withOpacity(0.75)),
+                        overlayColor: MaterialStateProperty.resolveWith<Color?>(
+                          (states) {
+                            if (states.contains(MaterialState.pressed)) {
+                              return Colors.red;
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                      child: const Icon(Icons.close),
+                    ),
+                  ),
                   Positioned(
                     bottom: MediaQuery.of(context).size.height * 0.01,
                     right: MediaQuery.of(context).size.width * 0.03,
@@ -327,11 +330,13 @@ class _HomePageState extends State<HomePage> {
                         margin: const EdgeInsets.only(top: 30),
                         child: const Text(
                           "Loading . . .",
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18),
                         ),
                       ),
                     ],
-                  ))
+                  ),
+                )
               : Container(
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height,
@@ -357,7 +362,6 @@ class _HomePageState extends State<HomePage> {
     try {
       final res =
           await http.get(Uri.parse(apiGetProfilesEndpoint), headers: headers);
-      print("ran http 2");
       return jsonDecode(res.body);
     } catch (err) {
       // ignore
@@ -373,7 +377,6 @@ class _HomePageState extends State<HomePage> {
     try {
       final res =
           await http.post(Uri.parse(apiMatchingEndpoint), headers: headers);
-      print("ran http 1");
       return res.body;
     } catch (err) {
       // ignore

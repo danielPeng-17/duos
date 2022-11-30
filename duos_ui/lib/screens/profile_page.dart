@@ -120,8 +120,8 @@ class _ProfilePageState extends State<ProfilePage> {
                           Padding(
                             padding: const EdgeInsets.only(bottom: 25),
                             child: Wrap(
-                              spacing: 10.0,
-                              runSpacing: 10.0,
+                              spacing: 6.0,
+                              runSpacing: 6.0,
                               children: context
                                   .watch<ProfileProvider>()
                                   .categories
