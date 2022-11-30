@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:duos_ui/widgets/game_bubble.dart';
 import 'package:duos_ui/providers/providers.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -120,11 +121,12 @@ class _ProfilePageState extends State<ProfilePage> {
                             padding: const EdgeInsets.only(bottom: 25),
                             child: Wrap(
                               spacing: 10.0,
+                              runSpacing: 10.0,
                               children: context
                                   .watch<ProfileProvider>()
                                   .categories
                                   .map<Widget>(
-                                      (category) => gameBubble(category))
+                                      (category) => GameBubble(title: category))
                                   .toList(),
                             ),
                           ),
@@ -157,25 +159,6 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Text(description, style: ProfilePage.descSmallStyle),
         ),
       ],
-    );
-  }
-
-  Widget gameBubble(String title) {
-    return Container(
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15.0),
-          color: Colors.blue.withOpacity(0.25)),
-      child: Padding(
-        padding: const EdgeInsets.only(left: 12, right: 12, top: 7, bottom: 7),
-        child: Text(
-          title,
-          style: const TextStyle(
-            fontSize: 15,
-            color: Colors.black,
-            fontWeight: FontWeight.w400,
-          ),
-        ),
-      ),
     );
   }
 }

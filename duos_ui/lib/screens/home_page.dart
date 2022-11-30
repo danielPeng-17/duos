@@ -1,5 +1,6 @@
 import 'dart:collection';
 import 'package:duos_ui/constants/api_constants.dart';
+import 'package:duos_ui/widgets/game_bubble.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -202,9 +203,10 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                   child: Wrap(
                                     spacing: 10.0,
+                                    runSpacing: 10.0,
                                     children: _currentProfile["categories"]
                                         .map<Widget>((category) =>
-                                            _GameBubble(title: category))
+                                            GameBubble(title: category))
                                         .toList(),
                                   ),
                                 ),
@@ -355,6 +357,7 @@ class _HomePageState extends State<HomePage> {
     try {
       final res =
           await http.get(Uri.parse(apiGetProfilesEndpoint), headers: headers);
+      print("ran http 2");
       return jsonDecode(res.body);
     } catch (err) {
       // ignore
@@ -370,6 +373,7 @@ class _HomePageState extends State<HomePage> {
     try {
       final res =
           await http.post(Uri.parse(apiMatchingEndpoint), headers: headers);
+      print("ran http 1");
       return res.body;
     } catch (err) {
       // ignore
@@ -420,30 +424,5 @@ class _HomePageState extends State<HomePage> {
         existingMatches = false;
       }
     });
-  }
-}
-
-class _GameBubble extends StatelessWidget {
-  const _GameBubble({Key? key, required this.title}) : super(key: key);
-  final String title;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15.0),
-          color: Colors.blue.withOpacity(0.25)),
-      child: Padding(
-        padding: const EdgeInsets.only(left: 12, right: 12, top: 7, bottom: 7),
-        child: Text(
-          title,
-          style: const TextStyle(
-            fontSize: 15,
-            color: Colors.black,
-            fontWeight: FontWeight.w400,
-          ),
-        ),
-      ),
-    );
   }
 }
