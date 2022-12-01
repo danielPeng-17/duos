@@ -104,23 +104,24 @@ class _HomePageState extends State<HomePage> {
                                       colors: [
                                         Colors.transparent,
                                         Colors.transparent,
-                                        Colors.black
+                                        Color(0xff121212),
+                                        Color(0xff121212),
                                       ],
-                                      stops: [0, 0.8, 0.95],
+                                      stops: [0, 0.8, 0.98, 1],
                                     ).createShader(bounds);
                                   },
                                   blendMode: BlendMode.srcATop,
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(20.0),
-                                    child:
-                                        SizedBox(
-                                          height: MediaQuery.of(context).size.height,
-                                          width: MediaQuery.of(context).size.width,
-                                          child: Image.network(
-                                              _currentProfile["info"]
+                                    child: SizedBox(
+                                      height:
+                                          MediaQuery.of(context).size.height,
+                                      width: MediaQuery.of(context).size.width,
+                                      child: Image.network(
+                                          _currentProfile["info"]
                                               ["profile_picture_url"],
-                                              fit: BoxFit.cover),
-                                        ),
+                                          fit: BoxFit.cover),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -413,23 +414,72 @@ class _HomePageState extends State<HomePage> {
     var result = await postLikeProfile();
     var resultDecoded = jsonDecode(result);
     if (resultDecoded["matched"] == true) {
+      if (!mounted) return;
       showDialog<void>(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext dialogContext) {
-          return AlertDialog(
-            content: const Text('Matched!'),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('OK'),
-                onPressed: () {
-                  Navigator.of(dialogContext).pop();
-                },
+          context: context,
+          barrierDismissible: true,
+          builder: (BuildContext dialogContext) {
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius:
+                BorderRadius.circular(20),
               ),
-            ],
-          );
-        },
-      );
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20.0),
+                  gradient: const LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      Color(0xffffafbd),
+                      Color(0xffffc3a0)
+                    ],
+                  ),
+                ),
+                height: MediaQuery.of(context)
+                    .size
+                    .height *
+                    0.4,
+                width: MediaQuery.of(context)
+                    .size
+                    .width,
+                child: Column(
+                  mainAxisAlignment:
+                  MainAxisAlignment.center,
+                  crossAxisAlignment:
+                  CrossAxisAlignment.center,
+                  children: [
+                    const Spacer(),
+                    const Text(
+                      'You found your duo!',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 32.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const Spacer(),
+                    const Icon(Icons.favorite,
+                        color: Colors.pink,
+                        size: 100),
+                    const Spacer(),
+                    IconButton(
+                      style: IconButton.styleFrom(
+                        backgroundColor:
+                        Colors.black,
+                      ),
+                      icon: const Icon(Icons.close,
+                          size: 32),
+                      onPressed: () =>
+                          Navigator.of(context)
+                              .pop(),
+                    ),
+                    const Spacer(),
+                  ],
+                ),
+              ),
+            );
+          });
     }
     if (!mounted) return;
     setState(() {
