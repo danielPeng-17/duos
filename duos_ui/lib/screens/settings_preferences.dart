@@ -186,19 +186,4 @@ class _SettingsPagePreferencesState extends State<SettingsPagePreferences> {
       ),
     );
   }
-
-  Future updateEmailAndPhone() async {
-    final apiEmailAndPhone = 'http://10.0.2.2:3000/user/x';
-    String? token;
-    FirebaseAuth.instance.currentUser!.getIdTokenResult(true).then((result){
-      token = result.token;
-    });
-    final headers = {
-      "Content-type": 'application/json',
-      "Authorization": token ?? '',
-    };
-    final json = '{"email": "${_emailInput.text.trim()}"}';
-
-    final res = http.put(Uri.parse(apiEmailAndPhone), headers: headers, body:json);
-  }
 }

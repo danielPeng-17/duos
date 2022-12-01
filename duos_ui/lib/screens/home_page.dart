@@ -1,5 +1,6 @@
 import 'dart:collection';
 import 'package:duos_ui/constants/api_constants.dart';
+import 'package:duos_ui/widgets/game_bubble.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -78,64 +79,94 @@ class _HomePageState extends State<HomePage> {
                         const SizedBox(
                           height: 10,
                         ),
-                        ClipRRect(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(20)),
-                          child: Container(
-                            height: MediaQuery.of(context).size.height * 0.6,
-                            width: MediaQuery.of(context).size.width * 0.9,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: NetworkImage(_currentProfile["info"]
-                                    ["profile_picture_url"]),
-                                fit: BoxFit.cover,
-
-                              ),
-                            ),
-                            child: Stack(
-                              children: [
-                                Positioned(
-                                  left: 0,
-                                  bottom: 0,
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.1,
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.6,
-                                  child: Container(
-                                    margin: const EdgeInsets.all(10),
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.7,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          _currentProfile["info"]
-                                                  ["first_name"] +
-                                              " " +
-                                              _currentProfile["info"]
-                                                  ["last_name"],
-                                          style: const TextStyle(
-                                              fontSize: 20,
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w600),
-                                        ),
-                                        const SizedBox(height: 5),
-                                        Text(
-                                          _currentProfile["info"]["location"],
-                                          style: const TextStyle(
-                                              fontSize: 14,
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w400),
-                                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.6,
+                          width: MediaQuery.of(context).size.width * 0.9,
+                          child: Stack(
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.5),
+                                      spreadRadius: 5,
+                                      blurRadius: 7,
+                                      offset: const Offset(0, 3),
+                                    ),
+                                  ],
+                                ),
+                                child: ShaderMask(
+                                  shaderCallback: (bounds) {
+                                    return const LinearGradient(
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                      colors: [
+                                        Colors.transparent,
+                                        Colors.transparent,
+                                        Color(0xff121212),
+                                        Color(0xff121212),
                                       ],
+                                      stops: [0, 0.8, 0.98, 1],
+                                    ).createShader(bounds);
+                                  },
+                                  blendMode: BlendMode.srcATop,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    child: SizedBox(
+                                      height:
+                                          MediaQuery.of(context).size.height,
+                                      width: MediaQuery.of(context).size.width,
+                                      child: Image.network(
+                                          _currentProfile["info"]
+                                              ["profile_picture_url"],
+                                          fit: BoxFit.cover),
                                     ),
                                   ),
                                 ),
-                              ],
-                            ),
+                              ),
+                              Positioned(
+                                left: 0,
+                                bottom: 0,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.1,
+                                width: MediaQuery.of(context).size.width * 0.7,
+                                child: Container(
+                                  margin: const EdgeInsets.all(10),
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.7,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        _currentProfile["info"]["first_name"] +
+                                            " " +
+                                            _currentProfile["info"]
+                                                ["last_name"],
+                                        overflow: TextOverflow.fade,
+                                        softWrap: false,
+                                        style: const TextStyle(
+                                            fontSize: 22,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                      const SizedBox(height: 5),
+                                      Text(
+                                        _currentProfile["info"]["location"],
+                                        overflow: TextOverflow.fade,
+                                        softWrap: false,
+                                        style: const TextStyle(
+                                            fontSize: 18,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w400),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                         ClipRRect(
@@ -201,10 +232,11 @@ class _HomePageState extends State<HomePage> {
                                     right: 10,
                                   ),
                                   child: Wrap(
-                                    spacing: 10.0,
+                                    spacing: 6.0,
+                                    runSpacing: 6.0,
                                     children: _currentProfile["categories"]
                                         .map<Widget>((category) =>
-                                            _GameBubble(title: category))
+                                            GameBubble(title: category))
                                         .toList(),
                                   ),
                                 ),
@@ -249,31 +281,31 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   Positioned(
-                      bottom: MediaQuery.of(context).size.height * 0.01,
-                      left: MediaQuery.of(context).size.width * 0.03,
-                      child: ElevatedButton(
-                        onPressed: () => skipProfile(),
-                        style: ButtonStyle(
-                          shape: MaterialStateProperty.all(
-                            const CircleBorder(),
-                          ),
-                          padding: MaterialStateProperty.all(
-                            const EdgeInsets.all(18),
-                          ),
-                          backgroundColor: MaterialStateProperty.all(
-                              Colors.black.withOpacity(0.75)),
-                          overlayColor:
-                              MaterialStateProperty.resolveWith<Color?>(
-                            (states) {
-                              if (states.contains(MaterialState.pressed)) {
-                                return Colors.red;
-                              }
-                              return null;
-                            },
-                          ),
+                    bottom: MediaQuery.of(context).size.height * 0.01,
+                    left: MediaQuery.of(context).size.width * 0.03,
+                    child: ElevatedButton(
+                      onPressed: () => skipProfile(),
+                      style: ButtonStyle(
+                        shape: MaterialStateProperty.all(
+                          const CircleBorder(),
                         ),
-                        child: const Icon(Icons.close),
-                      )),
+                        padding: MaterialStateProperty.all(
+                          const EdgeInsets.all(18),
+                        ),
+                        backgroundColor: MaterialStateProperty.all(
+                            Colors.black.withOpacity(0.75)),
+                        overlayColor: MaterialStateProperty.resolveWith<Color?>(
+                          (states) {
+                            if (states.contains(MaterialState.pressed)) {
+                              return Colors.red;
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                      child: const Icon(Icons.close),
+                    ),
+                  ),
                   Positioned(
                     bottom: MediaQuery.of(context).size.height * 0.01,
                     right: MediaQuery.of(context).size.width * 0.03,
@@ -325,11 +357,13 @@ class _HomePageState extends State<HomePage> {
                         margin: const EdgeInsets.only(top: 30),
                         child: const Text(
                           "Loading . . .",
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18),
                         ),
                       ),
                     ],
-                  ))
+                  ),
+                )
               : Container(
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height,
@@ -380,23 +414,72 @@ class _HomePageState extends State<HomePage> {
     var result = await postLikeProfile();
     var resultDecoded = jsonDecode(result);
     if (resultDecoded["matched"] == true) {
+      if (!mounted) return;
       showDialog<void>(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext dialogContext) {
-          return AlertDialog(
-            content: const Text('Matched!'),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('OK'),
-                onPressed: () {
-                  Navigator.of(dialogContext).pop();
-                },
+          context: context,
+          barrierDismissible: true,
+          builder: (BuildContext dialogContext) {
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius:
+                BorderRadius.circular(20),
               ),
-            ],
-          );
-        },
-      );
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20.0),
+                  gradient: const LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      Color(0xffffafbd),
+                      Color(0xffffc3a0)
+                    ],
+                  ),
+                ),
+                height: MediaQuery.of(context)
+                    .size
+                    .height *
+                    0.4,
+                width: MediaQuery.of(context)
+                    .size
+                    .width,
+                child: Column(
+                  mainAxisAlignment:
+                  MainAxisAlignment.center,
+                  crossAxisAlignment:
+                  CrossAxisAlignment.center,
+                  children: [
+                    const Spacer(),
+                    const Text(
+                      'You found your duo!',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 32.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const Spacer(),
+                    const Icon(Icons.favorite,
+                        color: Colors.pink,
+                        size: 100),
+                    const Spacer(),
+                    IconButton(
+                      style: IconButton.styleFrom(
+                        backgroundColor:
+                        Colors.black,
+                      ),
+                      icon: const Icon(Icons.close,
+                          size: 32),
+                      onPressed: () =>
+                          Navigator.of(context)
+                              .pop(),
+                    ),
+                    const Spacer(),
+                  ],
+                ),
+              ),
+            );
+          });
     }
     if (!mounted) return;
     setState(() {
@@ -420,30 +503,5 @@ class _HomePageState extends State<HomePage> {
         existingMatches = false;
       }
     });
-  }
-}
-
-class _GameBubble extends StatelessWidget {
-  const _GameBubble({Key? key, required this.title}) : super(key: key);
-  final String title;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15.0),
-          color: Colors.blue.withOpacity(0.25)),
-      child: Padding(
-        padding: const EdgeInsets.only(left: 12, right: 12, top: 7, bottom: 7),
-        child: Text(
-          title,
-          style: const TextStyle(
-            fontSize: 15,
-            color: Colors.black,
-            fontWeight: FontWeight.w400,
-          ),
-        ),
-      ),
-    );
   }
 }

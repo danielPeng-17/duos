@@ -169,10 +169,9 @@ class _SettingsPageGamesState extends State<SettingsPageGames> {
     String token = await FirebaseAuth.instance.currentUser!.getIdToken();
     final headers = ApiConstants.apiHeader(token ?? '');
 
-    final data = {
-      "categories": [listOfChosenCategories.toString()]
-    };
-    final encodedJson = jsonEncode(data);
+    final encodedJson = jsonEncode({
+      "categories": listOfChosenCategories
+    });
 
     http.patch(Uri.parse(apiGames), headers: headers, body: encodedJson);
   }

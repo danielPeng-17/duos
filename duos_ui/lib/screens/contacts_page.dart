@@ -169,7 +169,7 @@ class ContactsPageState extends State<ContactsPage> {
                             ),
                             Text(lastMessages.isNotEmpty &&
                                     lastMessage.senderId != ""
-                                ? "${lastMessage.senderId == uid ? 'You: ' : ''} ${lastMessage.content}  •  ${Utils.formatDate(lastMessage.timestamp, "MMM. d, ''yy", true)}"
+                                ? "${lastMessage.senderId == uid ? 'You: ' : ''} ${lastMessage.content.length > 32 ? "${lastMessage.content.substring(0, 32)}..." : lastMessage.content}  •  ${Utils.formatDate(lastMessage.timestamp, "MMM. d, ''yy", true)}"
                                 : "No messages yet")
                           ],
                         )
