@@ -19,7 +19,11 @@ export class MatchingService {
         return allUsers.filter(user => {
             const preLiked = thisUser.likes ? thisUser.likes.find(ele => ele == user.uid) : false   // false if likes value doesn't exist in user
             const preMatched = thisUser.matched ? thisUser.matched.find(ele => ele.uid == user.uid) : false
-            return user.uid != id && !preLiked && !preMatched
+            let matchPref = false;
+            if (thisUser.info.dating_pref == "Both men and women" || thisUser.info.dating_pref == "Men" && user.info.gender == "Man" || thisUser.info.dating_pref == "Women" && user.info.gender == "Woman" ) {
+                matchPref = true;
+            } 
+            return user.uid != id && !preLiked && !preMatched && matchPref;
         })
 
     }
