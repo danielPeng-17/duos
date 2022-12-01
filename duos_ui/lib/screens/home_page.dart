@@ -79,67 +79,93 @@ class _HomePageState extends State<HomePage> {
                         const SizedBox(
                           height: 10,
                         ),
-                        ClipRRect(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(20)),
-                          child: Container(
-                            height: MediaQuery.of(context).size.height * 0.6,
-                            width: MediaQuery.of(context).size.width * 0.9,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: NetworkImage(_currentProfile["info"]
-                                    ["profile_picture_url"]),
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            child: Stack(
-                              children: [
-                                Positioned(
-                                  left: 0,
-                                  bottom: 0,
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.1,
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.7,
-                                  child: Container(
-                                    margin: const EdgeInsets.all(10),
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.7,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          _currentProfile["info"]
-                                                  ["first_name"] +
-                                              " " +
-                                              _currentProfile["info"]
-                                                  ["last_name"],
-                                          overflow: TextOverflow.fade,
-                                          softWrap: false,
-                                          style: const TextStyle(
-                                              fontSize: 22,
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w600),
-                                        ),
-                                        const SizedBox(height: 5),
-                                        Text(
-                                          _currentProfile["info"]["location"],
-                                          overflow: TextOverflow.fade,
-                                          softWrap: false,
-                                          style: const TextStyle(
-                                              fontSize: 18,
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w400),
-                                        ),
-                                      ],
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.6,
+                          width: MediaQuery.of(context).size.width * 0.9,
+                          child: Stack(
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.5),
+                                      spreadRadius: 5,
+                                      blurRadius: 7,
+                                      offset: const Offset(0, 3),
                                     ),
+                                  ],
+                                ),
+                                child: ShaderMask(
+                                  shaderCallback: (bounds) {
+                                    return const LinearGradient(
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                      colors: [
+                                        Colors.transparent,
+                                        Colors.transparent,
+                                        Colors.black
+                                      ],
+                                      stops: [0, 0.8, 0.95],
+                                    ).createShader(bounds);
+                                  },
+                                  blendMode: BlendMode.srcATop,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    child:
+                                        SizedBox(
+                                          height: MediaQuery.of(context).size.height,
+                                          width: MediaQuery.of(context).size.width,
+                                          child: Image.network(
+                                              _currentProfile["info"]
+                                              ["profile_picture_url"],
+                                              fit: BoxFit.cover),
+                                        ),
                                   ),
                                 ),
-                              ],
-                            ),
+                              ),
+                              Positioned(
+                                left: 0,
+                                bottom: 0,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.1,
+                                width: MediaQuery.of(context).size.width * 0.7,
+                                child: Container(
+                                  margin: const EdgeInsets.all(10),
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.7,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        _currentProfile["info"]["first_name"] +
+                                            " " +
+                                            _currentProfile["info"]
+                                                ["last_name"],
+                                        overflow: TextOverflow.fade,
+                                        softWrap: false,
+                                        style: const TextStyle(
+                                            fontSize: 22,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                      const SizedBox(height: 5),
+                                      Text(
+                                        _currentProfile["info"]["location"],
+                                        overflow: TextOverflow.fade,
+                                        softWrap: false,
+                                        style: const TextStyle(
+                                            fontSize: 18,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w400),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                         ClipRRect(
